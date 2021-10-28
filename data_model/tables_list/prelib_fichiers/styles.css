@@ -1,0 +1,47 @@
+.accordion > input[name="collapse"] {
+    display: none;
+}
+
+.accordion .content {
+    background: #fff;
+    overflow: hidden;
+    height: 0;
+    transition: 0.5s;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.accordion label {
+    color: #fff;
+    cursor: pointer;
+    font-weight: normal;
+    padding: 10px;
+    background: #007bff;
+    border-radius: 5px; 
+}
+     
+.accordion label:hover,
+.accordion label:focus {
+    background: #007bff;
+}
+     
+.accordion .handle label:before {
+    font-family: Verdana;
+    content: "^";
+    display: inline-block;
+    margin-right: 10px;
+    font-size: .8em;
+    line-height: 1.556em;
+    vertical-align: middle;
+    transition: 0.4s;    
+}
+     
+.accordion > input[name="collapse"]:checked ~ .handle label:before {
+    transform: rotate(180deg);
+    transform-origin: center;
+    transition: 0.4s;
+}
+
+.accordion > input[name="collapse"]:checked ~ .content {
+    height: 4780px;
+    transition: height 0.5s;
+}
