@@ -1,1132 +1,1266 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>prelib</title>
-  <link rel="stylesheet" href="prelib_fichiers/app.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="prelib_fichiers/main.css">
-  <link rel="stylesheet" href="prelib_fichiers/styles.css">
-  <script src="prelib_fichiers/main.js">
-  </script>
-  <script src="prelib_fichiers/sql-formatter-2.js" defer="defer">
-  </script>
-  <script src="prelib_fichiers/codemirror-5.js">
-  </script>
-  <link rel="stylesheet" href="prelib_fichiers/codemirror-5.css">
-  <script src="prelib_fichiers/codemirror-5_002.js">
-  </script>
-  <script src="prelib_fichiers/cm-resize-1.js">
-  </script>
-  <style>
-    .cm-resize-handle {
-      display: block;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 99;
-      width: 18px;
-      height: 18px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0,0 16,16'%3E%3Cpath stroke='gray' stroke-width='2' d='M-1,12 l18,-18 M-1,18 l18,-18 M-1,24 l18,-18 M-1,30 l18,-18'/%3E%3C/svg%3E") center/cover;
-      box-shadow: inset -1px -1px 0 0 silver;
-      cursor: nwse-resize
-    }
-  </style>
-  <style>
-    .CodeMirror {
-      height: auto;
-      min-height: 70px;
-      width: 80%;
-      border: 1px solid #ddd;
-    }
-
-    .cm-resize-handle {
-      background: url("data:image/svg+xml,%3Csvg%20aria-labelledby%3D%22cm-drag-to-resize%22%20role%3D%22img%22%20fill%3D%22%23ccc%22%20stroke%3D%22%23ccc%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%20width%3D%2216%22%20height%3D%2216%22%3E%0A%20%20%3Ctitle%20id%3D%22cm-drag-to-resize%22%3EDrag%20to%20resize%3C%2Ftitle%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M1%202.75A.75.75%200%20011.75%202h12.5a.75.75%200%20110%201.5H1.75A.75.75%200%20011%202.75zm0%205A.75.75%200%20011.75%207h12.5a.75.75%200%20110%201.5H1.75A.75.75%200%20011%207.75zM1.75%2012a.75.75%200%20100%201.5h12.5a.75.75%200%20100-1.5H1.75z%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E");
-      background-repeat: no-repeat;
-      box-shadow: none;
-      cursor: ns-resize;
-    }
-  </style>
-</head>
-
-<body class="db db-prelib">
-  <header>
-    <nav>
-      <p class="crumbs">
-        <a href="https://crbc-dataset.huma-num.fr/">home</a>
-      </p>
-      <details class="nav-menu">
-        <summary>
-          <svg aria-labelledby="nav-menu-svg-title" role="img" fill="currentColor" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
-            <title id="nav-menu-svg-title">Menu</title>
-            <path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z">
-            </path>
-          </svg>
-        </summary>
-        <div class="nav-menu-inner">
-          <ul>
-            <li>
-              <a href="https://crbc-dataset.huma-num.fr/-/search">Search all tables</a>
-            </li>
-          </ul>
-        </div>
-      </details>
-    </nav>
-  </header>
-  <section class="content">
-    <div class="page-header" style="border-color: #ff0000">
-      <h1>Projet de recherche en littérature de langue bretonne</h1>
-    </div>
-    <div class="metadata-description">
-      <p>Base de données permettant la consultation et le traitement de données concernant les acteurs du domaine de la littérature de langue bretonne des origines à nos jours. Cette base est réalisée à partir d’informations factuelles figurant dans
-        des ouvrages (histoires de la littérature, anthologies, ouvrages scientifiques, mémoires, thèses etc.), des fonds d’archives (État civil, fonds d’archives de personnes ou d’institutions, correspondances etc.), des paratextes (dédicaces,
-        préfaces, illustrations, liste d’abonnés, listes de financeurs etc.), des relevés divers (participation à des périodiques, lauréats de prix littéraires etc.). L’horizon des informations potentiellement implémentables n’étant pas borné,
-        l’enrichissement de la base, le comblement des lacunes et l’affinement de la granulométrie des informations se font progressivement, sans restreindre pour autant l’accès aux données déjà exploitables.</p>
-      <p>Responsables de la base de données : Nelly Blanchard, Jean-Baptiste Pressac, Mannaig Thomas (CRBC)</p>
-    </div>
-    <p> Data license: <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence Ouverte version 2.0</a>
-    </p>
-    <form class="sql" action="/prelib" method="get">
-      <h3>Custom SQL query</h3>
-      <p>
-        <textarea id="sql-editor" name="sql" style="display: none;">select * from prelib_airegeographique</textarea>
-        <div class="CodeMirror cm-s-default CodeMirror-wrap">
-          <div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 4.76666px; left: 34.7667px;">
-            <textarea style="position: absolute; bottom: -1em; padding: 0px; width: 1px; height: 1em; outline: currentcolor none medium;" autocorrect="off" autocapitalize="none" spellcheck="false" tabindex="0" wrap="off">
-                        </textarea>
-          </div>
-          <div class="CodeMirror-vscrollbar" tabindex="-1" cm-not-content="true" style="bottom: 18px;">
-            <div style="min-width: 1px; height: 0px;">
-            </div>
-          </div>
-          <div class="CodeMirror-hscrollbar" tabindex="-1" cm-not-content="true" style="right: 18px;">
-            <div style="height: 100%; min-height: 1px; width: 0px;">
-            </div>
-          </div>
-          <div class="CodeMirror-scrollbar-filler" cm-not-content="true">
-          </div>
-          <div class="CodeMirror-gutter-filler" cm-not-content="true">
-          </div>
-          <div class="CodeMirror-scroll" tabindex="-1" draggable="true">
-            <div class="CodeMirror-sizer" style="margin-left: 30px; margin-bottom: -11px; border-right-width: 39px; min-height: 32px; padding-right: 0px; padding-bottom: 0px;">
-              <div style="position: relative; top: 0px;">
-                <div class="CodeMirror-lines" role="presentation">
-                  <div style="position: relative; outline: currentcolor none medium;" role="presentation">
-                    <div class="CodeMirror-measure">
-                    </div>
-                    <div class="CodeMirror-measure">
-                    </div>
-                    <div style="position: relative; z-index: 1;">
-                    </div>
-                    <div class="CodeMirror-cursors">
-                      <div class="CodeMirror-cursor" style="left: 4px; top: 0px; height: 24px;">&nbsp;</div>
-                    </div>
-                    <div class="CodeMirror-code" role="presentation">
-                      <div style="position: relative;">
-                        <div class="CodeMirror-gutter-wrapper" style="left: -30px;">
-                          <div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">1</div>
-                        </div>
-                        <pre class=" CodeMirror-line " role="presentation">
-                                      <span role="presentation">
-                                        <span class="cm-keyword">select</span>
-                                        <span class="cm-operator">*</span>
-                                        <span class="cm-keyword">from</span> prelib_airegeographique</span>
-                                      </pre>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <title>prelib</title>
+      <link rel="stylesheet" href="prelib_fichiers/app.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+          <link rel="stylesheet" href="prelib_fichiers/main.css">
+            <link rel="stylesheet" href="prelib_fichiers/styles.css">
+              <script src="prelib_fichiers/main.js">
+              </script>
+              <script src="prelib_fichiers/sql-formatter-2.js" defer="defer">
+              </script>
+              <script src="prelib_fichiers/codemirror-5.js">
+              </script>
+              <link rel="stylesheet" href="prelib_fichiers/codemirror-5.css">
+                <script src="prelib_fichiers/codemirror-5_002.js">
+                </script>
+                <script src="prelib_fichiers/cm-resize-1.js">
+                </script>
+                <style>    .cm-resize-handle {      display: block;      position: absolute;      bottom: 0;      right: 0;      z-index: 99;      width: 18px;      height: 18px;      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0,0 16,16'%3E%3Cpath stroke='gray' stroke-width='2' d='M-1,12 l18,-18 M-1,18 l18,-18 M-1,24 l18,-18 M-1,30 l18,-18'/%3E%3C/svg%3E") center/cover;      box-shadow: inset -1px -1px 0 0 silver;      cursor: nwse-resize    }  </style>
+                <style>    .CodeMirror {      height: auto;      min-height: 70px;      width: 80%;      border: 1px solid #ddd;    }    .cm-resize-handle {      background: url("data:image/svg+xml,%3Csvg%20aria-labelledby%3D%22cm-drag-to-resize%22%20role%3D%22img%22%20fill%3D%22%23ccc%22%20stroke%3D%22%23ccc%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2016%22%20width%3D%2216%22%20height%3D%2216%22%3E%0A%20%20%3Ctitle%20id%3D%22cm-drag-to-resize%22%3EDrag%20to%20resize%3C%2Ftitle%3E%0A%20%20%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M1%202.75A.75.75%200%20011.75%202h12.5a.75.75%200%20110%201.5H1.75A.75.75%200%20011%202.75zm0%205A.75.75%200%20011.75%207h12.5a.75.75%200%20110%201.5H1.75A.75.75%200%20011%207.75zM1.75%2012a.75.75%200%20100%201.5h12.5a.75.75%200%20100-1.5H1.75z%22%3E%3C%2Fpath%3E%0A%3C%2Fsvg%3E");      background-repeat: no-repeat;      box-shadow: none;      cursor: ns-resize;    }  </style>
+              </head>
+              <body class="db db-prelib">
+                <header>
+                  <nav>
+                    <p class="crumbs">
+                      <a href="https://crbc-dataset.huma-num.fr/">home</a>
+                    </p>
+                    <details class="nav-menu">
+                      <summary>
+                        <svg aria-labelledby="nav-menu-svg-title" role="img" fill="currentColor" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                          <title id="nav-menu-svg-title">Menu</title>
+                          <path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z">
+                          </path>
+                        </svg>
+                      </summary>
+                      <div class="nav-menu-inner">
+                        <ul>
+                          <li>
+                            <a href="https://crbc-dataset.huma-num.fr/-/search">Search all tables</a>
+                          </li>
+                        </ul>
                       </div>
-                    </div>
+                    </details>
+                  </nav>
+                </header>
+                <section class="content">
+                  <div class="page-header" style="border-color: #ff0000">
+                    <h1>Projet de recherche en littérature de langue bretonne</h1>
+                  </div>
+                  <div class="metadata-description">
+                    <p>Base de données permettant la consultation et le traitement de données concernant les acteurs du domaine de la littérature de langue bretonne des origines à nos jours. Cette base est réalisée à partir d’informations factuelles figurant dans        des ouvrages (histoires de la littérature, anthologies, ouvrages scientifiques, mémoires, thèses etc.), des fonds d’archives (État civil, fonds d’archives de personnes ou d’institutions, correspondances etc.), des paratextes (dédicaces,        préfaces, illustrations, liste d’abonnés, listes de financeurs etc.), des relevés divers (participation à des périodiques, lauréats de prix littéraires etc.). L’horizon des informations potentiellement implémentables n’étant pas borné,        l’enrichissement de la base, le comblement des lacunes et l’affinement de la granulométrie des informations se font progressivement, sans restreindre pour autant l’accès aux données déjà exploitables.</p>
+                    <p>Responsables de la base de données : Nelly Blanchard, Jean-Baptiste Pressac, Mannaig Thomas (CRBC)</p>
+                  </div>
+                  <p> Data license: <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence Ouverte version 2.0</a>
+                </p>
+                <form class="sql" action="/prelib" method="get">
+                  <h3>[Form deleted]</h3>
+                </form>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique">prelib_airegeographique</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, wikidata</em>
+                  </p>
+                  <p>39 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationcollectif">prelib_appellationcollectif</a>
+                  </h2>
+                  <p>
+                    <em>id, appellation, forme, collectif_id, langue_id</em>
+                  </p>
+                  <p>469 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne">prelib_appellationpersonne</a>
+                  </h2>
+                  <p>
+                    <em>id, appellation, alias, forme, langue_id, personne_id</em>
+                  </p>
+                  <p>3,425 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_batiment">prelib_batiment</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, wikidata, aire_geographique_id, departement_id, pays_id, ville_id</em>
+                  </p>
+                  <p>15 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_collaborerevue">prelib_collaborerevue</a>
+                  </h2>
+                  <p>
+                    <em>id, fonction_id, personne_id, revue_id</em>
+                  </p>
+                  <p>1,339 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_collectif">prelib_collectif</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, annee_creation, annee_dissolution, type_collectif_id, wikidata, ark_bnf, idref, isni, viaf</em>
+                  </p>
+                  <p>800 rows</p>
+                  <br/>
+                  <div class="alignment">
+                    <table>
+                      <caption>
+                        <strong>crm:E74 Group</strong>
+                      </caption>
+                      <tr>
+                        <th>Original</th>
+                        <th>Alignment</th>
+                        <th>Notes</th>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>nom</td>
+                        <td>rdfs:label</td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>annee_creation</td>
+                        <td>crm:E66 Formation → crm:P95 has formed (was formed by)</td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>annee_dissolution</td>
+                        <td>crm:E68 Dissolution  → crm:P99 dissolved (was dissolved by)</td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>type_collectif_id</td>
+                        <td> crm-sup:P7 has group type (is group type of) → crm-sup:C9 Group type</td>
+                        <td>Cf. le vocabulaire dans <a href="https://ontomeopentheso.mom.fr">OntoME-Opentheso</a> > SDHSS Generic > Group Type            </td>
+                      </tr>
+                      <tr>
+                        <td>wikidata</td>
+                        <td>owl:sameAs</td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>ark_bnf</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>idref</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>isni</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>viaf</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                    </table>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div style="position: absolute; height: 39px; width: 1px; border-bottom: 0px solid transparent; top: 32px;">
-            </div>
-            <div class="CodeMirror-gutters" style="height: 71px;">
-              <div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 29px;">
-              </div>
-            </div>
-          </div>
-          <div class="cm-resize-handle">
-          </div>
-        </div>
-      </p>
-      <p>
-        <button id="sql-format" type="button">Format SQL</button>
-        <input type="submit" value="Run SQL">
-      </p>
-    </form>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique">prelib_airegeographique</a>
-      </h2>
-      <p>
-        <em>id, nom, wikidata</em>
-      </p>
-      <p>39 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationcollectif">prelib_appellationcollectif</a>
-      </h2>
-      <p>
-        <em>id, appellation, forme, collectif_id, langue_id</em>
-      </p>
-      <p>469 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne">prelib_appellationpersonne</a>
-      </h2>
-      <p>
-        <em>id, appellation, alias, forme, langue_id, personne_id</em>
-      </p>
-      <p>3,425 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_batiment">prelib_batiment</a>
-      </h2>
-      <p>
-        <em>id, nom, wikidata, aire_geographique_id, departement_id, pays_id, ville_id</em>
-      </p>
-      <p>15 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_collaborerevue">prelib_collaborerevue</a>
-      </h2>
-      <p>
-        <em>id, fonction_id, personne_id, revue_id</em>
-      </p>
-      <p>1,339 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_collectif">prelib_collectif</a>
-      </h2>
-      <p>
-        <em>id, nom, annee_creation, annee_dissolution, type_collectif_id, wikidata, ark_bnf, idref, isni, viaf</em>
-      </p>
-      <p>800 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_collectifecritoeuvre">prelib_collectifecritoeuvre</a>
-      </h2>
-      <p>
-        <em>id, date_ecriture, collectif_id, fonction_id, oeuvre_id</em>
-      </p>
-      <p>7 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement">prelib_departement</a>
-      </h2>
-      <p>
-        <em>id, nom, wikidata</em>
-      </p>
-      <p>46 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_deplacement">prelib_deplacement</a>
-      </h2>
-      <p>
-        <em>id, destination, mois_debut, annee_debut, mois_fin, annee_fin</em>
-      </p>
-      <p>90 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ecritoeuvre">prelib_ecritoeuvre</a>
-      </h2>
-      <p>
-        <em>id, date_ecriture, fonction_id, oeuvre_id, personne_id</em>
-      </p>
-      <p>4,851 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editeoeuvre">prelib_editeoeuvre</a>
-      </h2>
-      <p>
-        <em>id, edition_id, collectif_id</em>
-      </p>
-      <p>2,406 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editerevue">prelib_editerevue</a>
-      </h2>
-      <p>
-        <em>id, revue_id, collectif_id</em>
-      </p>
-      <p>29 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_edition">prelib_edition</a>
-      </h2>
-      <p>
-        <em>id, titre, annee_publication, annee_publication_notes, sudoc, isbn_10, isbn_13, wikidata, ark_bnf</em>
-      </p>
-      <p>2,647 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editiongraphie">prelib_editiongraphie</a>
-      </h2>
-      <p>
-        <em>id, edition_id, graphie_id</em>
-      </p>
-      <p>296 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editionprix">prelib_editionprix</a>
-      </h2>
-      <p>
-        <em>id, edition_id, prix_id, annee</em>
-      </p>
-      <p>19 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_estdedicacea">prelib_estdedicacea</a>
-      </h2>
-      <p>
-        <em>id, oeuvre_id, personne_id</em>
-      </p>
-      <p>458 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_estdedicaceacollectif">prelib_estdedicaceacollectif</a>
-      </h2>
-      <p>
-        <em>id, collectif_id, oeuvre_id</em>
-      </p>
-      <p>2 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_etudes">prelib_etudes</a>
-      </h2>
-      <p>
-        <em>id, intitule, etablissement, annee_debut_etudes, annee_fin_etudes, ordre, diplome, personne_id, qualite_id, groupe_id, batiment_id, ville_id, departement_id, pays_id, aire_geographique_id</em>
-      </p>
-      <p>399 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_faitundeplacement">prelib_faitundeplacement</a>
-      </h2>
-      <p>
-        <em>id, deplacement_id, personne_id</em>
-      </p>
-      <p>108 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctioncollaborerevue">prelib_fonctioncollaborerevue</a>
-      </h2>
-      <p>
-        <em>id, nom</em>
-      </p>
-      <p>36 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre">prelib_fonctionecritoeuvre</a>
-      </h2>
-      <p>
-        <em>id, nom, code_idref</em>
-      </p>
-      <p>19 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_graphie">prelib_graphie</a>
-      </h2>
-      <p>
-        <em>id, nom</em>
-      </p>
-      <p>8 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue">prelib_langue</a>
-      </h2>
-      <p>
-        <em>id, nom, code_iso_639_3, wikidata</em>
-      </p>
-      <p>31 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_manuscrit">prelib_manuscrit</a>
-      </h2>
-      <p>
-        <em>id, titre</em>
-      </p>
-      <p>4 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_manuscritcollectif">prelib_manuscritcollectif</a>
-      </h2>
-      <p>
-        <em>id, cote, manuscrit_id, collectif_id, annee_debut_detention, annee_fin_detention, jour_debut_detention, jour_fin_detention, mois_debut_detention, mois_fin_detention</em>
-      </p>
-      <p>4 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_manuscritoeuvre">prelib_manuscritoeuvre</a>
-      </h2>
-      <p>
-        <em>id, jour, mois, annee, manuscrit_id, oeuvre_id, original</em>
-      </p>
-      <p>4 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre">prelib_oeuvre</a>
-      </h2>
-      <p>
-        <em>id, titre, descriptif, wikidata, ark_bnf</em>
-      </p>
-      <p>4,157 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre_langue">prelib_oeuvre_langue</a>
-      </h2>
-      <p>
-        <em>id, langue_id, oeuvre_id</em>
-      </p>
-      <p>4,303 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre_types">prelib_oeuvre_types</a>
-      </h2>
-      <p>
-        <em>id, oeuvre_id, typeoeuvre_id</em>
-      </p>
-      <p>2,791 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvreedition">prelib_oeuvreedition</a>
-      </h2>
-      <p>
-        <em>id, edition_id, oeuvre_id</em>
-      </p>
-      <p>2,675 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvrelangue">prelib_oeuvrelangue</a>
-      </h2>
-      <p>
-        <em>id, langue_id, oeuvre_id</em>
-      </p>
-      <p>4,367 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvreoeuvre">prelib_oeuvreoeuvre</a>
-      </h2>
-      <p>
-        <em>id, oeuvre_inspiree_id, oeuvre_originale_id, type_relation_oeuvres_id</em>
-      </p>
-      <p>283 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvreprix">prelib_oeuvreprix</a>
-      </h2>
-      <p>
-        <em>id, annee, oeuvre_id, prix_id</em>
-      </p>
-      <p>3 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_paraitdans">prelib_paraitdans</a>
-      </h2>
-      <p>
-        <em>id, jour_parution, mois_parution, annee_parution, numero_revue, page_debut, page_fin, oeuvre_id, revue_id</em>
-      </p>
-      <p>1,850 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays">prelib_pays</a>
-      </h2>
-      <p>
-        <em>id, nom, wikidata, iso3166_alpha_2, iso3166_alpha_3, iso3166_alpha_4</em>
-      </p>
-      <p>36 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne">prelib_personne</a>
-      </h2>
-      <p>
-        <em>id, sexe, nom_usuel, nom_etat_civil, prenom_etat_civil, particule_noblesse, jour_naissance, mois_naissance, annee_naissance, jour_deces, mois_deces, annee_deces, langue_maternelle_1, langue_maternelle_2, langue_maternelle_3, wikidata,
-          idref, ark_bnf, isni, viaf, aire_geographique_deces_id, aire_geographique_naissance_id, confession_religieuse_id, departement_deces_id, departement_naissance_id, langue_usuelle_1_id, langue_usuelle_2_id, langue_usuelle_3_id, pays_deces_id,
-          pays_naissance_id, ville_deces_id, ville_naissance_id</em>
-      </p>
-      <p>2,365 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_prix">prelib_prix</a>
-      </h2>
-      <p>
-        <em>id, nom, wikidata</em>
-      </p>
-      <p>21 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_prix_institutions">prelib_prix_institutions</a>
-      </h2>
-      <p>
-        <em>id, prix_id, collectif_id</em>
-      </p>
-      <p>21 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_profession">prelib_profession</a>
-      </h2>
-      <p>
-        <em>id, intitule, qualite_id, employeur, date_debut, date_fin, annee_debut, annee_fin, ordre, batiment_id, departement_id, pays_id, personne_id, ville_id, aire_geographique_id, groupe_id, type_groupe_id</em>
-      </p>
-      <p>2,701 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_qualiteparticipecollectif">prelib_qualiteparticipecollectif</a>
-      </h2>
-      <p>
-        <em>id, nom</em>
-      </p>
-      <p>108 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_qualiterelation">prelib_qualiterelation</a>
-      </h2>
-      <p>
-        <em>id, nom, relation_inverse_id, wikidata</em>
-      </p>
-      <p>53 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_recipiendaireprix">prelib_recipiendaireprix</a>
-      </h2>
-      <p>
-        <em>id, annee, personne_id, prix_id</em>
-      </p>
-      <p>36 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_relationinterpersonnelle">prelib_relationinterpersonnelle</a>
-      </h2>
-      <p>
-        <em>id, jour_debut_relation, mois_debut_relation, annee_debut_relation, jour_fin_relation, mois_fin_relation, annee_fin_relation, personne_id, qualite_relation_id, relation_id</em>
-      </p>
-      <p>1,312 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue">prelib_revue</a>
-      </h2>
-      <p>
-        <em>id, titre, titre_alt_1, titre_alt_2, titre_alt_3, titre_alt_4, titre_alt_5, sous_titre_1, sous_titre_2, sous_titre_3, slogan_1, slogan_2, slogan_3, issn, issn_numerique, wikidata, sudoc, ark_bnf, oclc, annee_debut, annee_fin</em>
-      </p>
-      <p>260 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_sourcepersonne">prelib_sourcepersonne</a>
-      </h2>
-      <p>
-        <em>id, page_debut, page_fin, concerne, edition_id, personne_id</em>
-      </p>
-      <p>8 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typecollectif">prelib_typecollectif</a>
-      </h2>
-      <p>
-        <em>id, nom</em>
-      </p>
-      <p>91 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typeoeuvre">prelib_typeoeuvre</a>
-      </h2>
-      <p>
-        <em>id, intitule, commentaire</em>
-      </p>
-      <p>32 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typerelationoeuvres">prelib_typerelationoeuvres</a>
-      </h2>
-      <p>
-        <em>id, nom</em>
-      </p>
-      <p>5 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typerelationrevues">prelib_typerelationrevues</a>
-      </h2>
-      <p>
-        <em>id, nom, abbreviation, relation_inverse_id</em>
-      </p>
-      <p>8 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville">prelib_ville</a>
-      </h2>
-      <p>
-        <em>id, nom, wikidata, idref, pays_id, latitude, longitude</em>
-      </p>
-      <p>766 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts">prelib_airegeographique_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom, wikidata, prelib_airegeographique_fts, rank</em>
-      </p>
-      <p>39 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_config">prelib_airegeographique_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_data">prelib_airegeographique_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>3 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_docsize">prelib_airegeographique_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>39 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_idx">prelib_airegeographique_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts">prelib_appellationpersonne_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>appellation, prelib_appellationpersonne_fts, rank</em>
-      </p>
-      <p>3,425 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_config">prelib_appellationpersonne_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_data">prelib_appellationpersonne_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>15 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_docsize">prelib_appellationpersonne_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>3,425 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_idx">prelib_appellationpersonne_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>13 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts">prelib_departement_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom, wikidata, prelib_departement_fts, rank</em>
-      </p>
-      <p>46 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_config">prelib_departement_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_data">prelib_departement_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>3 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_docsize">prelib_departement_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>46 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_idx">prelib_departement_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts">prelib_fonctionecritoeuvre_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom, code_idref, prelib_fonctionecritoeuvre_fts, rank</em>
-      </p>
-      <p>19 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_config">prelib_fonctionecritoeuvre_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_data">prelib_fonctionecritoeuvre_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>3 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_docsize">prelib_fonctionecritoeuvre_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>19 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_idx">prelib_fonctionecritoeuvre_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts">prelib_langue_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom, wikidata, code_iso_639_3, prelib_langue_fts, rank</em>
-      </p>
-      <p>31 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_config">prelib_langue_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_data">prelib_langue_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>3 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_docsize">prelib_langue_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>28 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_idx">prelib_langue_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts">prelib_pays_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom, prelib_pays_fts, rank</em>
-      </p>
-      <p>36 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_config">prelib_pays_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_data">prelib_pays_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>3 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_docsize">prelib_pays_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>36 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_idx">prelib_pays_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts">prelib_personne_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom_usuel, prelib_personne_fts, rank</em>
-      </p>
-      <p>2,365 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_config">prelib_personne_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_data">prelib_personne_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>12 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_docsize">prelib_personne_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>2,365 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_idx">prelib_personne_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>10 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts">prelib_revue_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>titre, titre_alt_1, titre_alt_2, titre_alt_3, titre_alt_4, titre_alt_5, sous_titre_1, sous_titre_2, sous_titre_3, slogan_1, slogan_2, slogan_3, prelib_revue_fts, rank</em>
-      </p>
-      <p>260 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_config">prelib_revue_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_data">prelib_revue_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>4 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_docsize">prelib_revue_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>260 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_idx">prelib_revue_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>2 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts">prelib_ville_fts</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>nom, wikidata, idref, prelib_ville_fts, rank</em>
-      </p>
-      <p>766 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_config">prelib_ville_fts_config</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>k, v</em>
-      </p>
-      <p>1 row</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_data">prelib_ville_fts_data</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, block</em>
-      </p>
-      <p>7 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_docsize">prelib_ville_fts_docsize</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>id, sz</em>
-      </p>
-      <p>742 rows</p>
-    </div>
-    <div class="db-table">
-      <h2>
-        <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_idx">prelib_ville_fts_idx</a>
-        <em> (hidden)</em>
-      </h2>
-      <p>
-        <em>segid, term, pgno</em>
-      </p>
-      <p>5 rows</p>
-    </div>
-    <script>
-      window.onload = () => {
-        const sqlFormat = document.querySelector("button#sql-format");
-        const readOnly = document.querySelector("pre#sql-query");
-        const sqlInput = document.querySelector("textarea#sql-editor");
-        if (sqlFormat && !readOnly) {
-          sqlFormat.hidden = false;
-        }
-        if (sqlInput) {
-          var editor = CodeMirror.fromTextArea(sqlInput, {
-            lineNumbers: true,
-            mode: "text/x-sql",
-            lineWrapping: true,
-          });
-          editor.setOption("extraKeys", {
-            "Shift-Enter": function() {
-              document.getElementsByClassName("sql")[0].submit();
-            },
-            Tab: false
-          });
-          if (sqlFormat) {
-            sqlFormat.addEventListener("click", ev => {
-              editor.setValue(sqlFormatter.format(editor.getValue()));
-            })
-          }
-          cmResize(editor, {
-            resizableWidth: false
-          });
-        }
-        if (sqlFormat && readOnly) {
-          const formatted = sqlFormatter.format(readOnly.innerHTML);
-          if (formatted != readOnly.innerHTML) {
-            sqlFormat.hidden = false;
-            sqlFormat.addEventListener("click", ev => {
-              readOnly.innerHTML = formatted;
-            })
-          }
-        }
-      }
-    </script>
-  </section>
-  <footer class="ft">Powered by <a href="https://datasette.io/" title="Datasette v0.57.1">Datasette</a>· Query took 99.364ms · Data license: <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence
-      Ouverte version 2.0</a>
-  </footer>
-  <script>
-    document.body.addEventListener('click', (ev) => {
-      /* Close any open details elements that this click is outside of */
-      var target = ev.target;
-      var detailsClickedWithin = null;
-      while (target && target.tagName != 'DETAILS') {
-        target = target.parentNode;
-      }
-      if (target && target.tagName == 'DETAILS') {
-        detailsClickedWithin = target;
-      }
-      Array.from(document.getElementsByTagName('details')).filter((details) => details.open && details != detailsClickedWithin).forEach(details => details.open = false);
-    });
-  </script>
-  <script>
-    window.datasette = window.datasette || {};
-    datasette.leaflet = {
-      JAVASCRIPT_URL: '/-/static-plugins/datasette-leaflet/leaflet-v1.7.1.js',
-      CSS_URL: '/-/static-plugins/datasette-leaflet/leaflet-v1.7.1.css'
-    };
-  </script>
-  <script>
-    []
-  </script>
-  <!-- Templates considered: database-prelib.html, *database.html -->
-</body>
-
-</html>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_collectifecritoeuvre">prelib_collectifecritoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, date_ecriture, collectif_id, fonction_id, oeuvre_id</em>
+                  </p>
+                  <p>7 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement">prelib_departement</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, wikidata</em>
+                  </p>
+                  <p>46 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_deplacement">prelib_deplacement</a>
+                  </h2>
+                  <p>
+                    <em>id, destination, mois_debut, annee_debut, mois_fin, annee_fin</em>
+                  </p>
+                  <p>90 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ecritoeuvre">prelib_ecritoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, date_ecriture, fonction_id, oeuvre_id, personne_id</em>
+                  </p>
+                  <p>4,851 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editeoeuvre">prelib_editeoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, edition_id, collectif_id</em>
+                  </p>
+                  <p>2,406 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editerevue">prelib_editerevue</a>
+                  </h2>
+                  <p>
+                    <em>id, revue_id, collectif_id</em>
+                  </p>
+                  <p>29 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_edition">prelib_edition</a>
+                  </h2>
+                  <p>
+                    <em>id, titre, annee_publication, annee_publication_notes, sudoc, isbn_10, isbn_13, wikidata, ark_bnf</em>
+                  </p>
+                  <p>2,647 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editiongraphie">prelib_editiongraphie</a>
+                  </h2>
+                  <p>
+                    <em>id, edition_id, graphie_id</em>
+                  </p>
+                  <p>296 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_editionprix">prelib_editionprix</a>
+                  </h2>
+                  <p>
+                    <em>id, edition_id, prix_id, annee</em>
+                  </p>
+                  <p>19 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_estdedicacea">prelib_estdedicacea</a>
+                  </h2>
+                  <p>
+                    <em>id, oeuvre_id, personne_id</em>
+                  </p>
+                  <p>458 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_estdedicaceacollectif">prelib_estdedicaceacollectif</a>
+                  </h2>
+                  <p>
+                    <em>id, collectif_id, oeuvre_id</em>
+                  </p>
+                  <p>2 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_etudes">prelib_etudes</a>
+                  </h2>
+                  <p>
+                    <em>id, intitule, etablissement, annee_debut_etudes, annee_fin_etudes, ordre, diplome, personne_id, qualite_id, groupe_id, batiment_id, ville_id, departement_id, pays_id, aire_geographique_id</em>
+                  </p>
+                  <p>399 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_faitundeplacement">prelib_faitundeplacement</a>
+                  </h2>
+                  <p>
+                    <em>id, deplacement_id, personne_id</em>
+                  </p>
+                  <p>108 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctioncollaborerevue">prelib_fonctioncollaborerevue</a>
+                  </h2>
+                  <p>
+                    <em>id, nom</em>
+                  </p>
+                  <p>36 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre">prelib_fonctionecritoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, code_idref</em>
+                  </p>
+                  <p>19 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_graphie">prelib_graphie</a>
+                  </h2>
+                  <p>
+                    <em>id, nom</em>
+                  </p>
+                  <p>8 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue">prelib_langue</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, code_iso_639_3, wikidata</em>
+                  </p>
+                  <p>31 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_manuscrit">prelib_manuscrit</a>
+                  </h2>
+                  <p>
+                    <em>id, titre</em>
+                  </p>
+                  <p>4 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_manuscritcollectif">prelib_manuscritcollectif</a>
+                  </h2>
+                  <p>
+                    <em>id, cote, manuscrit_id, collectif_id, annee_debut_detention, annee_fin_detention, jour_debut_detention, jour_fin_detention, mois_debut_detention, mois_fin_detention</em>
+                  </p>
+                  <p>4 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_manuscritoeuvre">prelib_manuscritoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, jour, mois, annee, manuscrit_id, oeuvre_id, original</em>
+                  </p>
+                  <p>4 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre">prelib_oeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, titre, descriptif, wikidata, ark_bnf</em>
+                  </p>
+                  <p>4,157 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre_langue">prelib_oeuvre_langue</a>
+                  </h2>
+                  <p>
+                    <em>id, langue_id, oeuvre_id</em>
+                  </p>
+                  <p>4,303 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre_types">prelib_oeuvre_types</a>
+                  </h2>
+                  <p>
+                    <em>id, oeuvre_id, typeoeuvre_id</em>
+                  </p>
+                  <p>2,791 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvreedition">prelib_oeuvreedition</a>
+                  </h2>
+                  <p>
+                    <em>id, edition_id, oeuvre_id</em>
+                  </p>
+                  <p>2,675 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvrelangue">prelib_oeuvrelangue</a>
+                  </h2>
+                  <p>
+                    <em>id, langue_id, oeuvre_id</em>
+                  </p>
+                  <p>4,367 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvreoeuvre">prelib_oeuvreoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, oeuvre_inspiree_id, oeuvre_originale_id, type_relation_oeuvres_id</em>
+                  </p>
+                  <p>283 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvreprix">prelib_oeuvreprix</a>
+                  </h2>
+                  <p>
+                    <em>id, annee, oeuvre_id, prix_id</em>
+                  </p>
+                  <p>3 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_paraitdans">prelib_paraitdans</a>
+                  </h2>
+                  <p>
+                    <em>id, jour_parution, mois_parution, annee_parution, numero_revue, page_debut, page_fin, oeuvre_id, revue_id</em>
+                  </p>
+                  <p>1,850 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays">prelib_pays</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, wikidata, iso3166_alpha_2, iso3166_alpha_3, iso3166_alpha_4</em>
+                  </p>
+                  <p>36 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne">prelib_personne</a>
+                  </h2>
+                  <p>
+                    <em>id, sexe, nom_usuel, nom_etat_civil, prenom_etat_civil, particule_noblesse, jour_naissance, mois_naissance, annee_naissance, jour_deces, mois_deces, annee_deces, langue_maternelle_1, langue_maternelle_2, langue_maternelle_3, wikidata,          idref, ark_bnf, isni, viaf, aire_geographique_deces_id, aire_geographique_naissance_id, confession_religieuse_id, departement_deces_id, departement_naissance_id, langue_usuelle_1_id, langue_usuelle_2_id, langue_usuelle_3_id, pays_deces_id,          pays_naissance_id, ville_deces_id, ville_naissance_id</em>
+                  </p>
+                  <p>2,365 rows</p>
+                  <div class="alignment">
+                    <table>
+                      <caption>
+                        <strong>crm:E21 Person</strong>
+                      </caption>
+                      <tr>
+                        <th>Original</th>
+                        <th>Alignment</th>
+                        <th>Notes</th>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>sexe</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>nom_usuel</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>nom_etat_civil</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>prenom_etat_civil</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>particule_noblesse</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>jour_naissance</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>mois_naissance</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>annee_naissance</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>jour_deces</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>mois_deces</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>annee_deces</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>langue_maternelle_1</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>langue_maternelle_2</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>langue_maternelle_3</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>wikidata,              idref</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>ark_bnf</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>isni</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>viaf</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>aire_geographique_deces_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>aire_geographique_naissance_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>confession_religieuse_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>departement_deces_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>departement_naissance_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>langue_usuelle_1_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>langue_usuelle_2_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>langue_usuelle_3_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>pays_deces_id,              pays_naissance_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>ville_deces_id</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>ville_naissance_id</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_prix">prelib_prix</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, wikidata</em>
+                  </p>
+                  <p>21 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_prix_institutions">prelib_prix_institutions</a>
+                  </h2>
+                  <p>
+                    <em>id, prix_id, collectif_id</em>
+                  </p>
+                  <p>21 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_profession">prelib_profession</a>
+                  </h2>
+                  <p>
+                    <em>id, intitule, qualite_id, employeur, date_debut, date_fin, annee_debut, annee_fin, ordre, batiment_id, departement_id, pays_id, personne_id, ville_id, aire_geographique_id, groupe_id, type_groupe_id</em>
+                  </p>
+                  <p>2,701 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_qualiteparticipecollectif">prelib_qualiteparticipecollectif</a>
+                  </h2>
+                  <p>
+                    <em>id, nom</em>
+                  </p>
+                  <p>108 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_qualiterelation">prelib_qualiterelation</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, relation_inverse_id, wikidata</em>
+                  </p>
+                  <p>53 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_recipiendaireprix">prelib_recipiendaireprix</a>
+                  </h2>
+                  <p>
+                    <em>id, annee, personne_id, prix_id</em>
+                  </p>
+                  <p>36 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_relationinterpersonnelle">prelib_relationinterpersonnelle</a>
+                  </h2>
+                  <p>
+                    <em>id, jour_debut_relation, mois_debut_relation, annee_debut_relation, jour_fin_relation, mois_fin_relation, annee_fin_relation, personne_id, qualite_relation_id, relation_id</em>
+                  </p>
+                  <p>1,312 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue">prelib_revue</a>
+                  </h2>
+                  <p>
+                    <em>id, titre, titre_alt_1, titre_alt_2, titre_alt_3, titre_alt_4, titre_alt_5, sous_titre_1, sous_titre_2, sous_titre_3, slogan_1, slogan_2, slogan_3, issn, issn_numerique, wikidata, sudoc, ark_bnf, oclc, annee_debut, annee_fin</em>
+                  </p>
+                  <p>260 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_sourcepersonne">prelib_sourcepersonne</a>
+                  </h2>
+                  <p>
+                    <em>id, page_debut, page_fin, concerne, edition_id, personne_id</em>
+                  </p>
+                  <p>8 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typecollectif">prelib_typecollectif</a>
+                  </h2>
+                  <p>
+                    <em>id, nom</em>
+                  </p>
+                  <p>91 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typeoeuvre">prelib_typeoeuvre</a>
+                  </h2>
+                  <p>
+                    <em>id, intitule, commentaire</em>
+                  </p>
+                  <p>32 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typerelationoeuvres">prelib_typerelationoeuvres</a>
+                  </h2>
+                  <p>
+                    <em>id, nom</em>
+                  </p>
+                  <p>5 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_typerelationrevues">prelib_typerelationrevues</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, abbreviation, relation_inverse_id</em>
+                  </p>
+                  <p>8 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville">prelib_ville</a>
+                  </h2>
+                  <p>
+                    <em>id, nom, wikidata, idref, pays_id, latitude, longitude</em>
+                  </p>
+                  <p>766 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts">prelib_airegeographique_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom, wikidata, prelib_airegeographique_fts, rank</em>
+                  </p>
+                  <p>39 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_config">prelib_airegeographique_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_data">prelib_airegeographique_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>3 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_docsize">prelib_airegeographique_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>39 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_airegeographique_fts_idx">prelib_airegeographique_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts">prelib_appellationpersonne_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>appellation, prelib_appellationpersonne_fts, rank</em>
+                  </p>
+                  <p>3,425 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_config">prelib_appellationpersonne_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_data">prelib_appellationpersonne_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>15 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_docsize">prelib_appellationpersonne_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>3,425 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_appellationpersonne_fts_idx">prelib_appellationpersonne_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>13 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts">prelib_departement_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom, wikidata, prelib_departement_fts, rank</em>
+                  </p>
+                  <p>46 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_config">prelib_departement_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_data">prelib_departement_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>3 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_docsize">prelib_departement_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>46 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_departement_fts_idx">prelib_departement_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts">prelib_fonctionecritoeuvre_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom, code_idref, prelib_fonctionecritoeuvre_fts, rank</em>
+                  </p>
+                  <p>19 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_config">prelib_fonctionecritoeuvre_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_data">prelib_fonctionecritoeuvre_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>3 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_docsize">prelib_fonctionecritoeuvre_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>19 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_fonctionecritoeuvre_fts_idx">prelib_fonctionecritoeuvre_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts">prelib_langue_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom, wikidata, code_iso_639_3, prelib_langue_fts, rank</em>
+                  </p>
+                  <p>31 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_config">prelib_langue_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_data">prelib_langue_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>3 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_docsize">prelib_langue_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>28 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_langue_fts_idx">prelib_langue_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts">prelib_pays_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom, prelib_pays_fts, rank</em>
+                  </p>
+                  <p>36 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_config">prelib_pays_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_data">prelib_pays_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>3 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_docsize">prelib_pays_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>36 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_pays_fts_idx">prelib_pays_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts">prelib_personne_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom_usuel, prelib_personne_fts, rank</em>
+                  </p>
+                  <p>2,365 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_config">prelib_personne_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_data">prelib_personne_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>12 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_docsize">prelib_personne_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>2,365 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_personne_fts_idx">prelib_personne_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>10 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts">prelib_revue_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>titre, titre_alt_1, titre_alt_2, titre_alt_3, titre_alt_4, titre_alt_5, sous_titre_1, sous_titre_2, sous_titre_3, slogan_1, slogan_2, slogan_3, prelib_revue_fts, rank</em>
+                  </p>
+                  <p>260 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_config">prelib_revue_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_data">prelib_revue_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>4 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_docsize">prelib_revue_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>260 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_revue_fts_idx">prelib_revue_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>2 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts">prelib_ville_fts</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>nom, wikidata, idref, prelib_ville_fts, rank</em>
+                  </p>
+                  <p>766 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_config">prelib_ville_fts_config</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>k, v</em>
+                  </p>
+                  <p>1 row</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_data">prelib_ville_fts_data</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, block</em>
+                  </p>
+                  <p>7 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_docsize">prelib_ville_fts_docsize</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>id, sz</em>
+                  </p>
+                  <p>742 rows</p>
+                </div>
+                <div class="db-table">
+                  <h2>
+                    <a href="https://crbc-dataset.huma-num.fr/prelib/prelib_ville_fts_idx">prelib_ville_fts_idx</a>
+                    <em> (hidden)</em>
+                  </h2>
+                  <p>
+                    <em>segid, term, pgno</em>
+                  </p>
+                  <p>5 rows</p>
+                </div>
+                <script>      window.onload = () => {        const sqlFormat = document.querySelector("button#sql-format");        const readOnly = document.querySelector("pre#sql-query");        const sqlInput = document.querySelector("textarea#sql-editor");        if (sqlFormat && !readOnly) {          sqlFormat.hidden = false;        }        if (sqlInput) {          var editor = CodeMirror.fromTextArea(sqlInput, {            lineNumbers: true,            mode: "text/x-sql",            lineWrapping: true,          });          editor.setOption("extraKeys", {            "Shift-Enter": function() {              document.getElementsByClassName("sql")[0].submit();            },            Tab: false          });          if (sqlFormat) {            sqlFormat.addEventListener("click", ev => {              editor.setValue(sqlFormatter.format(editor.getValue()));            })          }          cmResize(editor, {            resizableWidth: false          });        }        if (sqlFormat && readOnly) {          const formatted = sqlFormatter.format(readOnly.innerHTML);          if (formatted != readOnly.innerHTML) {            sqlFormat.hidden = false;            sqlFormat.addEventListener("click", ev => {              readOnly.innerHTML = formatted;            })          }        }      }    </script>
+              </section>
+              <footer class="ft">Powered by <a href="https://datasette.io/" title="Datasette v0.57.1">Datasette</a>· Query took 99.364ms · Data license: <a href="https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf">Licence      Ouverte version 2.0</a>
+            </footer>
+            <script>    document.body.addEventListener('click', (ev) => {      /* Close any open details elements that this click is outside of */      var target = ev.target;      var detailsClickedWithin = null;      while (target && target.tagName != 'DETAILS') {        target = target.parentNode;      }      if (target && target.tagName == 'DETAILS') {        detailsClickedWithin = target;      }      Array.from(document.getElementsByTagName('details')).filter((details) => details.open && details != detailsClickedWithin).forEach(details => details.open = false);    });  </script>
+            <script>    window.datasette = window.datasette || {};    datasette.leaflet = {      JAVASCRIPT_URL: '/-/static-plugins/datasette-leaflet/leaflet-v1.7.1.js',      CSS_URL: '/-/static-plugins/datasette-leaflet/leaflet-v1.7.1.css'    };  </script>
+            <script>    []  </script>
+            <!-- Templates considered: database-prelib.html, *database.html -->
+          </body>
+        </html>
