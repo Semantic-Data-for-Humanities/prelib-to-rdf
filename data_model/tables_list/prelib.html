@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-      <title>prelib</title>
+      <title>Align Prelib</title>
       <link rel="stylesheet" href="prelib_fichiers/app.css">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
           <link rel="stylesheet" href="prelib_fichiers/main.css">
@@ -76,6 +75,7 @@
                     <em>id, appellation, forme, collectif_id, langue_id</em>
                   </p>
                   <p>469 rows</p>
+                  <p>Alignement proposé: <a href="https://ontome.net/class/365">sdh:C11 Appellation in a Language</a></p>
                 </div>
                 <div class="db-table">
                   <h2>
@@ -85,6 +85,7 @@
                     <em>id, appellation, alias, forme, langue_id, personne_id</em>
                   </p>
                   <p>3,425 rows</p>
+                  <p>Alignement proposé: <a href="https://ontome.net/class/365">sdh:C11 Appellation in a Language</a></p>
                 </div>
                 <div class="db-table">
                   <h2>
@@ -94,6 +95,7 @@
                     <em>id, nom, wikidata, aire_geographique_id, departement_id, pays_id, ville_id</em>
                   </p>
                   <p>15 rows</p>
+                  <p>Alignement proposé: <a href="https://ontome.net/class/441">sdh:C17 Construction</a></p>
                 </div>
                 <div class="db-table">
                   <h2>
@@ -103,6 +105,9 @@
                     <em>id, fonction_id, personne_id, revue_id</em>
                   </p>
                   <p>1,339 rows</p>
+                  <ul><li>Une revue est un collectif de personnes (crm:E74 Group) éditant une revue entendue au sens de collection de livraisons (ou numéros) – frbr:F18 	Serial Work</li><li><strong>Question</strong>: faut-il entendre cette collaboration comme une appartenance, avec un rôle, ou comme une activité (phase) ?</li>
+                  <li><a href="https://ontome.net/class/213">sdh-so:C1 Social Quality of an Actor</a> ? </li><li><a href="https://ontome.net/class/697">sdh-so:C13 Social Actor Embodiment</a> ? </li></ul>
+
                 </div>
                 <div class="db-table">
                   <h2>
@@ -198,6 +203,7 @@
                     <em>id, date_ecriture, collectif_id, fonction_id, oeuvre_id</em>
                   </p>
                   <p>7 rows</p>
+                  <p><strong>Question</strong>: pas clair le sens au vu des données</p>
                 </div>
                 <div class="db-table">
                   <h2>
@@ -216,6 +222,8 @@
                     <em>id, destination, mois_debut, annee_debut, mois_fin, annee_fin</em>
                   </p>
                   <p>90 rows</p>
+                  <p><strong>Alignement proposé</strong>: <a href="https://ontome.net/class/212">sdh:C15 Geographical Location of a Physical Thing</a></p>
+                  <p><strong>Question</strong>:il faudra créer les lieux</p>
                 </div>
                 <div class="db-table">
                   <h2>
