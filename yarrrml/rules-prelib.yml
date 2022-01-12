@@ -1,0 +1,65 @@
+prefixes:
+ crm: http://www.cidoc-crm.org/cidoc-crm/
+ idref:  https://www.idref.fr/
+ frbroo: http://iflastandards.info/ns/fr/frbr/frbroo/
+ prelib: https://mshb.huma-num.fr/prelib/
+ lexvo: http://lexvo.org/id/iso639-3/
+
+mappings:
+ personnes:
+  sources:
+   - access: https://crbc-dataset.huma-num.fr/prelib/prelib_personne.json?_sort=id&idref__notnull=1&_labels=on&_shape=objects
+     referenceFormulation: jsonpath
+     iterator: "$.rows[*]"
+  subjects: idref:$(idref)
+  predicateobjects:
+   - [a, crm:E21_Person]
+   - [rdfs:label, $(nom_usuel)]
+   
+ appellations_retenues_personnes:
+  sources:
+   - access: https://crbc-dataset.huma-num.fr/prelib.json?sql=select%0D%0A++appellation%2C%0D%0A++alias%2C%0D%0A++forme%2C%0D%0A++langue_id%2C%0D%0A++code_iso_639_3%2C%0D%0A++personne_id%2C%0D%0A++prelib_personne.idref%0D%0Afrom%0D%0A++prelib_appellationpersonne%0D%0Ajoin+prelib_langue%0D%0Aon+prelib_langue.id+%3D+prelib_appellationpersonne.langue_id%0D%0Ajoin+prelib_personne%0D%0Aon+prelib_personne.id+%3D+prelib_appellationpersonne.personne_id%0D%0Awhere%0D%0A++forme+%3D+2&_shape=objects
+     referenceFormulation: jsonpath
+     iterator: "$.rows[*]"
+  subjects: idref:$(idref)
+  predicateobjects:
+   - [skos:prefLabel, $(appellation), $(code_iso_639_3)~lang]
+   
+ appellations_rejettees_personnes:
+  sources:
+   - access: https://crbc-dataset.huma-num.fr/prelib.json?sql=select%0D%0A++appellation%2C%0D%0A++alias%2C%0D%0A++forme%2C%0D%0A++langue_id%2C%0D%0A++code_iso_639_3%2C%0D%0A++personne_id%2C%0D%0A++prelib_personne.idref%0D%0Afrom%0D%0A++prelib_appellationpersonne%0D%0Ajoin+prelib_langue%0D%0Aon+prelib_langue.id+%3D+prelib_appellationpersonne.langue_id%0D%0Ajoin+prelib_personne%0D%0Aon+prelib_personne.id+%3D+prelib_appellationpersonne.personne_id%0D%0Awhere%0D%0A++forme+%3D+1&_shape=objects
+     referenceFormulation: jsonpath
+     iterator: "$.rows[*]"
+  subjects: idref:$(idref)
+  predicateobjects:
+   - [skos:altLabel, $(appellation), $(code_iso_639_3)~lang]   
+   
+ collectifs:
+  sources:
+   - access: https://crbc-dataset.huma-num.fr/prelib/prelib_collectif.json?_sort=id&idref__notnull=1&_labels=on&_shape=objects
+     referenceFormulation: jsonpath
+     iterator: "$.rows[*]"
+  subjects: idref:$(idref)
+  predicateobjects:
+   - [a, crm:E74_Group]
+   - [rdfs:label, $(nom)]
+   
+ oeuvres:
+  sources:
+   - access: https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre.json?_shape=objects
+     referenceFormulation: jsonpath
+     iterator: "$.rows[*]"
+  subjects: prelib:oeuvre/$(id)
+  predicateobjects:
+   - [a, frbroo:F2]
+   - [a, crm:E33_Linguistic_Object]
+   - [rdfs:label, $(titre)]
+  
+ oeuvres-langues:
+  sources:
+   - access: https://crbc-dataset.huma-num.fr/prelib.json?sql=select+code_iso_639_3%2C+oeuvre_id+from+prelib_oeuvre_langue+JOIN+prelib_langue+ON+prelib_langue.id+%3D+prelib_oeuvre_langue.langue_id&_shape=objects
+     referenceFormulation: jsonpath
+     iterator: "$.rows[*]"
+  subjects: prelib:oeuvre/$(oeuvre_id)
+  predicateobjects:
+   - [crm:P72_has_language, lexvo:$(code_iso_639_3)~iri]
