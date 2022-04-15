@@ -1,65 +1,129 @@
 prefixes:
+ idlab-fn: http://example.com/idlab/function/
+ grel: http://users.ugent.be/~bjdmeest/function/grel.ttl# 
  crm: http://www.cidoc-crm.org/cidoc-crm/
- idref:  https://www.idref.fr/
+ idref: https://www.idref.fr/
  frbroo: http://iflastandards.info/ns/fr/frbr/frbroo/
- prelib: https://mshb.huma-num.fr/prelib/
+ prelib: http://mshb.huma-num.fr/prelib/
  lexvo: http://lexvo.org/id/iso639-3/
+ sdh: https://ontome.net/ns/sdhss/
+ sdh-so: https://ontome.net/ns/social-life-specific/
+ wd: http://www.wikidata.org/entity/ 
+
+variables:
+  access: &dbHost http://localhost/django_mshb
+  type: &dbType mysql
+  referenceFormulation: &csvReferenceFormulation csv
+  credentials: &credentials
+    username: username
+    password: password
+
+sources:
+ prelib_airegeographique:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_airegeographique; 
+ prelib_appellationpersonne:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_appellationpersonne JOIN prelib_langue ON prelib_langue.id = prelib_appellationpersonne.langue_id;
+ prelib_collectif:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_collectif;
+ prelib_oeuvre:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_oeuvre;
+ prelib_oeuvrelangue:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_oeuvrelangue JOIN prelib_langue WHERE prelib_langue.id = prelib_oeuvrelangue.langue_id;     
+ prelib_personne:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query: SELECT * FROM prelib_personne;  
+ prelib_profession:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_profession;  
 
 mappings:
- personnes:
-  sources:
-   - access: https://crbc-dataset.huma-num.fr/prelib/prelib_personne.json?_sort=id&idref__notnull=1&_labels=on&_shape=objects
-     referenceFormulation: jsonpath
-     iterator: "$.rows[*]"
-  subjects: idref:$(idref)
+ PersonnesMapping:
+  sources: prelib_personne
+  subjects: prelib:personne/$(id)
   predicateobjects:
    - [a, crm:E21_Person]
    - [rdfs:label, $(nom_usuel)]
-   
- appellations_retenues_personnes:
-  sources:
-   - access: https://crbc-dataset.huma-num.fr/prelib.json?sql=select%0D%0A++appellation%2C%0D%0A++alias%2C%0D%0A++forme%2C%0D%0A++langue_id%2C%0D%0A++code_iso_639_3%2C%0D%0A++personne_id%2C%0D%0A++prelib_personne.idref%0D%0Afrom%0D%0A++prelib_appellationpersonne%0D%0Ajoin+prelib_langue%0D%0Aon+prelib_langue.id+%3D+prelib_appellationpersonne.langue_id%0D%0Ajoin+prelib_personne%0D%0Aon+prelib_personne.id+%3D+prelib_appellationpersonne.personne_id%0D%0Awhere%0D%0A++forme+%3D+2&_shape=objects
-     referenceFormulation: jsonpath
-     iterator: "$.rows[*]"
-  subjects: idref:$(idref)
+
+ AppellationsRetenuesPersonnesMapping:
+  sources: prelib_appellationpersonne
+  subjects: prelib:personne/$(personne_id)
   predicateobjects:
    - [skos:prefLabel, $(appellation), $(code_iso_639_3)~lang]
+  condition:
+    function: idlab-fn:equal
+    parameters:
+     - [grel:valueParameter, $(forme)]
+     - [grel:valueParameter2, "2"]     
    
- appellations_rejettees_personnes:
-  sources:
-   - access: https://crbc-dataset.huma-num.fr/prelib.json?sql=select%0D%0A++appellation%2C%0D%0A++alias%2C%0D%0A++forme%2C%0D%0A++langue_id%2C%0D%0A++code_iso_639_3%2C%0D%0A++personne_id%2C%0D%0A++prelib_personne.idref%0D%0Afrom%0D%0A++prelib_appellationpersonne%0D%0Ajoin+prelib_langue%0D%0Aon+prelib_langue.id+%3D+prelib_appellationpersonne.langue_id%0D%0Ajoin+prelib_personne%0D%0Aon+prelib_personne.id+%3D+prelib_appellationpersonne.personne_id%0D%0Awhere%0D%0A++forme+%3D+1&_shape=objects
-     referenceFormulation: jsonpath
-     iterator: "$.rows[*]"
-  subjects: idref:$(idref)
+ AppellationsRejetteesPersonnesMapping:
+  sources: prelib_appellationpersonne
+  subjects: prelib:personne/$(personne_id)
   predicateobjects:
-   - [skos:altLabel, $(appellation), $(code_iso_639_3)~lang]   
-   
- collectifs:
-  sources:
-   - access: https://crbc-dataset.huma-num.fr/prelib/prelib_collectif.json?_sort=id&idref__notnull=1&_labels=on&_shape=objects
-     referenceFormulation: jsonpath
-     iterator: "$.rows[*]"
-  subjects: idref:$(idref)
+   - [skos:altLabel, $(appellation), $(code_iso_639_3)~lang]
+  condition:
+    function: idlab-fn:equal
+    parameters:
+     - [grel:valueParameter, $(forme)]
+     - [grel:valueParameter2, "1"]    
+ 
+ CollectifsMapping:
+  sources: prelib_collectif
+  subjects: prelib:collectif/$(id)
   predicateobjects:
    - [a, crm:E74_Group]
    - [rdfs:label, $(nom)]
-   
- oeuvres:
-  sources:
-   - access: https://crbc-dataset.huma-num.fr/prelib/prelib_oeuvre.json?_shape=objects
-     referenceFormulation: jsonpath
-     iterator: "$.rows[*]"
+
+ OccupationMapping:
+  sources: prelib_profession
+  subjects: prelib:occupation/$(id)
+  predicateobjects:
+   - [a, sdh-so:C8]
+   - [sdh-so:P7_on_behalf_of, prelib:personne/$(personne_id)~iri]
+
+ OeuvresMapping:
+  sources: prelib_oeuvre
   subjects: prelib:oeuvre/$(id)
   predicateobjects:
    - [a, frbroo:F2]
    - [a, crm:E33_Linguistic_Object]
    - [rdfs:label, $(titre)]
   
- oeuvres-langues:
-  sources:
-   - access: https://crbc-dataset.huma-num.fr/prelib.json?sql=select+code_iso_639_3%2C+oeuvre_id+from+prelib_oeuvre_langue+JOIN+prelib_langue+ON+prelib_langue.id+%3D+prelib_oeuvre_langue.langue_id&_shape=objects
-     referenceFormulation: jsonpath
-     iterator: "$.rows[*]"
+ OeuvresLanguesMapping:
+  sources: prelib_oeuvrelangue
   subjects: prelib:oeuvre/$(oeuvre_id)
   predicateobjects:
    - [crm:P72_has_language, lexvo:$(code_iso_639_3)~iri]
+
+ AiresGeographiquesMapping:
+  sources: prelib_airegeographique
+  subjects: prelib:airegeographique/$(id)
+  predicateobjects:
+   - [a, sdh:C13_Geographical_Place]
+   - [rdfs:label, $(nom)]
+   - [owl:sameAs, wd:$(wikidata)~iri]
