@@ -1,22 +1,32 @@
 prefixes:
- idlab-fn: http://example.com/idlab/function/
- grel: http://users.ugent.be/~bjdmeest/function/grel.ttl# 
+ # La validité de ces prefixes ainsi que les URI des propriétés et classes utilisées restent à vérifier
+ # Par exemple, crm:P98i_was_born ou crm:P98_was_born ?
+ bibo: http://purl.org/ontology/bibo/
+ bnf-onto: http://data.bnf.fr/ontology/bnf-onto/
  crm: http://www.cidoc-crm.org/cidoc-crm/
- idref: https://www.idref.fr/
+ crm-sup: https://ontome.net/ns/sdh-crm-supplement/
+ foaf: http://xmlns.com/foaf/0.1/
  frbroo: http://iflastandards.info/ns/fr/frbr/frbroo/
- prelib: http://mshb.huma-num.fr/prelib/
+ grel: http://users.ugent.be/~bjdmeest/function/grel.ttl# 
+ idlab-fn: http://example.com/idlab/function/
+ idref: https://www.idref.fr/
+ isni: http://isni.org/ontology#
  lexvo: http://lexvo.org/id/iso639-3/
+ owl: http://www.w3.org/2002/07/owl#  
+ prelib: http://mshb.huma-num.fr/prelib/
  sdh: https://ontome.net/ns/sdhss/
+ sdh-int: https://ontome.net/ns/intellectual-literary-life/
  sdh-so: https://ontome.net/ns/social-life-specific/
  wd: http://www.wikidata.org/entity/ 
+ xsd: http://www.w3.org/2001/XMLSchema#
 
 variables:
   access: &dbHost http://localhost/django_mshb
   type: &dbType mysql
   referenceFormulation: &csvReferenceFormulation csv
   credentials: &credentials
-    username: username
-    password: password
+    username: $(_username)
+    password: $(_password)
 
 sources:
  prelib_airegeographique:
@@ -30,47 +40,204 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT * FROM prelib_appellationpersonne JOIN prelib_langue ON prelib_langue.id = prelib_appellationpersonne.langue_id;
+  query : > 
+   SELECT * FROM prelib_appellationpersonne 
+   JOIN prelib_langue ON prelib_langue.id = prelib_appellationpersonne.langue_id; 
  prelib_collectif:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
   query : SELECT * FROM prelib_collectif;
+ prelib_collectifecritoeuvre:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query: >
+   SELECT (CASE WHEN date_ecriture REGEXP '^\\d+$' THEN date_ecriture END) AS annee, 
+   prelib_collectifecritoeuvre.* FROM prelib_collectifecritoeuvre 
+   JOIN prelib_fonctionecritoeuvre ON prelib_fonctionecritoeuvre.id = prelib_collectifecritoeuvre.fonction_id  
+   ORDER BY prelib_collectifecritoeuvre.id
+ prelib_ecritoeuvre:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  # date_ecriture est de type VARCHAR et contient parfois des années, parfois des intervales d'années, parfois des dates au format français
+  # parfois des commentaires. Pour l'instant, on se contente de récupérer les saisies conformes à la la REGEXP '^\\d+$'. 
+  # Puisque prelib_ecritoeuvre contient des relations avec d'autres roles que les auteurs, date_ecriture devrait être considéré 
+  # comme la date d'exercice du rôle et non pas la date d'écriture à proprement parler.
+  # A FAiRE : Voir s'il ne faudrait tout simplement pas retirer cette information des triplets.
+  # Creation des champs suivants :
+  # - annee
+  query: >
+   SELECT (CASE WHEN date_ecriture REGEXP '^\\d+$' THEN date_ecriture END) AS annee, 
+   prelib_ecritoeuvre.*, prelib_fonctionecritoeuvre.nom AS nom_fonction, 
+   prelib_fonctionecritoeuvre.code_idref AS code_idref_fonction
+   FROM prelib_ecritoeuvre
+   JOIN prelib_fonctionecritoeuvre ON prelib_fonctionecritoeuvre.id = prelib_ecritoeuvre.fonction_id  
+   ORDER BY prelib_ecritoeuvre.id
+ prelib_editeoeuvre:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_editeoeuvre;
+ prelib_editerevue:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_editerevue;  
+ prelib_edition:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_edition;
  prelib_oeuvre:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
   query : SELECT * FROM prelib_oeuvre;
+ prelib_oeuvreedition:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_oeuvreedition;  
  prelib_oeuvrelangue:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT * FROM prelib_oeuvrelangue JOIN prelib_langue WHERE prelib_langue.id = prelib_oeuvrelangue.langue_id;     
+  query : > 
+   SELECT * FROM prelib_oeuvrelangue JOIN prelib_langue 
+   WHERE prelib_langue.id = prelib_oeuvrelangue.langue_id;
+ prelib_paraitdans:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_paraitdans;    
  prelib_personne:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query: SELECT * FROM prelib_personne;  
+  # Creation des champs suivants :
+  # - date_naissance = date de naissance complète yyyy-mm-dd ou yyyy
+  # - date_naissance_dtype = date ou gYear
+  # - idem pour date_deces et date_deces_dtype
+  # - FRBNF = numéro de notice BnF
+  # - gender = Male ou Female
+  query: >
+   SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) 
+   THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) 
+   WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, 
+   (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) 
+   THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, 
+   (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) 
+   THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) 
+   WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, 
+   (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) 
+   THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype,   
+   SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF, 
+   IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, 
+   prelib_personne.* FROM prelib_personne ORDER BY id ;
  prelib_profession:
   access: *dbHost
   credentials: *credentials
   type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_profession;
+ prelib_revue:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_revue;
+ prelib_ville:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT * FROM prelib_profession;  
+  query : SELECT * FROM prelib_ville;    
+
+# A FAIRE : 
+# - Mettre les triplets dans des graphes, généred des N-Quads
+# - Modifier PRELIB pour ajouter les identifiants Geonames des villes
+# - Editer PRELIB pour verser le champ 'intitule' de prelib_profession dans qualite_id (prelib_qualiteparticipecollectif)
+# - Exprimer les informations de prelib_ecritoeuvre avec les ontologies utilisées par la BnF et l'Abes
+
+# Ne faudrait-il pas distinguer la notice PRELIB de ce dont parle la notice comme le fait IdRef 
+# et la BnF ? ex. sur data.bnf.fr : DESCRIBE <http://data.bnf.fr/ark:/12148/cb16623239r#about>
+# qui comprend le triplet :
+# <http://data.bnf.fr/ark:/12148/cb16623239r> <http://xmlns.com/foaf/0.1/focus> <http://data.bnf.fr/ark:/12148/cb16623239r#about>
 
 mappings:
- PersonnesMapping:
+# Inspiré de data.bnf.fr : DESCRIBE <http://data.bnf.fr/ark:/12148/cb16623239r#about>
+# Voir aussi Théodore Hersart de la Villemarqué http://data.bnf.fr/ark:/12148/cb119103377#about et http://www.idref.fr/026956845/id
+# Voir aussi Michel Serres http://www.idref.fr/02713329X/id
+# Problèmes : https://github.com/RMLio/rmlmapper-java/issues/159 (RML Mapper ne tient pas compte des colonnes vides de type VARCHAR)
+ PersonneMapping:
   sources: prelib_personne
   subjects: prelib:personne/$(id)
   predicateobjects:
    - [a, crm:E21_Person]
    - [rdfs:label, $(nom_usuel)]
+   - [foaf:name, $(nom_usuel)]
+   - [foaf:familyName, $(nom_etat_civil)]
+   - [foaf:givenName, $(prenom_etat_civil)]
+   - [bnf-onto:FRBNF, $(FRBNF)]
+   - [isni:identifierValid, $(isni)]
+   - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [owl:sameAs, http://www.idref.fr/$(idref)~iri]
+   - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)#foaf:Person~iri]
+   - [owl:sameAs, http://isni.org/isni/$(isni)~iri]
+   - [owl:sameAs, http://viaf.org/viaf/$(viaf)~iri]
+   - [crm-sup:P20_same_as_URI, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, http://www.idref.fr/$(idref)~iri]
+   - [crm-sup:P20_same_as_URI, http://data.bnf.fr/ark:/$(ark_bnf)#foaf:Person~iri]
+   - [crm-sup:P20_same_as_URI, http://isni.org/isni/$(isni)~iri]
+   - [crm-sup:P20_same_as_URI, http://viaf.org/viaf/$(viaf)~iri]
+   - [foaf:gender, $(gender), en~lang]
+   - p: crm:P1_is_identified_by
+     o:
+      - mapping: AppellationPersonneMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(personne_id)]
+   - p: crm:P98_was_born
+     o:
+      - mapping: BirthMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+   - p: crm:P100_died_in 
+     o:
+      - mapping: DeathMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]           
 
- AppellationsRetenuesPersonnesMapping:
+ # Avec la proposition de Vincent et Francesco, il n'y a pas de dictinction entre les formes retenues et les formes rejettées
+ # blank nodes (ressources anonymes)
+ AppellationPersonneMapping:
+  sources: prelib_appellationpersonne
+  predicateobjects:
+  - [a, crm:E41_Appellation]
+  - [crm-sup:P21_has_value, $(appellation), $(code_iso_639_3)~lang]
+
+ AppellationRetenuePersonneMapping:
   sources: prelib_appellationpersonne
   subjects: prelib:personne/$(personne_id)
   predicateobjects:
@@ -79,9 +246,9 @@ mappings:
     function: idlab-fn:equal
     parameters:
      - [grel:valueParameter, $(forme)]
-     - [grel:valueParameter2, "2"]     
+     - [grel:valueParameter2, "2"]
    
- AppellationsRejetteesPersonnesMapping:
+ AppellationRejetteePersonneMapping:
   sources: prelib_appellationpersonne
   subjects: prelib:personne/$(personne_id)
   predicateobjects:
@@ -90,40 +257,345 @@ mappings:
     function: idlab-fn:equal
     parameters:
      - [grel:valueParameter, $(forme)]
-     - [grel:valueParameter2, "1"]    
- 
- CollectifsMapping:
+     - [grel:valueParameter2, "1"]
+
+ DeathMapping:
+  sources: prelib_personne
+  predicateobjects:
+   - [a, crm:E69_Death]
+   - p: crm:P7_took_place_at
+     o:
+      - mapping: VilleMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(ville_deces_id)]
+          - [str2, $(id)]
+   - p: crm:P4_has_time_span
+     o:
+      - mapping: TimeSpanDeathMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]    
+
+ BirthMapping:
+  sources: prelib_personne
+  predicateobjects:
+   - [a, crm:E67_Birth]
+   - p: crm:P7_took_place_at
+     o:
+      - mapping: VilleMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(ville_naissance_id)]
+          - [str2, $(id)]
+   - p: crm:P4_has_time_span
+     o:
+      - mapping: TimeSpanBirthMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)] 
+
+ # yarrrml-parser ne tient pas compte de l'utilisation de la référence pour forger le datatype
+ # créé une issue https://github.com/RMLio/yarrrml-parser/issues/162#issuecomment-1104892337
+ TimeSpanBirthMapping:
+  sources: prelib_personne
+  predicateobjects:
+   - [a, crm:E52_Time-Span]
+   - p: crm:P82_at_some_time_within
+     o: $(date_naissance)
+     datatype: xsd:gYear
+     condition:
+      function: equal
+      parameters:
+       - [str1, $(date_naissance_dtype)]
+       - [str2, 'gYear']
+   - p: crm:P82_at_some_time_within
+     o: $(date_naissance)
+     datatype: xsd:date
+     condition:
+      function: equal
+      parameters:
+       - [str1, $(date_naissance_dtype)]
+       - [str2, 'date']
+
+ TimeSpanDeathMapping:
+  sources: prelib_personne
+  predicateobjects:
+   - [a, crm:E52_Time-Span]
+   - p: crm:P82_at_some_time_within
+     o: $(date_deces)
+     datatype: xsd:gYear
+     condition:
+      function: equal
+      parameters:
+       - [str1, $(date_deces_dtype)]
+       - [str2, 'gYear']
+   - p: crm:P82_at_some_time_within
+     o: $(date_deces)
+     datatype: xsd:date
+     condition:
+      function: equal
+      parameters:
+       - [str1, $(date_deces_dtype)]
+       - [str2, 'date']
+
+ CollectifMapping:
   sources: prelib_collectif
   subjects: prelib:collectif/$(id)
   predicateobjects:
    - [a, crm:E74_Group]
-   - [rdfs:label, $(nom)]
+   - [rdfs:label, $(nom, fr~lang]
 
- OccupationMapping:
+ # frbroo:F3 "Manifestation Product Type"
+ EditionMapping:
+  sources: prelib_edition
+  subjects: prelib:edition/$(id)
+  predicateobjects:
+   - [a, frbroo:F3]
+   - [rdfs:label, $(titre)]
+   - [crm:P102_has_title, $(titre)]
+   - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [owl:sameAs, http://www.sudoc.org/$(sudoc)~iri]
+   - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)~iri]
+   - [crm-sup:P20_same_as_URI, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, http://www.sudoc.org/$(sudoc)~iri]
+   - [crm-sup:P20_same_as_URI, http://data.bnf.fr/ark:/$(ark_bnf)~iri]
+   - [bibo:isbn10, $(isbn_10)]
+   - [bibo:isbn13, $(isbn_13)]
+
+ ExpressionPublicationEventMapping:
+  sources: prelib_edition
+  predicateobjects:
+   - [a, sdh-int:C1_Expression_Publication_Event]
+   - p: crm:P4_has_time-span
+     o: 
+      - mapping: TimeSpanExpressionPublicationEventMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+
+ TimeSpanExpressionPublicationEventMapping:
+  sources: prelib_edition
+  predicateobjects:
+   - [a, crm:E52_Time-Span]
+   - p: crm:P82_at_some_time_within
+     o: $(annee_publication)
+     datatype: xsd:gYear
+
+# Au sujet des blank nodes
+# - https://github.com/RMLio/yarrrml-parser/issues/67#issuecomment-614669254
+# - https://rml.io/yarrrml/spec/#referring-to-other-mappings
+
+ OccupationTemporalEntityMapping:
   sources: prelib_profession
   subjects: prelib:occupation/$(id)
   predicateobjects:
-   - [a, sdh-so:C8]
-   - [sdh-so:P7_on_behalf_of, prelib:personne/$(personne_id)~iri]
+   - [a, sdh-so:C8_Occupation_(Temporal_entity)]
+   # A voir si on n'écrit pas cette ligne comme pour sdh-so:P7_on_behalf_of
+   - [sdh-so:P4_is_occupation_of, prelib:personne/$(personne_id)~iri]
+   - p: crm:P4_has_time-span
+     o: 
+      - mapping: TimeSpanOccupationMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+   - p: sdh-so:P5_is_about
+     o:
+      - mapping: OccupationMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+   - p: sdh-so:P7_on_behalf_of
+     o:
+      - mapping: CollectifMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(groupe_id)]
+          - [str2, $(id)]       
 
- OeuvresMapping:
+ # blank nodes (ressources anonymes)
+ OccupationMapping:
+  sources: prelib_profession
+  predicateobjects:
+  - [a, sdh-so:C7_Occupation]
+  - [rdfs:label, $(intitule), fr~lang]
+
+# Il faudrait gérer le fait que les date_debut, date_fin ne sont pas toujours saisies
+# ou qu'elles sont remplacées par annee_debut et annee_fin
+# voir les fonction GREL trouvées par Christine
+# - https://docs.openrefine.org/manual/grel
+# - https://gitlab.huma-num.fr/portic/porticttl/-/blob/main/writing_rules_yarrrml.md
+# - https://github.com/RMLio/yarrrml-parser/blob/development/test/condition-function-on-po/mapping.yarrrml
+# - https://fno.io/spec/ (The Function Ontology)
+# - http://users.ugent.be/~bjdmeest/function/grel.ttl#
+
+ TimeSpanOccupationMapping:
+  sources: prelib_profession
+  predicateobjects:
+  - [a, crm:E52_Time-Span]
+  - predicates: crm:P82a_begin_of_the_begin
+    objects:
+     value: $(date_debut)
+     datatype: xsd:date
+  - predicates: crm:P82b_end_of_the_end
+    objects:
+     value: $(date_fin)
+     datatype: xsd:date
+  - predicates: crm:P82a_begin_of_the_begin
+    objects:
+     value: $(annee_debut)
+     datatype: xsd:gYear
+  - predicates: crm:P82b_end_of_the_end
+    objects:
+     value: $(annee_fin)
+     datatype: xsd:gYear
+
+ # frbroo:F2 "Expression"
+ OeuvreMapping:
   sources: prelib_oeuvre
   subjects: prelib:oeuvre/$(id)
   predicateobjects:
    - [a, frbroo:F2]
    - [a, crm:E33_Linguistic_Object]
    - [rdfs:label, $(titre)]
+ 
+ # frbroo:F24 "Publication Expression"
+ # frbroo:CLR6i "should be carried by"
+ # frbroo:R5 "has component"
+ OeuvreEditionMapping:
+  sources: prelib_oeuvreedition
+  predicateobjects:
+   - [a, frbroo:F24]
+   - p: frbroo:CLR6i
+     o:
+      - mapping: EditionMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(edition_id)]
+          - [str2, $(id)]
+   - p: frbroo:R5
+     o:
+      - mapping: OeuvreMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(oeuvre_id)]
+          - [str2, $(id)]    
   
- OeuvresLanguesMapping:
+ OeuvreLangueMapping:
   sources: prelib_oeuvrelangue
   subjects: prelib:oeuvre/$(oeuvre_id)
   predicateobjects:
    - [crm:P72_has_language, lexvo:$(code_iso_639_3)~iri]
 
- AiresGeographiquesMapping:
-  sources: prelib_airegeographique
-  subjects: prelib:airegeographique/$(id)
+
+ # Probleme de l'expression du rôle du createur, nécessiterait de la reification pour utiliser P14.1 in the role of, 
+ # propriété de la propriété P14 carried out by (performed).
+ # LRMoo (et son prédécesceur FRBRoo) fonctionnent que si on exprime tout ce qui constitue une édition (les illustrations, la préface, le texte...)
+ # sous la forme d'un F1 Work, où il n'existe plus d'illustrateur, de préfacier, de scénariste mais des auteurs de l'illustration, de la préface, du scénario... 
+ # Ne vaudrait-il pas mieux exprimer ces informations avec les mêmes ontologies que celles utilisées
+ # par data.bnf.fr ou data.idref.fr ?
+ # - https://cidoc-crm.org/sites/default/files/Roles.pdf
+ # - https://www.ontotext.com/blog/graphdb-users-ask-is-rdf-star-best-choice-for-reification/
+ # - https://graphdb.ontotext.com/documentation/9.4/free/devhub/rdf-sparql-star.html
+ # - http://cidoc-crm.org/cidoc-crm/7.1.1/P14_carried_out_by
+ # frbroo:R17 "created Expression from Expression Creation"
+ # crm:P3 "has note"
+ # crm:P4 "has time span"
+ PersonneExpressionCreationMapping:
+  sources: prelib_ecritoeuvre
+  predicateobjects:
+   - [a, frbroo:F28_Expression_Creation]
+   # La table prelib_ecritoeuvre ne contient pas que des relations entre des oeuvres et des auteurs
+   # mais des fonction_id = éditeurs scientifiques, traducteurs, collecteur, illustrateur, préfacier, etc.
+   # la colonne date_ecriture dont est dérivée annee devrait plutôt s'appeller date tout court.
+   - [crm:P3, $(nom_fonction, fr~lang)]
+   - [crm:P4, $(annee)]
+   - p: frbroo:R17
+     o:
+      - mapping: OeuvreMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(oeuvre_id)]
+          - [str2, $(id)]
+   - p: crm:P14_carried_out_by_(performed)
+     o:
+      - mapping: PersonneMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(personne_id)]
+          - [str2, $(id)]       
+
+ # Pour bibo:issn, voir https://data.bnf.fr/fr/semanticweb et LOV
+ # frbroo:F18 "Serial Work"
+ RevueMapping:
+  sources: prelib_revue
+  subjects: prelib:revue/$(id)
+  predicateobjects:
+   - [a, frbroo:F18]
+   - [crm:P102_has_title, $(titre)]
+   - [rdfs:label, $(titre)]
+   - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [owl:sameAs, http://www.sudoc.org/$(sudoc)~iri]
+   - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)~iri]    
+   - [owl:sameAs, http://www.worldcat.org/oclc/$(oclc)~iri]
+   - [crm-sup:P20_same_as_URI, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, http://www.sudoc.org/$(sudoc)~iri]
+   - [crm-sup:P20_same_as_URI, http://data.bnf.fr/ark:/$(ark_bnf)~iri] 
+   - [crm-sup:P20_same_as_URI, http://www.worldcat.org/oclc/$(oclc)~iri]
+   - [bibo:issn, $(issn)]
+   - [bibo:oclcnum, $(oclc)]
+ 
+ # frbroo:F30 "Publication Event"
+ # frbroo:R23 "created a realisation of"
+ PublicationEventMapping:
+  source: prelib_editerevue
+  predicateobjects:
+   - [a, frbroo:F30]
+   - p: frbroo:R23
+     o:
+      - mapping: RevueMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(revue_id)]
+          - [str2, $(id)]
+   - p: crm:P14_carried_out_by
+     o:
+      - mapping: CollectifMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(collectif_id)]
+          - [str2, $(id)]
+
+ # frbroo:F24 "Publication Expression" = expression de l'intégralité d'un numéro d'une revue 
+ PublicationExpressionMapping:
+  source: prelib_paraitdans
+  predicateobjects: 
+  - [a, frbroo:F24_Publication_Expression]
+
+ VilleMapping:
+  sources: prelib_ville
+  subjects: prelib:ville/$(id)
   predicateobjects:
    - [a, sdh:C13_Geographical_Place]
-   - [rdfs:label, $(nom)]
+   - [rdfs:label, $(nom), fr~lang]
    - [owl:sameAs, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
