@@ -1,6 +1,7 @@
 prefixes:
  # La validité de ces prefixes ainsi que les URI des propriétés et classes utilisées restent à vérifier
  # Par exemple, crm:P98i_was_born ou crm:P98_was_born ?
+ # Référence à compulser : les namespaces de OntoMe (https://ontome.net/namespace)
  bibo: http://purl.org/ontology/bibo/
  bnf-onto: http://data.bnf.fr/ontology/bnf-onto/
  crm: http://www.cidoc-crm.org/cidoc-crm/
@@ -16,7 +17,7 @@ prefixes:
  prelib: http://mshb.huma-num.fr/prelib/
  sdh: https://ontome.net/ns/sdhss/
  sdh-int: https://ontome.net/ns/intellectual-literary-life/
- sdh-so: https://ontome.net/ns/social-life-specific/
+ sdh-so: https://ontome.net/ns/social-legal-economic-life/
  wd: http://www.wikidata.org/entity/ 
  xsd: http://www.w3.org/2001/XMLSchema#
 
@@ -43,20 +44,36 @@ sources:
   query : > 
    SELECT * FROM prelib_appellationpersonne 
    JOIN prelib_langue ON prelib_langue.id = prelib_appellationpersonne.langue_id; 
- prelib_collectif:
+ prelib_appellationcollectif:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
+  query : >
+   SELECT * FROM prelib_appellationcollectif 
+   JOIN prelib_langue ON prelib_langue.id = prelib_appellationcollectif.langue_id;
+ prelib_batiment:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_batiment;
+ prelib_collectif:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
   query : SELECT * FROM prelib_collectif;
  prelib_collectifecritoeuvre:
   access: *dbHost
   credentials: *credentials
   type: *dbType
-  referenceFormulation: *csvReferenceFormulation   
+  referenceFormulation: *csvReferenceFormulation
   query: >
    SELECT (CASE WHEN date_ecriture REGEXP '^\\d+$' THEN date_ecriture END) AS annee, 
-   prelib_collectifecritoeuvre.* FROM prelib_collectifecritoeuvre 
+   prelib_collectifecritoeuvre.*, prelib_fonctionecritoeuvre.nom AS nom_fonction, 
+   prelib_fonctionecritoeuvre.code_idref AS code_idref_fonction
+   FROM prelib_collectifecritoeuvre 
    JOIN prelib_fonctionecritoeuvre ON prelib_fonctionecritoeuvre.id = prelib_collectifecritoeuvre.fonction_id  
    ORDER BY prelib_collectifecritoeuvre.id
  prelib_ecritoeuvre:
@@ -152,7 +169,13 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT * FROM prelib_profession;
+  query : SELECT * FROM prelib_profession WHERE qualite_id IS NOT null;
+ prelib_qualiteparticipecollectif:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_qualiteparticipecollectif;
  prelib_revue:
   access: *dbHost
   credentials: *credentials
@@ -164,18 +187,69 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT * FROM prelib_ville;    
+  query : SELECT * FROM prelib_ville;
 
 # A FAIRE : 
 # - Mettre les triplets dans des graphes, généred des N-Quads
 # - Modifier PRELIB pour ajouter les identifiants Geonames des villes
-# - Editer PRELIB pour verser le champ 'intitule' de prelib_profession dans qualite_id (prelib_qualiteparticipecollectif)
+# - Editer PRELIB pour verser le champ 'intitule' de prelib_profession dans qualite_id (prelib_qualiteparticipecollectif) 
+#    (Fait en grande partie le 10 mai 2022, manque une vingtaine de "professions" à traiter)
 # - Exprimer les informations de prelib_ecritoeuvre avec les ontologies utilisées par la BnF et l'Abes
 
 # Ne faudrait-il pas distinguer la notice PRELIB de ce dont parle la notice comme le fait IdRef 
 # et la BnF ? ex. sur data.bnf.fr : DESCRIBE <http://data.bnf.fr/ark:/12148/cb16623239r#about>
 # qui comprend le triplet :
 # <http://data.bnf.fr/ark:/12148/cb16623239r> <http://xmlns.com/foaf/0.1/focus> <http://data.bnf.fr/ark:/12148/cb16623239r#about>
+
+# Au sujet des blank nodes :
+# - https://github.com/RMLio/yarrrml-parser/issues/67#issuecomment-614669254
+# - https://rml.io/yarrrml/spec/#referring-to-other-mappings
+
+# Remarques :
+# - Le mapping proposé par Data4Humanities ne se préoccupe pas les URI des ressources correspondant
+#    aux concepts de PRELIB (personnes, collectifs, etc.). Or certaines ressources
+#    instances de la même classe (ex. sdh-so:C7 Occupation) proviennent de plusieurs tables (trois dans)
+#    le cas des Occupations. Il n'y a dans ce cas pas d'autre solution que de créer des ressources anonymes 
+#    (pas de possibilité de créer des ressources d'URI de type https://mshb.huma-num.fr/prelib/occupation/562/, 
+#    par exemple car le chiffre final correspond à la clé primaire de ces trois tables).
+#    Il faudrait définir dès le départ si les ressources doivent/peuvent être anonymes ou non 
+#    et pour les ressources anonymes, définir le schéma de leur URI.
+# - Autrement dit, on ne peut pas comme l'a fait Data4Humanities proposer pour chaque table une 
+#    la classe d'une ontologie car la même table peut servir plusieurs fois dans les mappings.
+#    Par exemple l'alignement proposé pour la table prelib_edition est la classe frbroo:F3 Manifestation Product Type et 
+#    celui de la table prelib_editeoeuvre est frbroo:C1 Expression Publication Event, or les instances de cette dernière
+#    classes ont été créées par un mapping sur prelib_edition.
+# - La modélisation en RDF ne peut se faire à partir d'une liste de tables mais à partir du schéma de 
+#    la base de données et du représentation graphique du graphe RDF attendu. Dans PRELIB, par exemple, 
+#    cela n'a pas de sens de tenter de modéliser séparément prelib_ecritoeuvre, 
+#    prelib_collectifecritoeuvre (qui sont équivalentes) et prelib_fonctionecritoeuvre (qui sert à stocker les 
+#    fonctions des contributeurs à des oeuvres et est réféencée par les deux autres).
+# - Le mapping des tables de jonction (relations n-n) pose question. Par ex., le choix a été fait  
+#    d'instancier les frbroo:F28 "Expression Creation" en partant de la table prelib_ecritoeuvre 
+#    et créant des ressources anonymes. Or la table prelib_ecritoeuvre contient les relations entre
+#    une oeuvre et une personne à travers une fonction. Uderzo par exemple apparaitra deux fois dans 
+#    la table prelib_ecritoeuvre pour sa relation à "Le Grand Fossé", une fois en tant que scénariste 
+#    et une autre fois en tant que dessinateur. L'instanciation des frbroo:F28 "Expression Creation" 
+#    en partant de la table prelib_ecritoeuvre par donc du principe que la création de l'expression
+#    est la combinaison d'une personne et d'une fonction. Mais cela correspond-il à la vision des 
+#    auteurs de l'ontologie FRBROO ? Remarquons au passage que l'on aurait probalement pu pousser la 
+#    modélisation en distinguant l'expression des dessins et l'expression du texte du scénrario.
+#    
+#    Par contre, partir de la table prelib_editeoeuvre pour instancier les sdh-int:C1 Expression Publication Event
+#    suppose donc qu'il y a autant de "expression publication event" que de co-éditeurs. Ce n'est peut-être pas
+#    correct d'un point de vue sémantique. Cela demande un peu de gymnastique intellectuelle mais créer 
+#    les triplets liés aux éditions en passant par la table prelib_editeoeuvre a nécessité trois mappings : 
+#    - ManifestationProductTypeMapping qui boucle sur prelib_edition et crée des prelib:edition de 
+#       classe frbroo:F3, 
+#    - ExpressionPublicationEventMapping qui boucle sur prelib_edition et des prelib:edition-event de 
+#       classe sdh-int:C1 (remarquez que cette ressource n'est pas anonyme)
+#    - EditeOeuvreMapping qui boucle sur la fameuse table prelib_editeoeuvre et qui crée des triplets 
+#       permettant de lier les ressources prelib:edition-event de classe sdh-int:C1 avec les éditions
+#       et leurs éditeurs
+# - RML mapper ne crée pas les triplets dont l'objet a pour valeur NULL dans la base de données. Mais il ne tient 
+#    pas compte du fait qu'un VARCHAR a pour valeur une chaine vide. Il existe donc des triplets dont l'objet
+#    est un littéral vide :
+#      <http://mshb.huma-num.fr/prelib/edition/1> <http://purl.org/ontology/bibo/isbn13> "".
 
 mappings:
 # Inspiré de data.bnf.fr : DESCRIBE <http://data.bnf.fr/ark:/12148/cb16623239r#about>
@@ -194,6 +268,7 @@ mappings:
    - [bnf-onto:FRBNF, $(FRBNF)]
    - [isni:identifierValid, $(isni)]
    - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
+   - [owl:sameAs, http://database.factgrid.de/entity/$(factgrid)~iri]   
    - [owl:sameAs, http://www.idref.fr/$(idref)~iri]
    - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)#foaf:Person~iri]
    - [owl:sameAs, http://isni.org/isni/$(isni)~iri]
@@ -204,6 +279,7 @@ mappings:
    - [crm-sup:P20_same_as_URI, http://isni.org/isni/$(isni)~iri]
    - [crm-sup:P20_same_as_URI, http://viaf.org/viaf/$(viaf)~iri]
    - [foaf:gender, $(gender), en~lang]
+   # Lien avec les ressources anomymes de classe crm:E41   
    - p: crm:P1_is_identified_by
      o:
       - mapping: AppellationPersonneMapping
@@ -211,7 +287,7 @@ mappings:
          function: equal
          parameters:
           - [str1, $(id)]
-          - [str2, $(personne_id)]
+          - [str2, $(personne_id)]       
    - p: crm:P98_was_born
      o:
       - mapping: BirthMapping
@@ -231,10 +307,11 @@ mappings:
 
  # Avec la proposition de Vincent et Francesco, il n'y a pas de dictinction entre les formes retenues et les formes rejettées
  # blank nodes (ressources anonymes)
+ # crm:E41 "Appellation"
  AppellationPersonneMapping:
   sources: prelib_appellationpersonne
   predicateobjects:
-  - [a, crm:E41_Appellation]
+  - [a, crm:E41]
   - [crm-sup:P21_has_value, $(appellation), $(code_iso_639_3)~lang]
 
  AppellationRetenuePersonneMapping:
@@ -303,10 +380,11 @@ mappings:
 
  # yarrrml-parser ne tient pas compte de l'utilisation de la référence pour forger le datatype
  # créé une issue https://github.com/RMLio/yarrrml-parser/issues/162#issuecomment-1104892337
+ # crm:E52 "Time-Span"
  TimeSpanBirthMapping:
   sources: prelib_personne
   predicateobjects:
-   - [a, crm:E52_Time-Span]
+   - [a, crm:E52]
    - p: crm:P82_at_some_time_within
      o: $(date_naissance)
      datatype: xsd:gYear
@@ -324,10 +402,11 @@ mappings:
        - [str1, $(date_naissance_dtype)]
        - [str2, 'date']
 
+ # crm:E52 "Time-Span"  
  TimeSpanDeathMapping:
   sources: prelib_personne
   predicateobjects:
-   - [a, crm:E52_Time-Span]
+   - [a, crm:E52]
    - p: crm:P82_at_some_time_within
      o: $(date_deces)
      datatype: xsd:gYear
@@ -345,15 +424,56 @@ mappings:
        - [str1, $(date_deces_dtype)]
        - [str2, 'date']
 
- CollectifMapping:
+ # crm:E74 "Group"
+ GroupMapping:
   sources: prelib_collectif
   subjects: prelib:collectif/$(id)
   predicateobjects:
-   - [a, crm:E74_Group]
-   - [rdfs:label, $(nom, fr~lang]
+   - [a, crm:E74]
+   - [rdfs:label, $(nom), fr~lang]
+   # Lien avec les ressources anomymes de classe crm:E41
+   - p: crm:P1_is_identified_by
+     o:
+      - mapping: AppellationCollectifMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(collectif_id)]
+
+ # Avec la proposition de Vincent et Francesco, il n'y a pas de dictinction entre les formes retenues et les formes rejettées
+ # blank nodes (ressources anonymes)
+ # crm:E41 "Appellation"
+ AppellationCollectifMapping:
+  sources: prelib_appellationcollectif
+  predicateobjects:
+  - [a, crm:E41]
+  - [crm-sup:P21_has_value, $(appellation), $(code_iso_639_3)~lang]
+
+ AppellationRetenueCollectifMapping:
+  sources: prelib_appellationcollectif
+  subjects: prelib:collectif/$(collectif_id)
+  predicateobjects:
+   - [skos:prefLabel, $(appellation), $(code_iso_639_3)~lang]
+  condition:
+    function: idlab-fn:equal
+    parameters:
+     - [grel:valueParameter, $(forme)]
+     - [grel:valueParameter2, "2"]
+   
+ AppellationRejetteeCollectifMapping:
+  sources: prelib_appellationcollectif
+  subjects: prelib:collectif/$(collectif_id)
+  predicateobjects:
+   - [skos:altLabel, $(appellation), $(code_iso_639_3)~lang]
+  condition:
+    function: idlab-fn:equal
+    parameters:
+     - [grel:valueParameter, $(forme)]
+     - [grel:valueParameter2, "1"]
 
  # frbroo:F3 "Manifestation Product Type"
- EditionMapping:
+ ManifestationProductTypeMapping:
   sources: prelib_edition
   subjects: prelib:edition/$(id)
   predicateobjects:
@@ -369,10 +489,35 @@ mappings:
    - [bibo:isbn10, $(isbn_10)]
    - [bibo:isbn13, $(isbn_13)]
 
+ # crm:P14 "carried out by"
+ # sdh-int:P3 "created manifestation (was created by)"
+ EditeOeuvreMapping:
+  sources: prelib_editeoeuvre
+  subjects: prelib:edition-event/$(edition_id)  
+  predicateobjects:
+   - p: crm:P14
+     o:
+      - mapping: ExpressionPublicationEventMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(collectif_id)]
+          - [str2, $(id)]
+   - p: sdh-int:P3
+     o:
+      - mapping: ExpressionPublicationEventMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(edition_id)]
+          - [str2, $(id)]
+
+ # sdh-int:C1 "Expression Publication Event"
  ExpressionPublicationEventMapping:
   sources: prelib_edition
+  subjects: prelib:edition-event/$(id)
   predicateobjects:
-   - [a, sdh-int:C1_Expression_Publication_Event]
+   - [a, sdh-int:C1]        
    - p: crm:P4_has_time-span
      o: 
       - mapping: TimeSpanExpressionPublicationEventMapping
@@ -382,26 +527,54 @@ mappings:
           - [str1, $(id)]
           - [str2, $(id)]
 
+ # crm:E52 "Time-Span"
  TimeSpanExpressionPublicationEventMapping:
   sources: prelib_edition
   predicateobjects:
-   - [a, crm:E52_Time-Span]
+   - [a, crm:E52]
    - p: crm:P82_at_some_time_within
      o: $(annee_publication)
      datatype: xsd:gYear
 
-# Au sujet des blank nodes
-# - https://github.com/RMLio/yarrrml-parser/issues/67#issuecomment-614669254
-# - https://rml.io/yarrrml/spec/#referring-to-other-mappings
+ # sdh:C17 "Construction"
+ # sdh:P17 "has location"
+ BatimentMapping:
+  sources: prelib_batiment
+  subjects: prelib:batiment/$(id)
+  predicateobjects:
+  - [a, sdh:C17]
+  - [rdfs:label, $(nom), fr~lang]
+  - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
+  - [owl:sameAs, http://database.factgrid.de/entity/$(factgrid)~iri]
+  - [sdh:P17, prelib:ville/$(ville_id)~iri]
 
+ # Le nom des mappings et les subjects suivants étaient mal choisis jusqu'à que je décide de ne pas instancier 
+ # prelib_qualiteparticipecollectif et prelib_fonctioncollaborerevue en tant que des sdh-so:C7, comme suggéré par Vincent. 
+ # Autrement dit, il y aurait pu y avoir d'autres mappings d'"Occupation"s que ceux de la table prelib_qualiteparticipecollectif.
+
+ # sdh-so:C7 "Occupation"
+ OccupationMapping:
+  sources: prelib_qualiteparticipecollectif
+  subjects: prelib:occupation/$(id)  
+  predicateobjects:
+  - [a, sdh-so:C7]
+  - [rdfs:label, $(nom), fr~lang]
+
+# blank nodes (ressources anonymes) mais on aurait peut-être pu créer des ressources d'URI prelib:occupation-temporal-entity/$(id)
+# sdh-so:C8 "Occupation (Temporal entity)"
+# sdh-so:P4 "is occupation of (is about)"
+# sdh-so:P5 "is about (is occupation of)"
+# sdh-so:P7 "on behalf of (provides occupation)"
+# crm:P8 "took place on or within"
+# crm:P4 "has time-span (is time-span of)"
  OccupationTemporalEntityMapping:
   sources: prelib_profession
-  subjects: prelib:occupation/$(id)
   predicateobjects:
-   - [a, sdh-so:C8_Occupation_(Temporal_entity)]
-   # A voir si on n'écrit pas cette ligne comme pour sdh-so:P7_on_behalf_of
-   - [sdh-so:P4_is_occupation_of, prelib:personne/$(personne_id)~iri]
-   - p: crm:P4_has_time-span
+   - [a, sdh-so:C8]
+   # A voir si on n'écrit pas cette ligne comme pour sdh-so:P7 lié au GroupMapping
+   - [sdh-so:P4, prelib:personne/$(personne_id)~iri]
+   - [crm:P8, prelib:batiment/$(batiment_id)~iri]
+   - p: crm:P4
      o: 
       - mapping: TimeSpanOccupationMapping
         condition:
@@ -409,29 +582,22 @@ mappings:
          parameters:
           - [str1, $(id)]
           - [str2, $(id)]
-   - p: sdh-so:P5_is_about
+   - p: sdh-so:P5
      o:
       - mapping: OccupationMapping
         condition:
          function: equal
          parameters:
-          - [str1, $(id)]
+          - [str1, $(qualite_id)]
           - [str2, $(id)]
-   - p: sdh-so:P7_on_behalf_of
+   - p: sdh-so:P7
      o:
-      - mapping: CollectifMapping
+      - mapping: GroupMapping
         condition:
          function: equal
          parameters:
           - [str1, $(groupe_id)]
-          - [str2, $(id)]       
-
- # blank nodes (ressources anonymes)
- OccupationMapping:
-  sources: prelib_profession
-  predicateobjects:
-  - [a, sdh-so:C7_Occupation]
-  - [rdfs:label, $(intitule), fr~lang]
+          - [str2, $(id)]
 
 # Il faudrait gérer le fait que les date_debut, date_fin ne sont pas toujours saisies
 # ou qu'elles sont remplacées par annee_debut et annee_fin
@@ -441,11 +607,11 @@ mappings:
 # - https://github.com/RMLio/yarrrml-parser/blob/development/test/condition-function-on-po/mapping.yarrrml
 # - https://fno.io/spec/ (The Function Ontology)
 # - http://users.ugent.be/~bjdmeest/function/grel.ttl#
-
+ # crm:E52 "Time-Span"
  TimeSpanOccupationMapping:
   sources: prelib_profession
   predicateobjects:
-  - [a, crm:E52_Time-Span]
+  - [a, crm:E52]
   - predicates: crm:P82a_begin_of_the_begin
     objects:
      value: $(date_debut)
@@ -464,7 +630,7 @@ mappings:
      datatype: xsd:gYear
 
  # frbroo:F2 "Expression"
- OeuvreMapping:
+ ExpressionMapping:
   sources: prelib_oeuvre
   subjects: prelib:oeuvre/$(id)
   predicateobjects:
@@ -475,13 +641,13 @@ mappings:
  # frbroo:F24 "Publication Expression"
  # frbroo:CLR6i "should be carried by"
  # frbroo:R5 "has component"
- OeuvreEditionMapping:
+ PublicationExpressionMapping:
   sources: prelib_oeuvreedition
   predicateobjects:
    - [a, frbroo:F24]
    - p: frbroo:CLR6i
      o:
-      - mapping: EditionMapping
+      - mapping: ManifestationProductTypeMapping
         condition:
          function: equal
          parameters:
@@ -489,7 +655,7 @@ mappings:
           - [str2, $(id)]
    - p: frbroo:R5
      o:
-      - mapping: OeuvreMapping
+      - mapping: ExpressionMapping
         condition:
          function: equal
          parameters:
@@ -502,7 +668,6 @@ mappings:
   predicateobjects:
    - [crm:P72_has_language, lexvo:$(code_iso_639_3)~iri]
 
-
  # Probleme de l'expression du rôle du createur, nécessiterait de la reification pour utiliser P14.1 in the role of, 
  # propriété de la propriété P14 carried out by (performed).
  # LRMoo (et son prédécesceur FRBRoo) fonctionnent que si on exprime tout ce qui constitue une édition (les illustrations, la préface, le texte...)
@@ -513,21 +678,23 @@ mappings:
  # - https://www.ontotext.com/blog/graphdb-users-ask-is-rdf-star-best-choice-for-reification/
  # - https://graphdb.ontotext.com/documentation/9.4/free/devhub/rdf-sparql-star.html
  # - http://cidoc-crm.org/cidoc-crm/7.1.1/P14_carried_out_by
+ #
+ # frbroo:F28 "Expression Creation"
  # frbroo:R17 "created Expression from Expression Creation"
  # crm:P3 "has note"
  # crm:P4 "has time span"
  PersonneExpressionCreationMapping:
   sources: prelib_ecritoeuvre
   predicateobjects:
-   - [a, frbroo:F28_Expression_Creation]
+   - [a, frbroo:F28]
    # La table prelib_ecritoeuvre ne contient pas que des relations entre des oeuvres et des auteurs
    # mais des fonction_id = éditeurs scientifiques, traducteurs, collecteur, illustrateur, préfacier, etc.
    # la colonne date_ecriture dont est dérivée annee devrait plutôt s'appeller date tout court.
-   - [crm:P3, $(nom_fonction, fr~lang)]
+   - [crm:P3, $(nom_fonction), fr~lang]
    - [crm:P4, $(annee)]
    - p: frbroo:R17
      o:
-      - mapping: OeuvreMapping
+      - mapping: ExpressionMapping
         condition:
          function: equal
          parameters:
@@ -541,6 +708,34 @@ mappings:
          parameters:
           - [str1, $(personne_id)]
           - [str2, $(id)]       
+
+ # frbroo:F28 "Expression Creation"
+ # frbroo:R17 "created Expression from Expression Creation"
+ # crm:P3 "has note"
+ # crm:P4 "has time span"
+ CollectifExpressionCreationMapping:
+  sources: prelib_collectifecritoeuvre
+  predicateobjects:
+   - [a, frbroo:F28]
+   # Voir remarque ci-dessus au sujet de la table prelib_ecritoeuvre
+   - [crm:P3, $(nom_fonction), fr~lang]
+   - [crm:P4, $(annee)]
+   - p: frbroo:R17
+     o:
+      - mapping: ExpressionMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(oeuvre_id)]
+          - [str2, $(id)]
+   - p: crm:P14_carried_out_by_(performed)
+     o:
+      - mapping: GroupMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(collectif_id)]
+          - [str2, $(id)] 
 
  # Pour bibo:issn, voir https://data.bnf.fr/fr/semanticweb et LOV
  # frbroo:F18 "Serial Work"
@@ -565,7 +760,7 @@ mappings:
  # frbroo:F30 "Publication Event"
  # frbroo:R23 "created a realisation of"
  PublicationEventMapping:
-  source: prelib_editerevue
+  sources: prelib_editerevue
   predicateobjects:
    - [a, frbroo:F30]
    - p: frbroo:R23
@@ -578,7 +773,7 @@ mappings:
           - [str2, $(id)]
    - p: crm:P14_carried_out_by
      o:
-      - mapping: CollectifMapping
+      - mapping: GroupMapping
         condition:
          function: equal
          parameters:
@@ -587,7 +782,7 @@ mappings:
 
  # frbroo:F24 "Publication Expression" = expression de l'intégralité d'un numéro d'une revue 
  PublicationExpressionMapping:
-  source: prelib_paraitdans
+  sources: prelib_paraitdans
   predicateobjects: 
   - [a, frbroo:F24_Publication_Expression]
 
