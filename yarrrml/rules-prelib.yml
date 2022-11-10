@@ -246,6 +246,12 @@ sources:
 #    - EditeOeuvreMapping qui boucle sur la fameuse table prelib_editeoeuvre et qui crée des triplets 
 #       permettant de lier les ressources prelib:edition-event de classe sdh-int:C1 avec les éditions
 #       et leurs éditeurs
+# - Méthodologie retrospective pour écrire EditeOeuvreMapping :
+#    1. la source : la table sur laquelle on boucle et dont les lignes sont les sujets des prédicats du mapping
+#    2. subjects : optionnel (auquel cas ont écrit des triplets qui ont pour sujet des ressources anonymes)
+#     se demander quelle est la colonne de la table qui sert à construire l'URI des sujets
+#    3. predicatesobjects : dans le cas où l'objet est une URI, se demander dans quel mapping se trouvent-elles
+#     Au départ, j'étais aller chercher les éditions et les collectifs dans ExpressionPublicationEventMapping
 # - RML mapper ne crée pas les triplets dont l'objet a pour valeur NULL dans la base de données. Mais il ne tient 
 #    pas compte du fait qu'un VARCHAR a pour valeur une chaine vide. Il existe donc des triplets dont l'objet
 #    est un littéral vide :
@@ -491,13 +497,16 @@ mappings:
 
  # crm:P14 "carried out by"
  # sdh-int:P3 "created manifestation (was created by)"
+ # Fonctionne parce que j'ai considéré qu'une édition n'est lié qu'à 
+ # un seul sdh-int:C1 "Expression Publication Event" d'URI 
+ # prelib:edition-event/$(edition_id) (soit le même identifiant que l'éditions
  EditeOeuvreMapping:
   sources: prelib_editeoeuvre
-  subjects: prelib:edition-event/$(edition_id)  
+  subjects: prelib:edition-event/$(edition_id)
   predicateobjects:
    - p: crm:P14
      o:
-      - mapping: ExpressionPublicationEventMapping
+      - mapping: GroupMapping
         condition:
          function: equal
          parameters:
@@ -505,7 +514,7 @@ mappings:
           - [str2, $(id)]
    - p: sdh-int:P3
      o:
-      - mapping: ExpressionPublicationEventMapping
+      - mapping: ManifestationProductTypeMapping
         condition:
          function: equal
          parameters:
