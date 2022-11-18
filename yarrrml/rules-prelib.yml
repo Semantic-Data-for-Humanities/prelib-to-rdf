@@ -6,19 +6,25 @@ prefixes:
  bnf-onto: http://data.bnf.fr/ontology/bnf-onto/
  crm: http://www.cidoc-crm.org/cidoc-crm/
  crm-sup: https://ontome.net/ns/sdh-crm-supplement/
+ databnf: http://data.bnf.fr/ark:/
  foaf: http://xmlns.com/foaf/0.1/
  frbroo: http://iflastandards.info/ns/fr/frbr/frbroo/
  grel: http://users.ugent.be/~bjdmeest/function/grel.ttl# 
  idlab-fn: http://example.com/idlab/function/
  idref: https://www.idref.fr/
- isni: http://isni.org/ontology#
+ factgrid: https://database.factgrid.de/entity/
+ isni-onto: http://isni.org/ontology#
+ isni: http://isni.org/isni/
  lexvo: http://lexvo.org/id/iso639-3/
- owl: http://www.w3.org/2002/07/owl#  
+ owl: http://www.w3.org/2002/07/owl#
  prelib: http://mshb.huma-num.fr/prelib/
  sdh: https://ontome.net/ns/sdhss/
  sdh-int: https://ontome.net/ns/intellectual-literary-life/
  sdh-so: https://ontome.net/ns/social-legal-economic-life/
- wd: http://www.wikidata.org/entity/ 
+ sudoc: http://www.sudoc.org/
+ viaf: http://viaf.org/viaf/
+ wd: http://www.wikidata.org/entity/
+ worldcat: http://www.worldcat.org/oclc/
  xsd: http://www.w3.org/2001/XMLSchema#
 
 variables:
@@ -272,18 +278,19 @@ mappings:
    - [foaf:familyName, $(nom_etat_civil)]
    - [foaf:givenName, $(prenom_etat_civil)]
    - [bnf-onto:FRBNF, $(FRBNF)]
-   - [isni:identifierValid, $(isni)]
-   - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
-   - [owl:sameAs, http://database.factgrid.de/entity/$(factgrid)~iri]   
-   - [owl:sameAs, http://www.idref.fr/$(idref)~iri]
-   - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)#foaf:Person~iri]
-   - [owl:sameAs, http://isni.org/isni/$(isni)~iri]
-   - [owl:sameAs, http://viaf.org/viaf/$(viaf)~iri]
-   - [crm-sup:P20_same_as_URI, http://www.wikidata.org/entity/$(wikidata)~iri]
-   - [crm-sup:P20_same_as_URI, http://www.idref.fr/$(idref)~iri]
-   - [crm-sup:P20_same_as_URI, http://data.bnf.fr/ark:/$(ark_bnf)#foaf:Person~iri]
-   - [crm-sup:P20_same_as_URI, http://isni.org/isni/$(isni)~iri]
-   - [crm-sup:P20_same_as_URI, http://viaf.org/viaf/$(viaf)~iri]
+   - [isni-onto:identifierValid, $(isni)]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]   
+   - [owl:sameAs, idref:$(idref)~iri]
+   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, isni:$(isni)~iri]
+   - [owl:sameAs, viaf:$(viaf)~iri]
+   - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20_same_as_URI, idref:$(idref)~iri]
+   - [crm-sup:P20_same_as_URI, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20_same_as_URI, isni:$(isni)~iri]
+   - [crm-sup:P20_same_as_URI, viaf:$(viaf)~iri]
    - [foaf:gender, $(gender), en~lang]
    # Lien avec les ressources anomymes de classe crm:E41   
    - p: crm:P1_is_identified_by
@@ -437,6 +444,18 @@ mappings:
   predicateobjects:
    - [a, crm:E74]
    - [rdfs:label, $(nom), fr~lang]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]   
+   - [owl:sameAs, idref:$(idref)~iri]
+   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, isni:$(isni)~iri]
+   - [owl:sameAs, viaf:$(viaf)~iri]
+   - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20_same_as_URI, idref:$(idref)~iri]
+   - [crm-sup:P20_same_as_URI, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20_same_as_URI, isni:$(isni)~iri]
+   - [crm-sup:P20_same_as_URI, viaf:$(viaf)~iri]
    # Lien avec les ressources anomymes de classe crm:E41
    - p: crm:P1_is_identified_by
      o:
@@ -486,12 +505,14 @@ mappings:
    - [a, frbroo:F3]
    - [rdfs:label, $(titre)]
    - [crm:P102_has_title, $(titre)]
-   - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
-   - [owl:sameAs, http://www.sudoc.org/$(sudoc)~iri]
-   - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)~iri]
-   - [crm-sup:P20_same_as_URI, http://www.wikidata.org/entity/$(wikidata)~iri]
-   - [crm-sup:P20_same_as_URI, http://www.sudoc.org/$(sudoc)~iri]
-   - [crm-sup:P20_same_as_URI, http://data.bnf.fr/ark:/$(ark_bnf)~iri]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]
+   - [owl:sameAs, sudoc:$(sudoc)~iri]
+   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20_same_as_URI, sudoc:$(sudoc)~iri]
+   - [crm-sup:P20_same_as_URI, databnf:$(ark_bnf)#about~iri]
    - [bibo:isbn10, $(isbn_10)]
    - [bibo:isbn13, $(isbn_13)]
 
@@ -553,8 +574,8 @@ mappings:
   predicateobjects:
   - [a, sdh:C17]
   - [rdfs:label, $(nom), fr~lang]
-  - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
-  - [owl:sameAs, http://database.factgrid.de/entity/$(factgrid)~iri]
+  - [owl:sameAs, wd:$(wikidata)~iri]
+  - [owl:sameAs, factgrid:$(factgrid)~iri]
   - [sdh:P17, prelib:ville/$(ville_id)~iri]
 
  # Le nom des mappings et les subjects suivants étaient mal choisis jusqu'à que je décide de ne pas instancier 
@@ -646,6 +667,12 @@ mappings:
    - [a, frbroo:F2]
    - [a, crm:E33_Linguistic_Object]
    - [rdfs:label, $(titre)]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]
+   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20_same_as_URI, databnf:$(ark_bnf)#about~iri]   
  
  # frbroo:F24 "Publication Expression"
  # frbroo:CLR6i "should be carried by"
@@ -755,15 +782,18 @@ mappings:
    - [a, frbroo:F18]
    - [crm:P102_has_title, $(titre)]
    - [rdfs:label, $(titre)]
-   - [owl:sameAs, http://www.wikidata.org/entity/$(wikidata)~iri]
-   - [owl:sameAs, http://www.sudoc.org/$(sudoc)~iri]
-   - [owl:sameAs, http://data.bnf.fr/ark:/$(ark_bnf)~iri]    
-   - [owl:sameAs, http://www.worldcat.org/oclc/$(oclc)~iri]
-   - [crm-sup:P20_same_as_URI, http://www.wikidata.org/entity/$(wikidata)~iri]
-   - [crm-sup:P20_same_as_URI, http://www.sudoc.org/$(sudoc)~iri]
-   - [crm-sup:P20_same_as_URI, http://data.bnf.fr/ark:/$(ark_bnf)~iri] 
-   - [crm-sup:P20_same_as_URI, http://www.worldcat.org/oclc/$(oclc)~iri]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]
+   - [owl:sameAs, sudoc:$(sudoc)~iri]
+   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, worldcat:$(oclc)~iri]
+   - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20_same_as_URI, sudoc:$(sudoc)~iri]
+   - [crm-sup:P20_same_as_URI, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20_same_as_URI, worldcat:$(oclc)~iri]
    - [bibo:issn, $(issn)]
+   - [bibo:eissn, $(issn_numerique)]
    - [bibo:oclcnum, $(oclc)]
  
  # frbroo:F30 "Publication Event"
@@ -802,4 +832,6 @@ mappings:
    - [a, sdh:C13_Geographical_Place]
    - [rdfs:label, $(nom), fr~lang]
    - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]
    - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
+   - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
