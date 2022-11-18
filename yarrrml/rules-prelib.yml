@@ -21,7 +21,7 @@ prefixes:
  sdh: https://ontome.net/ns/sdhss/
  sdh-int: https://ontome.net/ns/intellectual-literary-life/
  sdh-so: https://ontome.net/ns/social-legal-economic-life/
- sudoc: http://www.sudoc.org/
+ sudoc: http://www.sudoc.fr/
  viaf: http://viaf.org/viaf/
  wd: http://www.wikidata.org/entity/
  worldcat: http://www.worldcat.org/oclc/
@@ -281,13 +281,13 @@ mappings:
    - [isni-onto:identifierValid, $(isni)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
-   - [owl:sameAs, idref:$(idref)~iri]
+   - [owl:sameAs, idref:$(idref)/id~iri]
    - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
    - [owl:sameAs, isni:$(isni)~iri]
    - [owl:sameAs, viaf:$(viaf)~iri]
    - [crm-sup:P20_same_as_URI, wd:$(wikidata)~iri]
    - [crm-sup:P20_same_as_URI, factgrid:$(factgrid)~iri]
-   - [crm-sup:P20_same_as_URI, idref:$(idref)~iri]
+   - [crm-sup:P20_same_as_URI, idref:$(idref)/id~iri]
    - [crm-sup:P20_same_as_URI, databnf:$(ark_bnf)#about~iri]
    - [crm-sup:P20_same_as_URI, isni:$(isni)~iri]
    - [crm-sup:P20_same_as_URI, viaf:$(viaf)~iri]

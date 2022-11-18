@@ -28,7 +28,7 @@
 @prefix sdh: <https://ontome.net/ns/sdhss/>.
 @prefix sdh-int: <https://ontome.net/ns/intellectual-literary-life/>.
 @prefix sdh-so: <https://ontome.net/ns/social-legal-economic-life/>.
-@prefix sudoc: <http://www.sudoc.org/>.
+@prefix sudoc: <http://www.sudoc.fr/>.
 @prefix viaf: <http://viaf.org/viaf/>.
 @prefix wd: <http://www.wikidata.org/entity/>.
 @prefix worldcat: <http://www.worldcat.org/oclc/>.
@@ -320,7 +320,7 @@
 :pm_009 rr:constant owl:sameAs.
 :pom_009 rr:objectMap :om_009.
 :om_009 a rr:ObjectMap;
-    rr:template "https://www.idref.fr/{idref}";
+    rr:template "https://www.idref.fr/{idref}/id";
     rr:termType rr:IRI.
 :pom_010 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_010.
@@ -374,7 +374,7 @@
 :pm_015 rr:constant crm-sup:P20_same_as_URI.
 :pom_015 rr:objectMap :om_015.
 :om_015 a rr:ObjectMap;
-    rr:template "https://www.idref.fr/{idref}";
+    rr:template "https://www.idref.fr/{idref}/id";
     rr:termType rr:IRI.
 :pom_016 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_016.
@@ -1286,7 +1286,7 @@
 :pm_095 rr:constant owl:sameAs.
 :pom_095 rr:objectMap :om_095.
 :om_095 a rr:ObjectMap;
-    rr:template "http://www.sudoc.org/{sudoc}";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_096 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_096.
@@ -1322,7 +1322,7 @@
 :pm_099 rr:constant crm-sup:P20_same_as_URI.
 :pom_099 rr:objectMap :om_099.
 :om_099 a rr:ObjectMap;
-    rr:template "http://www.sudoc.org/{sudoc}";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_100 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_100.
@@ -1894,7 +1894,7 @@
 :pm_155 rr:constant owl:sameAs.
 :pom_155 rr:objectMap :om_155.
 :om_155 a rr:ObjectMap;
-    rr:template "http://www.sudoc.org/{sudoc}";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_156 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_156.
@@ -1939,7 +1939,7 @@
 :pm_160 rr:constant crm-sup:P20_same_as_URI.
 :pom_160 rr:objectMap :om_160.
 :om_160 a rr:ObjectMap;
-    rr:template "http://www.sudoc.org/{sudoc}";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_161 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_161.
