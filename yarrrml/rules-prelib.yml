@@ -69,7 +69,7 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT * FROM prelib_collectif;
+  query : SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_collectif;
  prelib_collectifecritoeuvre:
   access: *dbHost
   credentials: *credentials
@@ -118,13 +118,13 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT * FROM prelib_edition;
+  query : SELECT prelib_edition.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_edition;
  prelib_oeuvre:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT * FROM prelib_oeuvre;
+  query : SELECT prelib_oeuvre.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_oeuvre;
  prelib_oeuvreedition:
   access: *dbHost
   credentials: *credentials
@@ -154,7 +154,7 @@ sources:
   # - date_naissance = date de naissance complète yyyy-mm-dd ou yyyy
   # - date_naissance_dtype = date ou gYear
   # - idem pour date_deces et date_deces_dtype
-  # - FRBNF = numéro de notice BnF
+  # - FRBNF = numéro de notice BnF, utilisé systématiquement à la place de ark_bnf car RML Mapper encode les URI (par ex. / devient %2F).
   # - gender = Male ou Female
   query: >
    SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) 
@@ -187,7 +187,7 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT * FROM prelib_revue;
+  query : SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_revue;
  prelib_ville:
   access: *dbHost
   credentials: *credentials
@@ -457,13 +457,13 @@ mappings:
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
    - [owl:sameAs, idref:$(idref)~iri]
-   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
    - [owl:sameAs, isni:$(isni)~iri]
    - [owl:sameAs, viaf:$(viaf)~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
    - [crm-sup:P20, idref:$(idref)~iri]
-   - [crm-sup:P20, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
    - [crm-sup:P20, isni:$(isni)~iri]
    - [crm-sup:P20, viaf:$(viaf)~iri]
    # Lien avec les ressources anomymes de classe crm:E41
@@ -519,11 +519,11 @@ mappings:
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]
    - [owl:sameAs, sudoc:$(sudoc)~iri]
-   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
    - [crm-sup:P20, sudoc:$(sudoc)~iri]
-   - [crm-sup:P20, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
    - [bibo:isbn10, $(isbn_10)]
    - [bibo:isbn13, $(isbn_13)]
 
@@ -685,10 +685,10 @@ mappings:
    - [rdfs:label, $(titre)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]
-   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
-   - [crm-sup:P20, databnf:$(ark_bnf)#about~iri]   
+   - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]   
  
  # frbroo:F24 "Publication Expression"
  # frbroo:CLR6i "should be carried by"
@@ -803,12 +803,12 @@ mappings:
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]
    - [owl:sameAs, sudoc:$(sudoc)~iri]
-   - [owl:sameAs, databnf:$(ark_bnf)#about~iri]
+   - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
    - [owl:sameAs, worldcat:$(oclc)~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
    - [crm-sup:P20, sudoc:$(sudoc)~iri]
-   - [crm-sup:P20, databnf:$(ark_bnf)#about~iri]
+   - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
    - [crm-sup:P20, worldcat:$(oclc)~iri]
    - [bibo:issn, $(issn)]
    - [bibo:eissn, $(issn_numerique)]
