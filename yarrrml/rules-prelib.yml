@@ -69,7 +69,11 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_collectif;
+  query : > 
+   SELECT prelib_collectif.*, 
+   SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF,
+   REPLACE(isni, ' ', '') AS ISNI_SPACELESS
+   FROM prelib_collectif;
  prelib_collectifecritoeuvre:
   access: *dbHost
   credentials: *credentials
@@ -167,7 +171,8 @@ sources:
    WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, 
    (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) 
    THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype,   
-   SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, 
+   SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF,
+   REPLACE(isni, ' ', '') AS ISNI_SPACELESS, 
    IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, 
    prelib_personne.* FROM prelib_personne ORDER BY id ;
  prelib_profession:
@@ -283,18 +288,18 @@ mappings:
    - [foaf:familyName, $(nom_etat_civil)]
    - [foaf:givenName, $(prenom_etat_civil)]
    - [bnf-onto:FRBNF, $(FRBNF)]
-   - [isni-onto:identifierValid, $(isni)]
+   - [isni-onto:identifierValid, $(ISNI_SPACELESS)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
    - [owl:sameAs, idref:$(idref)/id~iri]
    - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
-   - [owl:sameAs, isni:$(isni)~iri]
+   - [owl:sameAs, isni:$(ISNI_SPACELESS)~iri]
    - [owl:sameAs, viaf:$(viaf)~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
    - [crm-sup:P20, idref:$(idref)/id~iri]
    - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
-   - [crm-sup:P20, isni:$(isni)~iri]
+   - [crm-sup:P20, isni:$(ISNI_SPACELESS)~iri]
    - [crm-sup:P20, viaf:$(viaf)~iri]
    - [foaf:gender, $(gender), en~lang]
    # Lien avec les ressources anomymes de classe crm:E41   
@@ -454,17 +459,18 @@ mappings:
   predicateobjects:
    - [a, crm:E74]
    - [rdfs:label, $(nom), fr~lang]
+   - [isni-onto:identifierValid, $(ISNI_SPACELESS)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
    - [owl:sameAs, idref:$(idref)~iri]
    - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
-   - [owl:sameAs, isni:$(isni)~iri]
+   - [owl:sameAs, isni:$(ISNI_SPACELESS)~iri]
    - [owl:sameAs, viaf:$(viaf)~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
    - [crm-sup:P20, idref:$(idref)~iri]
    - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
-   - [crm-sup:P20, isni:$(isni)~iri]
+   - [crm-sup:P20, isni:$(ISNI_SPACELESS)~iri]
    - [crm-sup:P20, viaf:$(viaf)~iri]
    # Lien avec les ressources anomymes de classe crm:E41
    - p: crm:P1

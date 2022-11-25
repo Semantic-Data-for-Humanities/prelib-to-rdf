@@ -78,7 +78,7 @@
 :source_004 a rml:LogicalSource;
     rdfs:label "prelib_collectif";
     rml:source :database_004;
-    rml:query "SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_collectif;".
+    rml:query "SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, REPLACE(isni, ' ', '') AS ISNI_SPACELESS FROM prelib_collectif;".
 :database_004 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -178,7 +178,7 @@
 :source_014 a rml:LogicalSource;
     rdfs:label "prelib_personne";
     rml:source :database_014;
-    rml:query "SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, prelib_personne.* FROM prelib_personne ORDER BY id ;".
+    rml:query "SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, REPLACE(isni, ' ', '') AS ISNI_SPACELESS, IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, prelib_personne.* FROM prelib_personne ORDER BY id ;".
 :database_014 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -293,7 +293,7 @@
 :pm_006 rr:constant isni-onto:identifierValid.
 :pom_006 rr:objectMap :om_006.
 :om_006 a rr:ObjectMap;
-    rml:reference "isni";
+    rml:reference "ISNI_SPACELESS";
     rr:termType rr:Literal.
 :pom_007 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_007.
@@ -338,7 +338,7 @@
 :pm_011 rr:constant owl:sameAs.
 :pom_011 rr:objectMap :om_011.
 :om_011 a rr:ObjectMap;
-    rr:template "http://isni.org/isni/{isni}";
+    rr:template "http://isni.org/isni/{ISNI_SPACELESS}";
     rr:termType rr:IRI.
 :pom_012 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_012.
@@ -392,7 +392,7 @@
 :pm_017 rr:constant crm-sup:P20.
 :pom_017 rr:objectMap :om_017.
 :om_017 a rr:ObjectMap;
-    rr:template "http://isni.org/isni/{isni}";
+    rr:template "http://isni.org/isni/{ISNI_SPACELESS}";
     rr:termType rr:IRI.
 :pom_018 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_018.
@@ -952,11 +952,11 @@
 :map_GroupMapping_000 rr:predicateObjectMap :pom_065.
 :pm_065 a rr:PredicateMap.
 :pom_065 rr:predicateMap :pm_065.
-:pm_065 rr:constant owl:sameAs.
+:pm_065 rr:constant isni-onto:identifierValid.
 :pom_065 rr:objectMap :om_065.
 :om_065 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "ISNI_SPACELESS";
+    rr:termType rr:Literal.
 :pom_066 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_066.
 :pm_066 a rr:PredicateMap.
@@ -964,7 +964,7 @@
 :pm_066 rr:constant owl:sameAs.
 :pom_066 rr:objectMap :om_066.
 :om_066 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_067 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_067.
@@ -973,7 +973,7 @@
 :pm_067 rr:constant owl:sameAs.
 :pom_067 rr:objectMap :om_067.
 :om_067 a rr:ObjectMap;
-    rr:template "https://www.idref.fr/{idref}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_068 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_068.
@@ -982,7 +982,7 @@
 :pm_068 rr:constant owl:sameAs.
 :pom_068 rr:objectMap :om_068.
 :om_068 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "https://www.idref.fr/{idref}";
     rr:termType rr:IRI.
 :pom_069 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_069.
@@ -991,7 +991,7 @@
 :pm_069 rr:constant owl:sameAs.
 :pom_069 rr:objectMap :om_069.
 :om_069 a rr:ObjectMap;
-    rr:template "http://isni.org/isni/{isni}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_070 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_070.
@@ -1000,16 +1000,16 @@
 :pm_070 rr:constant owl:sameAs.
 :pom_070 rr:objectMap :om_070.
 :om_070 a rr:ObjectMap;
-    rr:template "http://viaf.org/viaf/{viaf}";
+    rr:template "http://isni.org/isni/{ISNI_SPACELESS}";
     rr:termType rr:IRI.
 :pom_071 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_071.
 :pm_071 a rr:PredicateMap.
 :pom_071 rr:predicateMap :pm_071.
-:pm_071 rr:constant crm-sup:P20.
+:pm_071 rr:constant owl:sameAs.
 :pom_071 rr:objectMap :om_071.
 :om_071 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "http://viaf.org/viaf/{viaf}";
     rr:termType rr:IRI.
 :pom_072 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_072.
@@ -1018,7 +1018,7 @@
 :pm_072 rr:constant crm-sup:P20.
 :pom_072 rr:objectMap :om_072.
 :om_072 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_073 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_073.
@@ -1027,7 +1027,7 @@
 :pm_073 rr:constant crm-sup:P20.
 :pom_073 rr:objectMap :om_073.
 :om_073 a rr:ObjectMap;
-    rr:template "https://www.idref.fr/{idref}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_074 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_074.
@@ -1036,7 +1036,7 @@
 :pm_074 rr:constant crm-sup:P20.
 :pom_074 rr:objectMap :om_074.
 :om_074 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "https://www.idref.fr/{idref}";
     rr:termType rr:IRI.
 :pom_075 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_075.
@@ -1045,7 +1045,7 @@
 :pm_075 rr:constant crm-sup:P20.
 :pom_075 rr:objectMap :om_075.
 :om_075 a rr:ObjectMap;
-    rr:template "http://isni.org/isni/{isni}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_076 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_076.
@@ -1054,14 +1054,23 @@
 :pm_076 rr:constant crm-sup:P20.
 :pom_076 rr:objectMap :om_076.
 :om_076 a rr:ObjectMap;
-    rr:template "http://viaf.org/viaf/{viaf}";
+    rr:template "http://isni.org/isni/{ISNI_SPACELESS}";
     rr:termType rr:IRI.
 :pom_077 a rr:PredicateObjectMap.
 :map_GroupMapping_000 rr:predicateObjectMap :pom_077.
 :pm_077 a rr:PredicateMap.
 :pom_077 rr:predicateMap :pm_077.
-:pm_077 rr:constant crm:P1.
+:pm_077 rr:constant crm-sup:P20.
 :pom_077 rr:objectMap :om_077.
+:om_077 a rr:ObjectMap;
+    rr:template "http://viaf.org/viaf/{viaf}";
+    rr:termType rr:IRI.
+:pom_078 a rr:PredicateObjectMap.
+:map_GroupMapping_000 rr:predicateObjectMap :pom_078.
+:pm_078 a rr:PredicateMap.
+:pom_078 rr:predicateMap :pm_078.
+:pm_078 rr:constant crm:P1.
+:pom_078 rr:objectMap :om_078.
 :rules_000 void:exampleResource :map_AppellationCollectifMapping_000.
 :map_AppellationCollectifMapping_000 rml:logicalSource :source_002;
     a rr:TriplesMap;
@@ -1069,22 +1078,22 @@
 :s_009 a rr:SubjectMap.
 :map_AppellationCollectifMapping_000 rr:subjectMap :s_009.
 :s_009 rr:termType rr:BlankNode.
-:pom_078 a rr:PredicateObjectMap.
-:map_AppellationCollectifMapping_000 rr:predicateObjectMap :pom_078.
-:pm_078 a rr:PredicateMap.
-:pom_078 rr:predicateMap :pm_078.
-:pm_078 rr:constant rdf:type.
-:pom_078 rr:objectMap :om_078.
-:om_078 a rr:ObjectMap;
-    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E41";
-    rr:termType rr:IRI.
 :pom_079 a rr:PredicateObjectMap.
 :map_AppellationCollectifMapping_000 rr:predicateObjectMap :pom_079.
 :pm_079 a rr:PredicateMap.
 :pom_079 rr:predicateMap :pm_079.
-:pm_079 rr:constant crm-sup:P21.
+:pm_079 rr:constant rdf:type.
 :pom_079 rr:objectMap :om_079.
 :om_079 a rr:ObjectMap;
+    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E41";
+    rr:termType rr:IRI.
+:pom_080 a rr:PredicateObjectMap.
+:map_AppellationCollectifMapping_000 rr:predicateObjectMap :pom_080.
+:pm_080 a rr:PredicateMap.
+:pom_080 rr:predicateMap :pm_080.
+:pm_080 rr:constant crm-sup:P21.
+:pom_080 rr:objectMap :om_080.
+:om_080 a rr:ObjectMap;
     rml:reference "appellation";
     rr:termType rr:Literal;
     rml:languageMap :language_005.
@@ -1105,13 +1114,13 @@
 :pomexec_012 rr:objectMap :omexec_012.
 :omexec_012 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_012 rr:predicateObjectMap :pom_080.
-:pom_080 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_080.
-:pm_080 a rr:PredicateMap;
+:fn_012 rr:predicateObjectMap :pom_081.
+:pom_081 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_081.
+:pm_081 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_080 rr:objectMap :om_080.
-:om_080 a rr:ObjectMap, fnml:FunctionTermMap;
+:pom_081 rr:objectMap :om_081.
+:om_081 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_013.
 :fn_013 rml:logicalSource :source_002;
     rr:predicateObjectMap :pomexec_013.
@@ -1120,40 +1129,40 @@
 :pomexec_013 rr:objectMap :omexec_013.
 :omexec_013 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_013 rr:predicateObjectMap :pom_081.
-:pom_081 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_081.
-:pm_081 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_081 rr:objectMap :om_081.
-:om_081 a rr:ObjectMap;
-    rml:reference "forme";
-    rr:termType rr:Literal.
 :fn_013 rr:predicateObjectMap :pom_082.
 :pom_082 a rr:PredicateObjectMap;
     rr:predicateMap :pm_082.
 :pm_082 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant grel:valueParameter.
 :pom_082 rr:objectMap :om_082.
 :om_082 a rr:ObjectMap;
-    rr:constant "2";
+    rml:reference "forme";
     rr:termType rr:Literal.
-:fn_012 rr:predicateObjectMap :pom_083.
+:fn_013 rr:predicateObjectMap :pom_083.
 :pom_083 a rr:PredicateObjectMap;
     rr:predicateMap :pm_083.
 :pm_083 a rr:PredicateMap;
-    rr:constant idlab-fn:str.
+    rr:constant grel:valueParameter2.
 :pom_083 rr:objectMap :om_083.
 :om_083 a rr:ObjectMap;
-    rr:template "http://mshb.huma-num.fr/prelib/collectif/{collectif_id}";
-    rr:termType rr:IRI.
-:pom_084 a rr:PredicateObjectMap.
-:map_AppellationRetenueCollectifMapping_000 rr:predicateObjectMap :pom_084.
-:pm_084 a rr:PredicateMap.
-:pom_084 rr:predicateMap :pm_084.
-:pm_084 rr:constant <http://www.w3.org/2004/02/skos/core#prefLabel>.
+    rr:constant "2";
+    rr:termType rr:Literal.
+:fn_012 rr:predicateObjectMap :pom_084.
+:pom_084 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_084.
+:pm_084 a rr:PredicateMap;
+    rr:constant idlab-fn:str.
 :pom_084 rr:objectMap :om_084.
 :om_084 a rr:ObjectMap;
+    rr:template "http://mshb.huma-num.fr/prelib/collectif/{collectif_id}";
+    rr:termType rr:IRI.
+:pom_085 a rr:PredicateObjectMap.
+:map_AppellationRetenueCollectifMapping_000 rr:predicateObjectMap :pom_085.
+:pm_085 a rr:PredicateMap.
+:pom_085 rr:predicateMap :pm_085.
+:pm_085 rr:constant <http://www.w3.org/2004/02/skos/core#prefLabel>.
+:pom_085 rr:objectMap :om_085.
+:om_085 a rr:ObjectMap;
     rml:reference "appellation";
     rr:termType rr:Literal;
     rml:languageMap :language_006.
@@ -1174,13 +1183,13 @@
 :pomexec_014 rr:objectMap :omexec_014.
 :omexec_014 rr:constant "http://example.com/idlab/function/trueCondition";
     rr:termType rr:IRI.
-:fn_014 rr:predicateObjectMap :pom_085.
-:pom_085 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_085.
-:pm_085 a rr:PredicateMap;
+:fn_014 rr:predicateObjectMap :pom_086.
+:pom_086 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_086.
+:pm_086 a rr:PredicateMap;
     rr:constant idlab-fn:strBoolean.
-:pom_085 rr:objectMap :om_085.
-:om_085 a rr:ObjectMap, fnml:FunctionTermMap;
+:pom_086 rr:objectMap :om_086.
+:om_086 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_015.
 :fn_015 rml:logicalSource :source_002;
     rr:predicateObjectMap :pomexec_015.
@@ -1189,40 +1198,40 @@
 :pomexec_015 rr:objectMap :omexec_015.
 :omexec_015 rr:constant "http://example.com/idlab/function/equal";
     rr:termType rr:IRI.
-:fn_015 rr:predicateObjectMap :pom_086.
-:pom_086 a rr:PredicateObjectMap;
-    rr:predicateMap :pm_086.
-:pm_086 a rr:PredicateMap;
-    rr:constant grel:valueParameter.
-:pom_086 rr:objectMap :om_086.
-:om_086 a rr:ObjectMap;
-    rml:reference "forme";
-    rr:termType rr:Literal.
 :fn_015 rr:predicateObjectMap :pom_087.
 :pom_087 a rr:PredicateObjectMap;
     rr:predicateMap :pm_087.
 :pm_087 a rr:PredicateMap;
-    rr:constant grel:valueParameter2.
+    rr:constant grel:valueParameter.
 :pom_087 rr:objectMap :om_087.
 :om_087 a rr:ObjectMap;
-    rr:constant "1";
+    rml:reference "forme";
     rr:termType rr:Literal.
-:fn_014 rr:predicateObjectMap :pom_088.
+:fn_015 rr:predicateObjectMap :pom_088.
 :pom_088 a rr:PredicateObjectMap;
     rr:predicateMap :pm_088.
 :pm_088 a rr:PredicateMap;
-    rr:constant idlab-fn:str.
+    rr:constant grel:valueParameter2.
 :pom_088 rr:objectMap :om_088.
 :om_088 a rr:ObjectMap;
-    rr:template "http://mshb.huma-num.fr/prelib/collectif/{collectif_id}";
-    rr:termType rr:IRI.
-:pom_089 a rr:PredicateObjectMap.
-:map_AppellationRejetteeCollectifMapping_000 rr:predicateObjectMap :pom_089.
-:pm_089 a rr:PredicateMap.
-:pom_089 rr:predicateMap :pm_089.
-:pm_089 rr:constant <http://www.w3.org/2004/02/skos/core#altLabel>.
+    rr:constant "1";
+    rr:termType rr:Literal.
+:fn_014 rr:predicateObjectMap :pom_089.
+:pom_089 a rr:PredicateObjectMap;
+    rr:predicateMap :pm_089.
+:pm_089 a rr:PredicateMap;
+    rr:constant idlab-fn:str.
 :pom_089 rr:objectMap :om_089.
 :om_089 a rr:ObjectMap;
+    rr:template "http://mshb.huma-num.fr/prelib/collectif/{collectif_id}";
+    rr:termType rr:IRI.
+:pom_090 a rr:PredicateObjectMap.
+:map_AppellationRejetteeCollectifMapping_000 rr:predicateObjectMap :pom_090.
+:pm_090 a rr:PredicateMap.
+:pom_090 rr:predicateMap :pm_090.
+:pm_090 rr:constant <http://www.w3.org/2004/02/skos/core#altLabel>.
+:pom_090 rr:objectMap :om_090.
+:om_090 a rr:ObjectMap;
     rml:reference "appellation";
     rr:termType rr:Literal;
     rml:languageMap :language_007.
@@ -1234,29 +1243,20 @@
 :s_012 a rr:SubjectMap.
 :map_ManifestationProductTypeMapping_000 rr:subjectMap :s_012.
 :s_012 rr:template "http://mshb.huma-num.fr/prelib/edition/{id}".
-:pom_090 a rr:PredicateObjectMap.
-:map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_090.
-:pm_090 a rr:PredicateMap.
-:pom_090 rr:predicateMap :pm_090.
-:pm_090 rr:constant rdf:type.
-:pom_090 rr:objectMap :om_090.
-:om_090 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F3";
-    rr:termType rr:IRI.
 :pom_091 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_091.
 :pm_091 a rr:PredicateMap.
 :pom_091 rr:predicateMap :pm_091.
-:pm_091 rr:constant rdfs:label.
+:pm_091 rr:constant rdf:type.
 :pom_091 rr:objectMap :om_091.
 :om_091 a rr:ObjectMap;
-    rml:reference "titre";
-    rr:termType rr:Literal.
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F3";
+    rr:termType rr:IRI.
 :pom_092 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_092.
 :pm_092 a rr:PredicateMap.
 :pom_092 rr:predicateMap :pm_092.
-:pm_092 rr:constant crm:P102.
+:pm_092 rr:constant rdfs:label.
 :pom_092 rr:objectMap :om_092.
 :om_092 a rr:ObjectMap;
     rml:reference "titre";
@@ -1265,11 +1265,11 @@
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_093.
 :pm_093 a rr:PredicateMap.
 :pom_093 rr:predicateMap :pm_093.
-:pm_093 rr:constant owl:sameAs.
+:pm_093 rr:constant crm:P102.
 :pom_093 rr:objectMap :om_093.
 :om_093 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "titre";
+    rr:termType rr:Literal.
 :pom_094 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_094.
 :pm_094 a rr:PredicateMap.
@@ -1277,7 +1277,7 @@
 :pm_094 rr:constant owl:sameAs.
 :pom_094 rr:objectMap :om_094.
 :om_094 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_095 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_095.
@@ -1286,7 +1286,7 @@
 :pm_095 rr:constant owl:sameAs.
 :pom_095 rr:objectMap :om_095.
 :om_095 a rr:ObjectMap;
-    rr:template "http://www.sudoc.fr/{sudoc}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_096 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_096.
@@ -1295,16 +1295,16 @@
 :pm_096 rr:constant owl:sameAs.
 :pom_096 rr:objectMap :om_096.
 :om_096 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_097 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_097.
 :pm_097 a rr:PredicateMap.
 :pom_097 rr:predicateMap :pm_097.
-:pm_097 rr:constant crm-sup:P20.
+:pm_097 rr:constant owl:sameAs.
 :pom_097 rr:objectMap :om_097.
 :om_097 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_098 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_098.
@@ -1313,7 +1313,7 @@
 :pm_098 rr:constant crm-sup:P20.
 :pom_098 rr:objectMap :om_098.
 :om_098 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_099 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_099.
@@ -1322,7 +1322,7 @@
 :pm_099 rr:constant crm-sup:P20.
 :pom_099 rr:objectMap :om_099.
 :om_099 a rr:ObjectMap;
-    rr:template "http://www.sudoc.fr/{sudoc}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_100 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_100.
@@ -1331,24 +1331,33 @@
 :pm_100 rr:constant crm-sup:P20.
 :pom_100 rr:objectMap :om_100.
 :om_100 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_101 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_101.
 :pm_101 a rr:PredicateMap.
 :pom_101 rr:predicateMap :pm_101.
-:pm_101 rr:constant bibo:isbn10.
+:pm_101 rr:constant crm-sup:P20.
 :pom_101 rr:objectMap :om_101.
 :om_101 a rr:ObjectMap;
-    rml:reference "isbn_10";
-    rr:termType rr:Literal.
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:termType rr:IRI.
 :pom_102 a rr:PredicateObjectMap.
 :map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_102.
 :pm_102 a rr:PredicateMap.
 :pom_102 rr:predicateMap :pm_102.
-:pm_102 rr:constant bibo:isbn13.
+:pm_102 rr:constant bibo:isbn10.
 :pom_102 rr:objectMap :om_102.
 :om_102 a rr:ObjectMap;
+    rml:reference "isbn_10";
+    rr:termType rr:Literal.
+:pom_103 a rr:PredicateObjectMap.
+:map_ManifestationProductTypeMapping_000 rr:predicateObjectMap :pom_103.
+:pm_103 a rr:PredicateMap.
+:pom_103 rr:predicateMap :pm_103.
+:pm_103 rr:constant bibo:isbn13.
+:pom_103 rr:objectMap :om_103.
+:om_103 a rr:ObjectMap;
     rml:reference "isbn_13";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_EditeOeuvreMapping_000.
@@ -1358,18 +1367,18 @@
 :s_013 a rr:SubjectMap.
 :map_EditeOeuvreMapping_000 rr:subjectMap :s_013.
 :s_013 rr:template "http://mshb.huma-num.fr/prelib/edition-event/{edition_id}".
-:pom_103 a rr:PredicateObjectMap.
-:map_EditeOeuvreMapping_000 rr:predicateObjectMap :pom_103.
-:pm_103 a rr:PredicateMap.
-:pom_103 rr:predicateMap :pm_103.
-:pm_103 rr:constant crm:P14.
-:pom_103 rr:objectMap :om_103.
 :pom_104 a rr:PredicateObjectMap.
 :map_EditeOeuvreMapping_000 rr:predicateObjectMap :pom_104.
 :pm_104 a rr:PredicateMap.
 :pom_104 rr:predicateMap :pm_104.
-:pm_104 rr:constant sdh-int:P3.
+:pm_104 rr:constant crm:P14.
 :pom_104 rr:objectMap :om_104.
+:pom_105 a rr:PredicateObjectMap.
+:map_EditeOeuvreMapping_000 rr:predicateObjectMap :pom_105.
+:pm_105 a rr:PredicateMap.
+:pom_105 rr:predicateMap :pm_105.
+:pm_105 rr:constant sdh-int:P3.
+:pom_105 rr:objectMap :om_105.
 :rules_000 void:exampleResource :map_ExpressionPublicationEventMapping_000.
 :map_ExpressionPublicationEventMapping_000 rml:logicalSource :source_009;
     a rr:TriplesMap;
@@ -1377,21 +1386,21 @@
 :s_014 a rr:SubjectMap.
 :map_ExpressionPublicationEventMapping_000 rr:subjectMap :s_014.
 :s_014 rr:template "http://mshb.huma-num.fr/prelib/edition-event/{id}".
-:pom_105 a rr:PredicateObjectMap.
-:map_ExpressionPublicationEventMapping_000 rr:predicateObjectMap :pom_105.
-:pm_105 a rr:PredicateMap.
-:pom_105 rr:predicateMap :pm_105.
-:pm_105 rr:constant rdf:type.
-:pom_105 rr:objectMap :om_105.
-:om_105 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/intellectual-literary-life/C1";
-    rr:termType rr:IRI.
 :pom_106 a rr:PredicateObjectMap.
 :map_ExpressionPublicationEventMapping_000 rr:predicateObjectMap :pom_106.
 :pm_106 a rr:PredicateMap.
 :pom_106 rr:predicateMap :pm_106.
-:pm_106 rr:constant crm:P4.
+:pm_106 rr:constant rdf:type.
 :pom_106 rr:objectMap :om_106.
+:om_106 a rr:ObjectMap;
+    rr:constant "https://ontome.net/ns/intellectual-literary-life/C1";
+    rr:termType rr:IRI.
+:pom_107 a rr:PredicateObjectMap.
+:map_ExpressionPublicationEventMapping_000 rr:predicateObjectMap :pom_107.
+:pm_107 a rr:PredicateMap.
+:pom_107 rr:predicateMap :pm_107.
+:pm_107 rr:constant crm:P4.
+:pom_107 rr:objectMap :om_107.
 :rules_000 void:exampleResource :map_TimeSpanExpressionPublicationEventMapping_000.
 :map_TimeSpanExpressionPublicationEventMapping_000 rml:logicalSource :source_009;
     a rr:TriplesMap;
@@ -1399,22 +1408,22 @@
 :s_015 a rr:SubjectMap.
 :map_TimeSpanExpressionPublicationEventMapping_000 rr:subjectMap :s_015.
 :s_015 rr:termType rr:BlankNode.
-:pom_107 a rr:PredicateObjectMap.
-:map_TimeSpanExpressionPublicationEventMapping_000 rr:predicateObjectMap :pom_107.
-:pm_107 a rr:PredicateMap.
-:pom_107 rr:predicateMap :pm_107.
-:pm_107 rr:constant rdf:type.
-:pom_107 rr:objectMap :om_107.
-:om_107 a rr:ObjectMap;
-    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E52";
-    rr:termType rr:IRI.
 :pom_108 a rr:PredicateObjectMap.
 :map_TimeSpanExpressionPublicationEventMapping_000 rr:predicateObjectMap :pom_108.
 :pm_108 a rr:PredicateMap.
 :pom_108 rr:predicateMap :pm_108.
-:pm_108 rr:constant crm:P82.
+:pm_108 rr:constant rdf:type.
 :pom_108 rr:objectMap :om_108.
 :om_108 a rr:ObjectMap;
+    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E52";
+    rr:termType rr:IRI.
+:pom_109 a rr:PredicateObjectMap.
+:map_TimeSpanExpressionPublicationEventMapping_000 rr:predicateObjectMap :pom_109.
+:pm_109 a rr:PredicateMap.
+:pom_109 rr:predicateMap :pm_109.
+:pm_109 rr:constant crm:P82.
+:pom_109 rr:objectMap :om_109.
+:om_109 a rr:ObjectMap;
     rml:reference "annee_publication";
     rr:termType rr:Literal;
     rr:datatype xsd:gYear.
@@ -1425,35 +1434,26 @@
 :s_016 a rr:SubjectMap.
 :map_BatimentMapping_000 rr:subjectMap :s_016.
 :s_016 rr:template "http://mshb.huma-num.fr/prelib/batiment/{id}".
-:pom_109 a rr:PredicateObjectMap.
-:map_BatimentMapping_000 rr:predicateObjectMap :pom_109.
-:pm_109 a rr:PredicateMap.
-:pom_109 rr:predicateMap :pm_109.
-:pm_109 rr:constant rdf:type.
-:pom_109 rr:objectMap :om_109.
-:om_109 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/sdhss/C17";
-    rr:termType rr:IRI.
 :pom_110 a rr:PredicateObjectMap.
 :map_BatimentMapping_000 rr:predicateObjectMap :pom_110.
 :pm_110 a rr:PredicateMap.
 :pom_110 rr:predicateMap :pm_110.
-:pm_110 rr:constant rdfs:label.
+:pm_110 rr:constant rdf:type.
 :pom_110 rr:objectMap :om_110.
 :om_110 a rr:ObjectMap;
-    rml:reference "nom";
-    rr:termType rr:Literal;
-    rml:languageMap :language_008.
-:language_008 rr:constant "fr".
+    rr:constant "https://ontome.net/ns/sdhss/C17";
+    rr:termType rr:IRI.
 :pom_111 a rr:PredicateObjectMap.
 :map_BatimentMapping_000 rr:predicateObjectMap :pom_111.
 :pm_111 a rr:PredicateMap.
 :pom_111 rr:predicateMap :pm_111.
-:pm_111 rr:constant owl:sameAs.
+:pm_111 rr:constant rdfs:label.
 :pom_111 rr:objectMap :om_111.
 :om_111 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "nom";
+    rr:termType rr:Literal;
+    rml:languageMap :language_008.
+:language_008 rr:constant "fr".
 :pom_112 a rr:PredicateObjectMap.
 :map_BatimentMapping_000 rr:predicateObjectMap :pom_112.
 :pm_112 a rr:PredicateMap.
@@ -1461,15 +1461,24 @@
 :pm_112 rr:constant owl:sameAs.
 :pom_112 rr:objectMap :om_112.
 :om_112 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_113 a rr:PredicateObjectMap.
 :map_BatimentMapping_000 rr:predicateObjectMap :pom_113.
 :pm_113 a rr:PredicateMap.
 :pom_113 rr:predicateMap :pm_113.
-:pm_113 rr:constant sdh:P17.
+:pm_113 rr:constant owl:sameAs.
 :pom_113 rr:objectMap :om_113.
 :om_113 a rr:ObjectMap;
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:termType rr:IRI.
+:pom_114 a rr:PredicateObjectMap.
+:map_BatimentMapping_000 rr:predicateObjectMap :pom_114.
+:pm_114 a rr:PredicateMap.
+:pom_114 rr:predicateMap :pm_114.
+:pm_114 rr:constant sdh:P17.
+:pom_114 rr:objectMap :om_114.
+:om_114 a rr:ObjectMap;
     rr:template "http://mshb.huma-num.fr/prelib/ville/{ville_id}";
     rr:termType rr:IRI.
 :rules_000 void:exampleResource :map_OccupationMapping_000.
@@ -1479,22 +1488,22 @@
 :s_017 a rr:SubjectMap.
 :map_OccupationMapping_000 rr:subjectMap :s_017.
 :s_017 rr:template "http://mshb.huma-num.fr/prelib/occupation/{id}".
-:pom_114 a rr:PredicateObjectMap.
-:map_OccupationMapping_000 rr:predicateObjectMap :pom_114.
-:pm_114 a rr:PredicateMap.
-:pom_114 rr:predicateMap :pm_114.
-:pm_114 rr:constant rdf:type.
-:pom_114 rr:objectMap :om_114.
-:om_114 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/social-legal-economic-life/C7";
-    rr:termType rr:IRI.
 :pom_115 a rr:PredicateObjectMap.
 :map_OccupationMapping_000 rr:predicateObjectMap :pom_115.
 :pm_115 a rr:PredicateMap.
 :pom_115 rr:predicateMap :pm_115.
-:pm_115 rr:constant rdfs:label.
+:pm_115 rr:constant rdf:type.
 :pom_115 rr:objectMap :om_115.
 :om_115 a rr:ObjectMap;
+    rr:constant "https://ontome.net/ns/social-legal-economic-life/C7";
+    rr:termType rr:IRI.
+:pom_116 a rr:PredicateObjectMap.
+:map_OccupationMapping_000 rr:predicateObjectMap :pom_116.
+:pm_116 a rr:PredicateMap.
+:pom_116 rr:predicateMap :pm_116.
+:pm_116 rr:constant rdfs:label.
+:pom_116 rr:objectMap :om_116.
+:om_116 a rr:ObjectMap;
     rml:reference "nom";
     rr:termType rr:Literal;
     rml:languageMap :language_009.
@@ -1506,51 +1515,51 @@
 :s_018 a rr:SubjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:subjectMap :s_018.
 :s_018 rr:termType rr:BlankNode.
-:pom_116 a rr:PredicateObjectMap.
-:map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_116.
-:pm_116 a rr:PredicateMap.
-:pom_116 rr:predicateMap :pm_116.
-:pm_116 rr:constant rdf:type.
-:pom_116 rr:objectMap :om_116.
-:om_116 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/social-legal-economic-life/C8";
-    rr:termType rr:IRI.
 :pom_117 a rr:PredicateObjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_117.
 :pm_117 a rr:PredicateMap.
 :pom_117 rr:predicateMap :pm_117.
-:pm_117 rr:constant sdh-so:P4.
+:pm_117 rr:constant rdf:type.
 :pom_117 rr:objectMap :om_117.
 :om_117 a rr:ObjectMap;
-    rr:template "http://mshb.huma-num.fr/prelib/personne/{personne_id}";
+    rr:constant "https://ontome.net/ns/social-legal-economic-life/C8";
     rr:termType rr:IRI.
 :pom_118 a rr:PredicateObjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_118.
 :pm_118 a rr:PredicateMap.
 :pom_118 rr:predicateMap :pm_118.
-:pm_118 rr:constant crm:P8.
+:pm_118 rr:constant sdh-so:P4.
 :pom_118 rr:objectMap :om_118.
 :om_118 a rr:ObjectMap;
-    rr:template "http://mshb.huma-num.fr/prelib/batiment/{batiment_id}";
+    rr:template "http://mshb.huma-num.fr/prelib/personne/{personne_id}";
     rr:termType rr:IRI.
 :pom_119 a rr:PredicateObjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_119.
 :pm_119 a rr:PredicateMap.
 :pom_119 rr:predicateMap :pm_119.
-:pm_119 rr:constant crm:P4.
+:pm_119 rr:constant crm:P8.
 :pom_119 rr:objectMap :om_119.
+:om_119 a rr:ObjectMap;
+    rr:template "http://mshb.huma-num.fr/prelib/batiment/{batiment_id}";
+    rr:termType rr:IRI.
 :pom_120 a rr:PredicateObjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_120.
 :pm_120 a rr:PredicateMap.
 :pom_120 rr:predicateMap :pm_120.
-:pm_120 rr:constant sdh-so:P5.
+:pm_120 rr:constant crm:P4.
 :pom_120 rr:objectMap :om_120.
 :pom_121 a rr:PredicateObjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_121.
 :pm_121 a rr:PredicateMap.
 :pom_121 rr:predicateMap :pm_121.
-:pm_121 rr:constant sdh-so:P7.
+:pm_121 rr:constant sdh-so:P5.
 :pom_121 rr:objectMap :om_121.
+:pom_122 a rr:PredicateObjectMap.
+:map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_122.
+:pm_122 a rr:PredicateMap.
+:pom_122 rr:predicateMap :pm_122.
+:pm_122 rr:constant sdh-so:P7.
+:pom_122 rr:objectMap :om_122.
 :rules_000 void:exampleResource :map_TimeSpanOccupationMapping_000.
 :map_TimeSpanOccupationMapping_000 rml:logicalSource :source_015;
     a rr:TriplesMap;
@@ -1558,52 +1567,52 @@
 :s_019 a rr:SubjectMap.
 :map_TimeSpanOccupationMapping_000 rr:subjectMap :s_019.
 :s_019 rr:termType rr:BlankNode.
-:pom_122 a rr:PredicateObjectMap.
-:map_TimeSpanOccupationMapping_000 rr:predicateObjectMap :pom_122.
-:pm_122 a rr:PredicateMap.
-:pom_122 rr:predicateMap :pm_122.
-:pm_122 rr:constant rdf:type.
-:pom_122 rr:objectMap :om_122.
-:om_122 a rr:ObjectMap;
-    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E52";
-    rr:termType rr:IRI.
 :pom_123 a rr:PredicateObjectMap.
 :map_TimeSpanOccupationMapping_000 rr:predicateObjectMap :pom_123.
 :pm_123 a rr:PredicateMap.
 :pom_123 rr:predicateMap :pm_123.
-:pm_123 rr:constant crm:P82a.
+:pm_123 rr:constant rdf:type.
 :pom_123 rr:objectMap :om_123.
 :om_123 a rr:ObjectMap;
-    rml:reference "date_debut";
-    rr:termType rr:Literal;
-    rr:datatype xsd:date.
+    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E52";
+    rr:termType rr:IRI.
 :pom_124 a rr:PredicateObjectMap.
 :map_TimeSpanOccupationMapping_000 rr:predicateObjectMap :pom_124.
 :pm_124 a rr:PredicateMap.
 :pom_124 rr:predicateMap :pm_124.
-:pm_124 rr:constant crm:P82b.
+:pm_124 rr:constant crm:P82a.
 :pom_124 rr:objectMap :om_124.
 :om_124 a rr:ObjectMap;
-    rml:reference "date_fin";
+    rml:reference "date_debut";
     rr:termType rr:Literal;
     rr:datatype xsd:date.
 :pom_125 a rr:PredicateObjectMap.
 :map_TimeSpanOccupationMapping_000 rr:predicateObjectMap :pom_125.
 :pm_125 a rr:PredicateMap.
 :pom_125 rr:predicateMap :pm_125.
-:pm_125 rr:constant crm:P82a.
+:pm_125 rr:constant crm:P82b.
 :pom_125 rr:objectMap :om_125.
 :om_125 a rr:ObjectMap;
-    rml:reference "annee_debut";
+    rml:reference "date_fin";
     rr:termType rr:Literal;
-    rr:datatype xsd:gYear.
+    rr:datatype xsd:date.
 :pom_126 a rr:PredicateObjectMap.
 :map_TimeSpanOccupationMapping_000 rr:predicateObjectMap :pom_126.
 :pm_126 a rr:PredicateMap.
 :pom_126 rr:predicateMap :pm_126.
-:pm_126 rr:constant crm:P82b.
+:pm_126 rr:constant crm:P82a.
 :pom_126 rr:objectMap :om_126.
 :om_126 a rr:ObjectMap;
+    rml:reference "annee_debut";
+    rr:termType rr:Literal;
+    rr:datatype xsd:gYear.
+:pom_127 a rr:PredicateObjectMap.
+:map_TimeSpanOccupationMapping_000 rr:predicateObjectMap :pom_127.
+:pm_127 a rr:PredicateMap.
+:pom_127 rr:predicateMap :pm_127.
+:pm_127 rr:constant crm:P82b.
+:pom_127 rr:objectMap :om_127.
+:om_127 a rr:ObjectMap;
     rml:reference "annee_fin";
     rr:termType rr:Literal;
     rr:datatype xsd:gYear.
@@ -1614,15 +1623,6 @@
 :s_020 a rr:SubjectMap.
 :map_ExpressionMapping_000 rr:subjectMap :s_020.
 :s_020 rr:template "http://mshb.huma-num.fr/prelib/oeuvre/{id}".
-:pom_127 a rr:PredicateObjectMap.
-:map_ExpressionMapping_000 rr:predicateObjectMap :pom_127.
-:pm_127 a rr:PredicateMap.
-:pom_127 rr:predicateMap :pm_127.
-:pm_127 rr:constant rdf:type.
-:pom_127 rr:objectMap :om_127.
-:om_127 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F2";
-    rr:termType rr:IRI.
 :pom_128 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_128.
 :pm_128 a rr:PredicateMap.
@@ -1630,26 +1630,26 @@
 :pm_128 rr:constant rdf:type.
 :pom_128 rr:objectMap :om_128.
 :om_128 a rr:ObjectMap;
-    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E33";
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F2";
     rr:termType rr:IRI.
 :pom_129 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_129.
 :pm_129 a rr:PredicateMap.
 :pom_129 rr:predicateMap :pm_129.
-:pm_129 rr:constant rdfs:label.
+:pm_129 rr:constant rdf:type.
 :pom_129 rr:objectMap :om_129.
 :om_129 a rr:ObjectMap;
-    rml:reference "titre";
-    rr:termType rr:Literal.
+    rr:constant "http://www.cidoc-crm.org/cidoc-crm/E33";
+    rr:termType rr:IRI.
 :pom_130 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_130.
 :pm_130 a rr:PredicateMap.
 :pom_130 rr:predicateMap :pm_130.
-:pm_130 rr:constant owl:sameAs.
+:pm_130 rr:constant rdfs:label.
 :pom_130 rr:objectMap :om_130.
 :om_130 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "titre";
+    rr:termType rr:Literal.
 :pom_131 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_131.
 :pm_131 a rr:PredicateMap.
@@ -1657,7 +1657,7 @@
 :pm_131 rr:constant owl:sameAs.
 :pom_131 rr:objectMap :om_131.
 :om_131 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_132 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_132.
@@ -1666,16 +1666,16 @@
 :pm_132 rr:constant owl:sameAs.
 :pom_132 rr:objectMap :om_132.
 :om_132 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_133 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_133.
 :pm_133 a rr:PredicateMap.
 :pom_133 rr:predicateMap :pm_133.
-:pm_133 rr:constant crm-sup:P20.
+:pm_133 rr:constant owl:sameAs.
 :pom_133 rr:objectMap :om_133.
 :om_133 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_134 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_134.
@@ -1684,7 +1684,7 @@
 :pm_134 rr:constant crm-sup:P20.
 :pom_134 rr:objectMap :om_134.
 :om_134 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_135 a rr:PredicateObjectMap.
 :map_ExpressionMapping_000 rr:predicateObjectMap :pom_135.
@@ -1693,6 +1693,15 @@
 :pm_135 rr:constant crm-sup:P20.
 :pom_135 rr:objectMap :om_135.
 :om_135 a rr:ObjectMap;
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:termType rr:IRI.
+:pom_136 a rr:PredicateObjectMap.
+:map_ExpressionMapping_000 rr:predicateObjectMap :pom_136.
+:pm_136 a rr:PredicateMap.
+:pom_136 rr:predicateMap :pm_136.
+:pm_136 rr:constant crm-sup:P20.
+:pom_136 rr:objectMap :om_136.
+:om_136 a rr:ObjectMap;
     rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :rules_000 void:exampleResource :map_PublicationExpressionMapping_000.
@@ -1702,27 +1711,27 @@
 :s_021 a rr:SubjectMap.
 :map_PublicationExpressionMapping_000 rr:subjectMap :s_021.
 :s_021 rr:termType rr:BlankNode.
-:pom_136 a rr:PredicateObjectMap.
-:map_PublicationExpressionMapping_000 rr:predicateObjectMap :pom_136.
-:pm_136 a rr:PredicateMap.
-:pom_136 rr:predicateMap :pm_136.
-:pm_136 rr:constant rdf:type.
-:pom_136 rr:objectMap :om_136.
-:om_136 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F24";
-    rr:termType rr:IRI.
 :pom_137 a rr:PredicateObjectMap.
 :map_PublicationExpressionMapping_000 rr:predicateObjectMap :pom_137.
 :pm_137 a rr:PredicateMap.
 :pom_137 rr:predicateMap :pm_137.
-:pm_137 rr:constant frbroo:CLR6i.
+:pm_137 rr:constant rdf:type.
 :pom_137 rr:objectMap :om_137.
+:om_137 a rr:ObjectMap;
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F24";
+    rr:termType rr:IRI.
 :pom_138 a rr:PredicateObjectMap.
 :map_PublicationExpressionMapping_000 rr:predicateObjectMap :pom_138.
 :pm_138 a rr:PredicateMap.
 :pom_138 rr:predicateMap :pm_138.
-:pm_138 rr:constant frbroo:R5.
+:pm_138 rr:constant frbroo:CLR6i.
 :pom_138 rr:objectMap :om_138.
+:pom_139 a rr:PredicateObjectMap.
+:map_PublicationExpressionMapping_000 rr:predicateObjectMap :pom_139.
+:pm_139 a rr:PredicateMap.
+:pom_139 rr:predicateMap :pm_139.
+:pm_139 rr:constant frbroo:R5.
+:pom_139 rr:objectMap :om_139.
 :rules_000 void:exampleResource :map_OeuvreLangueMapping_000.
 :map_OeuvreLangueMapping_000 rml:logicalSource :source_012;
     a rr:TriplesMap;
@@ -1730,13 +1739,13 @@
 :s_022 a rr:SubjectMap.
 :map_OeuvreLangueMapping_000 rr:subjectMap :s_022.
 :s_022 rr:template "http://mshb.huma-num.fr/prelib/oeuvre/{oeuvre_id}".
-:pom_139 a rr:PredicateObjectMap.
-:map_OeuvreLangueMapping_000 rr:predicateObjectMap :pom_139.
-:pm_139 a rr:PredicateMap.
-:pom_139 rr:predicateMap :pm_139.
-:pm_139 rr:constant crm:P72.
-:pom_139 rr:objectMap :om_139.
-:om_139 a rr:ObjectMap;
+:pom_140 a rr:PredicateObjectMap.
+:map_OeuvreLangueMapping_000 rr:predicateObjectMap :pom_140.
+:pm_140 a rr:PredicateMap.
+:pom_140 rr:predicateMap :pm_140.
+:pm_140 rr:constant crm:P72.
+:pom_140 rr:objectMap :om_140.
+:om_140 a rr:ObjectMap;
     rr:template "http://lexvo.org/id/iso639-3/{code_iso_639_3}";
     rr:termType rr:IRI.
 :rules_000 void:exampleResource :map_PersonneExpressionCreationMapping_000.
@@ -1746,47 +1755,47 @@
 :s_023 a rr:SubjectMap.
 :map_PersonneExpressionCreationMapping_000 rr:subjectMap :s_023.
 :s_023 rr:termType rr:BlankNode.
-:pom_140 a rr:PredicateObjectMap.
-:map_PersonneExpressionCreationMapping_000 rr:predicateObjectMap :pom_140.
-:pm_140 a rr:PredicateMap.
-:pom_140 rr:predicateMap :pm_140.
-:pm_140 rr:constant rdf:type.
-:pom_140 rr:objectMap :om_140.
-:om_140 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F28";
-    rr:termType rr:IRI.
 :pom_141 a rr:PredicateObjectMap.
 :map_PersonneExpressionCreationMapping_000 rr:predicateObjectMap :pom_141.
 :pm_141 a rr:PredicateMap.
 :pom_141 rr:predicateMap :pm_141.
-:pm_141 rr:constant crm:P3.
+:pm_141 rr:constant rdf:type.
 :pom_141 rr:objectMap :om_141.
 :om_141 a rr:ObjectMap;
-    rml:reference "nom_fonction";
-    rr:termType rr:Literal;
-    rml:languageMap :language_010.
-:language_010 rr:constant "fr".
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F28";
+    rr:termType rr:IRI.
 :pom_142 a rr:PredicateObjectMap.
 :map_PersonneExpressionCreationMapping_000 rr:predicateObjectMap :pom_142.
 :pm_142 a rr:PredicateMap.
 :pom_142 rr:predicateMap :pm_142.
-:pm_142 rr:constant crm:P4.
+:pm_142 rr:constant crm:P3.
 :pom_142 rr:objectMap :om_142.
 :om_142 a rr:ObjectMap;
-    rml:reference "annee";
-    rr:termType rr:Literal.
+    rml:reference "nom_fonction";
+    rr:termType rr:Literal;
+    rml:languageMap :language_010.
+:language_010 rr:constant "fr".
 :pom_143 a rr:PredicateObjectMap.
 :map_PersonneExpressionCreationMapping_000 rr:predicateObjectMap :pom_143.
 :pm_143 a rr:PredicateMap.
 :pom_143 rr:predicateMap :pm_143.
-:pm_143 rr:constant frbroo:R17.
+:pm_143 rr:constant crm:P4.
 :pom_143 rr:objectMap :om_143.
+:om_143 a rr:ObjectMap;
+    rml:reference "annee";
+    rr:termType rr:Literal.
 :pom_144 a rr:PredicateObjectMap.
 :map_PersonneExpressionCreationMapping_000 rr:predicateObjectMap :pom_144.
 :pm_144 a rr:PredicateMap.
 :pom_144 rr:predicateMap :pm_144.
-:pm_144 rr:constant crm:P14.
+:pm_144 rr:constant frbroo:R17.
 :pom_144 rr:objectMap :om_144.
+:pom_145 a rr:PredicateObjectMap.
+:map_PersonneExpressionCreationMapping_000 rr:predicateObjectMap :pom_145.
+:pm_145 a rr:PredicateMap.
+:pom_145 rr:predicateMap :pm_145.
+:pm_145 rr:constant crm:P14.
+:pom_145 rr:objectMap :om_145.
 :rules_000 void:exampleResource :map_CollectifExpressionCreationMapping_000.
 :map_CollectifExpressionCreationMapping_000 rml:logicalSource :source_005;
     a rr:TriplesMap;
@@ -1794,47 +1803,47 @@
 :s_024 a rr:SubjectMap.
 :map_CollectifExpressionCreationMapping_000 rr:subjectMap :s_024.
 :s_024 rr:termType rr:BlankNode.
-:pom_145 a rr:PredicateObjectMap.
-:map_CollectifExpressionCreationMapping_000 rr:predicateObjectMap :pom_145.
-:pm_145 a rr:PredicateMap.
-:pom_145 rr:predicateMap :pm_145.
-:pm_145 rr:constant rdf:type.
-:pom_145 rr:objectMap :om_145.
-:om_145 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F28";
-    rr:termType rr:IRI.
 :pom_146 a rr:PredicateObjectMap.
 :map_CollectifExpressionCreationMapping_000 rr:predicateObjectMap :pom_146.
 :pm_146 a rr:PredicateMap.
 :pom_146 rr:predicateMap :pm_146.
-:pm_146 rr:constant crm:P3.
+:pm_146 rr:constant rdf:type.
 :pom_146 rr:objectMap :om_146.
 :om_146 a rr:ObjectMap;
-    rml:reference "nom_fonction";
-    rr:termType rr:Literal;
-    rml:languageMap :language_011.
-:language_011 rr:constant "fr".
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F28";
+    rr:termType rr:IRI.
 :pom_147 a rr:PredicateObjectMap.
 :map_CollectifExpressionCreationMapping_000 rr:predicateObjectMap :pom_147.
 :pm_147 a rr:PredicateMap.
 :pom_147 rr:predicateMap :pm_147.
-:pm_147 rr:constant crm:P4.
+:pm_147 rr:constant crm:P3.
 :pom_147 rr:objectMap :om_147.
 :om_147 a rr:ObjectMap;
-    rml:reference "annee";
-    rr:termType rr:Literal.
+    rml:reference "nom_fonction";
+    rr:termType rr:Literal;
+    rml:languageMap :language_011.
+:language_011 rr:constant "fr".
 :pom_148 a rr:PredicateObjectMap.
 :map_CollectifExpressionCreationMapping_000 rr:predicateObjectMap :pom_148.
 :pm_148 a rr:PredicateMap.
 :pom_148 rr:predicateMap :pm_148.
-:pm_148 rr:constant frbroo:R17.
+:pm_148 rr:constant crm:P4.
 :pom_148 rr:objectMap :om_148.
+:om_148 a rr:ObjectMap;
+    rml:reference "annee";
+    rr:termType rr:Literal.
 :pom_149 a rr:PredicateObjectMap.
 :map_CollectifExpressionCreationMapping_000 rr:predicateObjectMap :pom_149.
 :pm_149 a rr:PredicateMap.
 :pom_149 rr:predicateMap :pm_149.
-:pm_149 rr:constant crm:P14.
+:pm_149 rr:constant frbroo:R17.
 :pom_149 rr:objectMap :om_149.
+:pom_150 a rr:PredicateObjectMap.
+:map_CollectifExpressionCreationMapping_000 rr:predicateObjectMap :pom_150.
+:pm_150 a rr:PredicateMap.
+:pom_150 rr:predicateMap :pm_150.
+:pm_150 rr:constant crm:P14.
+:pom_150 rr:objectMap :om_150.
 :rules_000 void:exampleResource :map_RevueMapping_000.
 :map_RevueMapping_000 rml:logicalSource :source_017;
     a rr:TriplesMap;
@@ -1842,29 +1851,20 @@
 :s_025 a rr:SubjectMap.
 :map_RevueMapping_000 rr:subjectMap :s_025.
 :s_025 rr:template "http://mshb.huma-num.fr/prelib/revue/{id}".
-:pom_150 a rr:PredicateObjectMap.
-:map_RevueMapping_000 rr:predicateObjectMap :pom_150.
-:pm_150 a rr:PredicateMap.
-:pom_150 rr:predicateMap :pm_150.
-:pm_150 rr:constant rdf:type.
-:pom_150 rr:objectMap :om_150.
-:om_150 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F18";
-    rr:termType rr:IRI.
 :pom_151 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_151.
 :pm_151 a rr:PredicateMap.
 :pom_151 rr:predicateMap :pm_151.
-:pm_151 rr:constant crm:P102.
+:pm_151 rr:constant rdf:type.
 :pom_151 rr:objectMap :om_151.
 :om_151 a rr:ObjectMap;
-    rml:reference "titre";
-    rr:termType rr:Literal.
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F18";
+    rr:termType rr:IRI.
 :pom_152 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_152.
 :pm_152 a rr:PredicateMap.
 :pom_152 rr:predicateMap :pm_152.
-:pm_152 rr:constant rdfs:label.
+:pm_152 rr:constant crm:P102.
 :pom_152 rr:objectMap :om_152.
 :om_152 a rr:ObjectMap;
     rml:reference "titre";
@@ -1873,11 +1873,11 @@
 :map_RevueMapping_000 rr:predicateObjectMap :pom_153.
 :pm_153 a rr:PredicateMap.
 :pom_153 rr:predicateMap :pm_153.
-:pm_153 rr:constant owl:sameAs.
+:pm_153 rr:constant rdfs:label.
 :pom_153 rr:objectMap :om_153.
 :om_153 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "titre";
+    rr:termType rr:Literal.
 :pom_154 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_154.
 :pm_154 a rr:PredicateMap.
@@ -1885,7 +1885,7 @@
 :pm_154 rr:constant owl:sameAs.
 :pom_154 rr:objectMap :om_154.
 :om_154 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_155 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_155.
@@ -1894,7 +1894,7 @@
 :pm_155 rr:constant owl:sameAs.
 :pom_155 rr:objectMap :om_155.
 :om_155 a rr:ObjectMap;
-    rr:template "http://www.sudoc.fr/{sudoc}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_156 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_156.
@@ -1903,7 +1903,7 @@
 :pm_156 rr:constant owl:sameAs.
 :pom_156 rr:objectMap :om_156.
 :om_156 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_157 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_157.
@@ -1912,16 +1912,16 @@
 :pm_157 rr:constant owl:sameAs.
 :pom_157 rr:objectMap :om_157.
 :om_157 a rr:ObjectMap;
-    rr:template "http://www.worldcat.org/oclc/{oclc}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_158 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_158.
 :pm_158 a rr:PredicateMap.
 :pom_158 rr:predicateMap :pm_158.
-:pm_158 rr:constant crm-sup:P20.
+:pm_158 rr:constant owl:sameAs.
 :pom_158 rr:objectMap :om_158.
 :om_158 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "http://www.worldcat.org/oclc/{oclc}";
     rr:termType rr:IRI.
 :pom_159 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_159.
@@ -1930,7 +1930,7 @@
 :pm_159 rr:constant crm-sup:P20.
 :pom_159 rr:objectMap :om_159.
 :om_159 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_160 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_160.
@@ -1939,7 +1939,7 @@
 :pm_160 rr:constant crm-sup:P20.
 :pom_160 rr:objectMap :om_160.
 :om_160 a rr:ObjectMap;
-    rr:template "http://www.sudoc.fr/{sudoc}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_161 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_161.
@@ -1948,7 +1948,7 @@
 :pm_161 rr:constant crm-sup:P20.
 :pom_161 rr:objectMap :om_161.
 :om_161 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_162 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_162.
@@ -1957,33 +1957,42 @@
 :pm_162 rr:constant crm-sup:P20.
 :pom_162 rr:objectMap :om_162.
 :om_162 a rr:ObjectMap;
-    rr:template "http://www.worldcat.org/oclc/{oclc}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_163 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_163.
 :pm_163 a rr:PredicateMap.
 :pom_163 rr:predicateMap :pm_163.
-:pm_163 rr:constant bibo:issn.
+:pm_163 rr:constant crm-sup:P20.
 :pom_163 rr:objectMap :om_163.
 :om_163 a rr:ObjectMap;
-    rml:reference "issn";
-    rr:termType rr:Literal.
+    rr:template "http://www.worldcat.org/oclc/{oclc}";
+    rr:termType rr:IRI.
 :pom_164 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_164.
 :pm_164 a rr:PredicateMap.
 :pom_164 rr:predicateMap :pm_164.
-:pm_164 rr:constant bibo:eissn.
+:pm_164 rr:constant bibo:issn.
 :pom_164 rr:objectMap :om_164.
 :om_164 a rr:ObjectMap;
-    rml:reference "issn_numerique";
+    rml:reference "issn";
     rr:termType rr:Literal.
 :pom_165 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_165.
 :pm_165 a rr:PredicateMap.
 :pom_165 rr:predicateMap :pm_165.
-:pm_165 rr:constant bibo:oclcnum.
+:pm_165 rr:constant bibo:eissn.
 :pom_165 rr:objectMap :om_165.
 :om_165 a rr:ObjectMap;
+    rml:reference "issn_numerique";
+    rr:termType rr:Literal.
+:pom_166 a rr:PredicateObjectMap.
+:map_RevueMapping_000 rr:predicateObjectMap :pom_166.
+:pm_166 a rr:PredicateMap.
+:pom_166 rr:predicateMap :pm_166.
+:pm_166 rr:constant bibo:oclcnum.
+:pom_166 rr:objectMap :om_166.
+:om_166 a rr:ObjectMap;
     rml:reference "oclc";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_PublicationEventMapping_000.
@@ -1993,27 +2002,27 @@
 :s_026 a rr:SubjectMap.
 :map_PublicationEventMapping_000 rr:subjectMap :s_026.
 :s_026 rr:termType rr:BlankNode.
-:pom_166 a rr:PredicateObjectMap.
-:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_166.
-:pm_166 a rr:PredicateMap.
-:pom_166 rr:predicateMap :pm_166.
-:pm_166 rr:constant rdf:type.
-:pom_166 rr:objectMap :om_166.
-:om_166 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F30";
-    rr:termType rr:IRI.
 :pom_167 a rr:PredicateObjectMap.
 :map_PublicationEventMapping_000 rr:predicateObjectMap :pom_167.
 :pm_167 a rr:PredicateMap.
 :pom_167 rr:predicateMap :pm_167.
-:pm_167 rr:constant frbroo:R23.
+:pm_167 rr:constant rdf:type.
 :pom_167 rr:objectMap :om_167.
+:om_167 a rr:ObjectMap;
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F30";
+    rr:termType rr:IRI.
 :pom_168 a rr:PredicateObjectMap.
 :map_PublicationEventMapping_000 rr:predicateObjectMap :pom_168.
 :pm_168 a rr:PredicateMap.
 :pom_168 rr:predicateMap :pm_168.
-:pm_168 rr:constant crm:P14.
+:pm_168 rr:constant frbroo:R23.
 :pom_168 rr:objectMap :om_168.
+:pom_169 a rr:PredicateObjectMap.
+:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_169.
+:pm_169 a rr:PredicateMap.
+:pom_169 rr:predicateMap :pm_169.
+:pm_169 rr:constant crm:P14.
+:pom_169 rr:objectMap :om_169.
 :rules_000 void:exampleResource :map_VilleMapping_000.
 :map_VilleMapping_000 rml:logicalSource :source_018;
     a rr:TriplesMap;
@@ -2021,35 +2030,26 @@
 :s_027 a rr:SubjectMap.
 :map_VilleMapping_000 rr:subjectMap :s_027.
 :s_027 rr:template "http://mshb.huma-num.fr/prelib/ville/{id}".
-:pom_169 a rr:PredicateObjectMap.
-:map_VilleMapping_000 rr:predicateObjectMap :pom_169.
-:pm_169 a rr:PredicateMap.
-:pom_169 rr:predicateMap :pm_169.
-:pm_169 rr:constant rdf:type.
-:pom_169 rr:objectMap :om_169.
-:om_169 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/sdhss/C13";
-    rr:termType rr:IRI.
 :pom_170 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_170.
 :pm_170 a rr:PredicateMap.
 :pom_170 rr:predicateMap :pm_170.
-:pm_170 rr:constant rdfs:label.
+:pm_170 rr:constant rdf:type.
 :pom_170 rr:objectMap :om_170.
 :om_170 a rr:ObjectMap;
-    rml:reference "nom";
-    rr:termType rr:Literal;
-    rml:languageMap :language_012.
-:language_012 rr:constant "fr".
+    rr:constant "https://ontome.net/ns/sdhss/C13";
+    rr:termType rr:IRI.
 :pom_171 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_171.
 :pm_171 a rr:PredicateMap.
 :pom_171 rr:predicateMap :pm_171.
-:pm_171 rr:constant owl:sameAs.
+:pm_171 rr:constant rdfs:label.
 :pom_171 rr:objectMap :om_171.
 :om_171 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "nom";
+    rr:termType rr:Literal;
+    rml:languageMap :language_012.
+:language_012 rr:constant "fr".
 :pom_172 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_172.
 :pm_172 a rr:PredicateMap.
@@ -2057,16 +2057,16 @@
 :pm_172 rr:constant owl:sameAs.
 :pom_172 rr:objectMap :om_172.
 :om_172 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_173 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_173.
 :pm_173 a rr:PredicateMap.
 :pom_173 rr:predicateMap :pm_173.
-:pm_173 rr:constant crm-sup:P20.
+:pm_173 rr:constant owl:sameAs.
 :pom_173 rr:objectMap :om_173.
 :om_173 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_174 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_174.
@@ -2075,6 +2075,15 @@
 :pm_174 rr:constant crm-sup:P20.
 :pom_174 rr:objectMap :om_174.
 :om_174 a rr:ObjectMap;
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:termType rr:IRI.
+:pom_175 a rr:PredicateObjectMap.
+:map_VilleMapping_000 rr:predicateObjectMap :pom_175.
+:pm_175 a rr:PredicateMap.
+:pom_175 rr:predicateMap :pm_175.
+:pm_175 rr:constant crm-sup:P20.
+:pom_175 rr:objectMap :om_175.
+:om_175 a rr:ObjectMap;
     rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :om_020 a rr:ObjectMap;
@@ -2112,77 +2121,77 @@
     rr:joinCondition :jc_006.
 :jc_006 rr:child "id";
     rr:parent "id".
-:om_077 a rr:ObjectMap;
+:om_078 a rr:ObjectMap;
     rr:parentTriplesMap :map_AppellationCollectifMapping_000;
     rr:joinCondition :jc_007.
 :jc_007 rr:child "id";
     rr:parent "collectif_id".
-:om_103 a rr:ObjectMap;
+:om_104 a rr:ObjectMap;
     rr:parentTriplesMap :map_GroupMapping_000;
     rr:joinCondition :jc_008.
 :jc_008 rr:child "collectif_id";
     rr:parent "id".
-:om_104 a rr:ObjectMap;
+:om_105 a rr:ObjectMap;
     rr:parentTriplesMap :map_ManifestationProductTypeMapping_000;
     rr:joinCondition :jc_009.
 :jc_009 rr:child "edition_id";
     rr:parent "id".
-:om_106 a rr:ObjectMap;
+:om_107 a rr:ObjectMap;
     rr:parentTriplesMap :map_TimeSpanExpressionPublicationEventMapping_000;
     rr:joinCondition :jc_010.
 :jc_010 rr:child "id";
     rr:parent "id".
-:om_119 a rr:ObjectMap;
+:om_120 a rr:ObjectMap;
     rr:parentTriplesMap :map_TimeSpanOccupationMapping_000;
     rr:joinCondition :jc_011.
 :jc_011 rr:child "id";
     rr:parent "id".
-:om_120 a rr:ObjectMap;
+:om_121 a rr:ObjectMap;
     rr:parentTriplesMap :map_OccupationMapping_000;
     rr:joinCondition :jc_012.
 :jc_012 rr:child "qualite_id";
     rr:parent "id".
-:om_121 a rr:ObjectMap;
+:om_122 a rr:ObjectMap;
     rr:parentTriplesMap :map_GroupMapping_000;
     rr:joinCondition :jc_013.
 :jc_013 rr:child "groupe_id";
     rr:parent "id".
-:om_137 a rr:ObjectMap;
+:om_138 a rr:ObjectMap;
     rr:parentTriplesMap :map_ManifestationProductTypeMapping_000;
     rr:joinCondition :jc_014.
 :jc_014 rr:child "edition_id";
     rr:parent "id".
-:om_138 a rr:ObjectMap;
+:om_139 a rr:ObjectMap;
     rr:parentTriplesMap :map_ExpressionMapping_000;
     rr:joinCondition :jc_015.
 :jc_015 rr:child "oeuvre_id";
     rr:parent "id".
-:om_143 a rr:ObjectMap;
+:om_144 a rr:ObjectMap;
     rr:parentTriplesMap :map_ExpressionMapping_000;
     rr:joinCondition :jc_016.
 :jc_016 rr:child "oeuvre_id";
     rr:parent "id".
-:om_144 a rr:ObjectMap;
+:om_145 a rr:ObjectMap;
     rr:parentTriplesMap :map_PersonneMapping_000;
     rr:joinCondition :jc_017.
 :jc_017 rr:child "personne_id";
     rr:parent "id".
-:om_148 a rr:ObjectMap;
+:om_149 a rr:ObjectMap;
     rr:parentTriplesMap :map_ExpressionMapping_000;
     rr:joinCondition :jc_018.
 :jc_018 rr:child "oeuvre_id";
     rr:parent "id".
-:om_149 a rr:ObjectMap;
+:om_150 a rr:ObjectMap;
     rr:parentTriplesMap :map_GroupMapping_000;
     rr:joinCondition :jc_019.
 :jc_019 rr:child "collectif_id";
     rr:parent "id".
-:om_167 a rr:ObjectMap;
+:om_168 a rr:ObjectMap;
     rr:parentTriplesMap :map_RevueMapping_000;
     rr:joinCondition :jc_020.
 :jc_020 rr:child "revue_id";
     rr:parent "id".
-:om_168 a rr:ObjectMap;
+:om_169 a rr:ObjectMap;
     rr:parentTriplesMap :map_GroupMapping_000;
     rr:joinCondition :jc_021.
 :jc_021 rr:child "collectif_id";
