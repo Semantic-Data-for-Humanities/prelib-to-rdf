@@ -329,7 +329,7 @@
 :pm_010 rr:constant owl:sameAs.
 :pom_010 rr:objectMap :om_010.
 :om_010 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/{ark_bnf}#about";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_011 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_011.
@@ -383,7 +383,7 @@
 :pm_016 rr:constant crm-sup:P20.
 :pom_016 rr:objectMap :om_016.
 :om_016 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/{ark_bnf}#about";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_017 a rr:PredicateObjectMap.
 :map_PersonneMapping_000 rr:predicateObjectMap :pom_017.
