@@ -69,7 +69,7 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_collectif;
+  query : SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_collectif;
  prelib_collectifecritoeuvre:
   access: *dbHost
   credentials: *credentials
@@ -118,13 +118,13 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT prelib_edition.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_edition;
+  query : SELECT prelib_edition.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_edition;
  prelib_oeuvre:
   access: *dbHost
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT prelib_oeuvre.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_oeuvre;
+  query : SELECT prelib_oeuvre.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_oeuvre;
  prelib_oeuvreedition:
   access: *dbHost
   credentials: *credentials
@@ -167,7 +167,7 @@ sources:
    WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, 
    (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) 
    THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype,   
-   SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF, 
+   SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, 
    IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, 
    prelib_personne.* FROM prelib_personne ORDER BY id ;
  prelib_profession:
@@ -187,7 +187,7 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_revue;
+  query : SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_revue;
  prelib_ville:
   access: *dbHost
   credentials: *credentials

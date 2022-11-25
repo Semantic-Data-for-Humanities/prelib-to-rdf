@@ -78,7 +78,7 @@
 :source_004 a rml:LogicalSource;
     rdfs:label "prelib_collectif";
     rml:source :database_004;
-    rml:query "SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_collectif;".
+    rml:query "SELECT prelib_collectif.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_collectif;".
 :database_004 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -128,7 +128,7 @@
 :source_009 a rml:LogicalSource;
     rdfs:label "prelib_edition";
     rml:source :database_009;
-    rml:query "SELECT prelib_edition.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_edition;".
+    rml:query "SELECT prelib_edition.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_edition;".
 :database_009 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -138,7 +138,7 @@
 :source_010 a rml:LogicalSource;
     rdfs:label "prelib_oeuvre";
     rml:source :database_010;
-    rml:query "SELECT prelib_oeuvre.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_oeuvre;".
+    rml:query "SELECT prelib_oeuvre.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_oeuvre;".
 :database_010 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -178,7 +178,7 @@
 :source_014 a rml:LogicalSource;
     rdfs:label "prelib_personne";
     rml:source :database_014;
-    rml:query "SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF, IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, prelib_personne.* FROM prelib_personne ORDER BY id ;".
+    rml:query "SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, prelib_personne.* FROM prelib_personne ORDER BY id ;".
 :database_014 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -208,7 +208,7 @@
 :source_017 a rml:LogicalSource;
     rdfs:label "prelib_revue";
     rml:source :database_017;
-    rml:query "SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 9) AS FRBNF FROM prelib_revue;".
+    rml:query "SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_revue;".
 :database_017 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
