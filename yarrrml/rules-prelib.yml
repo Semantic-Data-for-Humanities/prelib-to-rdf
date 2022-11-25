@@ -263,9 +263,9 @@ sources:
 #     se demander quelle est la colonne de la table qui sert à construire l'URI des sujets
 #    3. predicatesobjects : dans le cas où l'objet est une URI, se demander dans quel mapping se trouvent-elles
 #     Au départ, j'étais aller chercher les éditions et les collectifs dans ExpressionPublicationEventMapping
-# - RML mapper ne crée pas les triplets dont l'objet a pour valeur NULL dans la base de données. Mais il ne tient 
-#    pas compte du fait qu'un VARCHAR a pour valeur une chaine vide. Il existe donc des triplets dont l'objet
-#    est un littéral vide :
+# - RML mapper ne crée pas les triplets dont l'objet est une URI et a pour valeur NULL dans la base de données. Mais il ne tient 
+#    pas compte du fait qu'un littéral a pour valeur un VARCHAR dont la valeur est une chaine vide ou NULL (c.f. ISNI_SPACELESS). 
+#    Il existe donc des triplets dont l'objet est un littéral vide :
 #      <http://mshb.huma-num.fr/prelib/edition/1> <http://purl.org/ontology/bibo/isbn13> "".
 
 mappings:
