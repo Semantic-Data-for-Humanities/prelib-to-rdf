@@ -188,6 +188,36 @@ sources:
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
   query : SELECT * FROM prelib_qualiteparticipecollectif;
+ prelib_qualiterelation:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_qualiterelation;
+ prelib_relationinterpersonnelle:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query: >
+   SELECT (CASE WHEN (jour_debut_relation IS NOT NULL AND mois_debut_relation IS NOT NULL AND annee_debut_relation IS NOT NULL) 
+   THEN CONCAT_WS('-', LPAD(`annee_debut_relation`, 4, 0), LPAD(`mois_debut_relation`, 2, 0), LPAD(`jour_debut_relation`, 2, 0)) END) AS date_debut_relation, 
+   (CASE WHEN (jour_fin_relation IS NOT NULL AND mois_fin_relation IS NOT NULL AND annee_fin_relation IS NOT NULL) 
+   THEN CONCAT_WS('-', LPAD(`annee_fin_relation`, 4, 0), LPAD(`mois_fin_relation`, 2, 0), LPAD(`jour_fin_relation`, 2, 0)) END) AS date_fin_relation, 
+   prelib_relationinterpersonnelle.* FROM prelib_relationinterpersonnelle ORDER BY id ;
+  #  Version de la requête qui crée nécessite de tester dans le mapping le type de date pour éviter de créer des littéraux égaux 
+  #  chaînes de caractères vides.
+  #  SELECT (CASE WHEN (jour_debut_relation IS NOT NULL AND mois_debut_relation IS NOT NULL AND annee_debut_relation IS NOT NULL) 
+  #  THEN CONCAT_WS('-', LPAD(`annee_debut_relation`, 4, 0), LPAD(`mois_debut_relation`, 2, 0), LPAD(`jour_debut_relation`, 2, 0)) 
+  #  WHEN (annee_debut_relation IS NOT NULL) THEN annee_debut_relation END) AS date_debut_relation, 
+  #  (CASE WHEN (jour_debut_relation IS NOT NULL AND mois_debut_relation IS NOT NULL AND annee_debut_relation IS NOT NULL) 
+  #  THEN 'date' WHEN (annee_debut_relation IS NOT NULL) THEN 'gYear' END) AS date_debut_relation_dtype, 
+  #  (CASE WHEN (jour_fin_relation IS NOT NULL AND mois_fin_relation IS NOT NULL AND annee_fin_relation IS NOT NULL) 
+  #  THEN CONCAT_WS('-', LPAD(`annee_fin_relation`, 4, 0), LPAD(`mois_fin_relation`, 2, 0), LPAD(`jour_fin_relation`, 2, 0)) 
+  #  WHEN (annee_fin_relation IS NOT NULL) THEN annee_fin_relation END) AS date_fin_relation, 
+  #  (CASE WHEN (jour_fin_relation IS NOT NULL AND mois_fin_relation IS NOT NULL AND annee_fin_relation IS NOT NULL) 
+  #  THEN 'date' WHEN (annee_fin_relation IS NOT NULL) THEN 'gYear' END) AS date_fin_relation_dtype,
+  #  prelib_relationinterpersonnelle.* FROM prelib_relationinterpersonnelle ORDER BY id ;  
  prelib_revue:
   access: *dbHost
   credentials: *credentials
@@ -598,19 +628,31 @@ mappings:
    - [owl:sameAs, factgrid:$(factgrid)~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
-   - [sdh:P17, prelib:ville/$(ville_id)~iri]   
+   - [sdh:P17, prelib:ville/$(ville_id)~iri]
 
  # Le nom des mappings et les subjects suivants étaient mal choisis jusqu'à que je décide de ne pas instancier 
- # prelib_qualiteparticipecollectif et prelib_fonctioncollaborerevue en tant que des sdh-so:C7, comme suggéré par Vincent. 
+ # prelib_fonctioncollaborerevue en tant que sdh-so:C7, comme suggéré par Vincent. 
  # Autrement dit, il y aurait pu y avoir d'autres mappings d'"Occupation"s que ceux de la table prelib_qualiteparticipecollectif.
 
  # sdh-so:C7 "Occupation"
- OccupationMapping:
+ QualiteParticipeCollectifMapping:
   sources: prelib_qualiteparticipecollectif
   subjects: prelib:occupation/$(id)  
   predicateobjects:
    - [a, sdh-so:C7]
    - [rdfs:label, $(nom), fr~lang]
+
+ # sdh-so:C4 "Social Relationship Type"
+ QualiteRelationMapping:
+  sources: prelib_qualiterelation
+  subjects: prelib:qualite-relation/$(id)
+  predicateobjects:
+   - [a, sdh-so:C4]
+   - [rdfs:label, $(nom), fr~lang]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20, wd:$(wikidata)~iri]
+   - [crm-sup:P20, factgrid:$(factgrid)~iri]
 
 # blank nodes (ressources anonymes) mais on aurait peut-être pu créer des ressources d'URI prelib:occupation-temporal-entity/$(id)
 # sdh-so:C8 "Occupation (Temporal entity)"
@@ -636,7 +678,7 @@ mappings:
           - [str2, $(id)]
    - p: sdh-so:P5
      o:
-      - mapping: OccupationMapping
+      - mapping: QualiteParticipeCollectifMapping
         condition:
          function: equal
          parameters:
@@ -661,7 +703,7 @@ mappings:
 # - http://users.ugent.be/~bjdmeest/function/grel.ttl#
  # crm:E52 "Time-Span"
  # crm:P82a "begin of the begin"
- # crm:P82b "ed of the end"
+ # crm:P82b "end of the end"
  TimeSpanOccupationMapping:
   sources: prelib_profession
   predicateobjects:
@@ -682,6 +724,53 @@ mappings:
     objects:
      value: $(annee_fin)
      datatype: xsd:gYear
+
+ # sdh-so:C3 "Social Relationship"
+ # sdh-so:P16 "has relationship type (is relationship type of)"
+ # sdh-so:P17 "has relationship source (is source in relationship)"
+ # shd-so:P18 "has relationship target (is target in relationship)"
+ RelationInterpersonnelleMapping:     
+  sources: prelib_relationinterpersonnelle
+  subjects: prelib:relation-interpersonnelle/$(id)  
+  predicateobjects:
+   - [a, sdh-so:C3]
+   - [sdh-so:P18, prelib:personne/$(personne_id)~iri]
+   - [sdh-so:P17, prelib:personne/$(relation_id)~iri]
+   - [sdh-so:P16, prelib:qualite-relation/$(qualite_relation_id)~iri]
+   - p: crm:P4
+     o:
+      - mapping: TimeSpanRelationInterpersonnelleMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+
+ # crm:E52 "Time-Span"
+ # crm:P82a "begin of the begin"
+ # crm:P82b "end of the end"
+ # Cette version utilise une requête SQL où les dates peuvent avoir pour valeur NULL
+ # auquel cas, le mapping ne crée par les triplets.
+ TimeSpanRelationInterpersonnelleMapping:
+  sources: prelib_relationinterpersonnelle
+  predicateobjects:
+  - [a, crm:E52]
+  - predicates: crm:P82a
+    objects:
+     value: $(date_debut_relation)
+     datatype: xsd:date
+  - predicates: crm:P82b
+    objects:
+     value: $(date_fin_relation)
+     datatype: xsd:date
+  - predicates: crm:P82a
+    objects:
+     value: $(annee_debut_relation)
+     datatype: xsd:gYear
+  - predicates: crm:P82b
+    objects:
+     value: $(annee_fin_relation)
+     datatype: xsd:gYear          
 
  # frbroo:F2 "Expression"
  # crm:E33 "Linguistic Object"
