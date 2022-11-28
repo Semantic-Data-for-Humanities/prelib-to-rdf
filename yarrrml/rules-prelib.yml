@@ -5,6 +5,7 @@ prefixes:
  bibo: http://purl.org/ontology/bibo/
  bnf-onto: http://data.bnf.fr/ontology/bnf-onto/
  crm: http://www.cidoc-crm.org/cidoc-crm/
+ crmba: https://ontome.net/ns/crmba/
  crm-sup: https://ontome.net/ns/sdh-crm-supplement/
  databnf: http://data.bnf.fr/ark:/
  foaf: http://xmlns.com/foaf/0.1/
@@ -201,7 +202,7 @@ sources:
   query : SELECT * FROM prelib_ville;
 
 # A FAIRE : 
-# - Mettre les triplets dans des graphes, généred des N-Quads
+# - Mettre les triplets dans des graphes, générer des N-Quads
 # - Modifier PRELIB pour ajouter les identifiants Geonames des villes
 # - Editer PRELIB pour verser le champ 'intitule' de prelib_profession dans qualite_id (prelib_qualiteparticipecollectif) 
 #    (Fait en grande partie le 10 mai 2022, manque une vingtaine de "professions" à traiter)
@@ -585,17 +586,19 @@ mappings:
      o: $(annee_publication)
      datatype: xsd:gYear
 
- # sdh:C17 "Construction"
+ # crmba:B1 "Built Work"
  # sdh:P17 "has location"
  BatimentMapping:
   sources: prelib_batiment
   subjects: prelib:batiment/$(id)
   predicateobjects:
-  - [a, sdh:C17]
-  - [rdfs:label, $(nom), fr~lang]
-  - [owl:sameAs, wd:$(wikidata)~iri]
-  - [owl:sameAs, factgrid:$(factgrid)~iri]
-  - [sdh:P17, prelib:ville/$(ville_id)~iri]
+   - [a, crmba:B1]
+   - [rdfs:label, $(nom), fr~lang]
+   - [owl:sameAs, wd:$(wikidata)~iri]
+   - [owl:sameAs, factgrid:$(factgrid)~iri]
+   - [crm-sup:P20, wd:$(wikidata)~iri]
+   - [crm-sup:P20, factgrid:$(factgrid)~iri]
+   - [sdh:P17, prelib:ville/$(ville_id)~iri]   
 
  # Le nom des mappings et les subjects suivants étaient mal choisis jusqu'à que je décide de ne pas instancier 
  # prelib_qualiteparticipecollectif et prelib_fonctioncollaborerevue en tant que des sdh-so:C7, comme suggéré par Vincent. 
@@ -606,8 +609,8 @@ mappings:
   sources: prelib_qualiteparticipecollectif
   subjects: prelib:occupation/$(id)  
   predicateobjects:
-  - [a, sdh-so:C7]
-  - [rdfs:label, $(nom), fr~lang]
+   - [a, sdh-so:C7]
+   - [rdfs:label, $(nom), fr~lang]
 
 # blank nodes (ressources anonymes) mais on aurait peut-être pu créer des ressources d'URI prelib:occupation-temporal-entity/$(id)
 # sdh-so:C8 "Occupation (Temporal entity)"
