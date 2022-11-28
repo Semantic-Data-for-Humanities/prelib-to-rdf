@@ -1616,7 +1616,7 @@
     rdfs:label "OccupationTemporalEntityMapping".
 :s_019 a rr:SubjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:subjectMap :s_019.
-:s_019 rr:termType rr:BlankNode.
+:s_019 rr:template "http://mshb.huma-num.fr/prelib/occupation-temporal-entity/{id}".
 :pom_125 a rr:PredicateObjectMap.
 :map_OccupationTemporalEntityMapping_000 rr:predicateObjectMap :pom_125.
 :pm_125 a rr:PredicateMap.

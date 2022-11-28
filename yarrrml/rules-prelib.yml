@@ -654,7 +654,8 @@ mappings:
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
 
-# blank nodes (ressources anonymes) mais on aurait peut-être pu créer des ressources d'URI prelib:occupation-temporal-entity/$(id)
+# Anciennement des blank nodes (ressources anonymes) mais pour faciliter 
+# le déboguage, on utilise finalement des URI.
 # sdh-so:C8 "Occupation (Temporal entity)"
 # sdh-so:P4 "is occupation of (is about)"
 # sdh-so:P5 "is about (is occupation of)"
@@ -663,6 +664,7 @@ mappings:
 # crm:P4 "has time-span (is time-span of)"
  OccupationTemporalEntityMapping:
   sources: prelib_profession
+  subjects: prelib:occupation-temporal-entity/$(id)  
   predicateobjects:
    - [a, sdh-so:C8]
    # A voir si on n'écrit pas cette ligne comme pour sdh-so:P7 lié au GroupMapping
@@ -750,7 +752,7 @@ mappings:
  # crm:P82a "begin of the begin"
  # crm:P82b "end of the end"
  # Cette version utilise une requête SQL où les dates peuvent avoir pour valeur NULL
- # auquel cas, le mapping ne crée par les triplets.
+ # auquel cas, le mapping ne crée par les triplets concernés (crm:P82a et crm:P82b).
  TimeSpanRelationInterpersonnelleMapping:
   sources: prelib_relationinterpersonnelle
   predicateobjects:
