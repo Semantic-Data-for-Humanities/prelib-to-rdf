@@ -167,9 +167,9 @@
     d2rq:password "$(_password)".
 :source_012 rml:referenceFormulation ql:CSV.
 :source_013 a rml:LogicalSource;
-    rdfs:label "prelib_paraitdans";
+    rdfs:label "prelib_oeuvre_types";
     rml:source :database_013;
-    rml:query "SELECT * FROM prelib_paraitdans;".
+    rml:query "SELECT * FROM prelib_oeuvre_types;".
 :database_013 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -177,9 +177,9 @@
     d2rq:password "$(_password)".
 :source_013 rml:referenceFormulation ql:CSV.
 :source_014 a rml:LogicalSource;
-    rdfs:label "prelib_personne";
+    rdfs:label "prelib_paraitdans";
     rml:source :database_014;
-    rml:query "SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, REPLACE(isni, ' ', '') AS ISNI_SPACELESS, IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, prelib_personne.* FROM prelib_personne ORDER BY id ;".
+    rml:query "SELECT * FROM prelib_paraitdans;".
 :database_014 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -187,9 +187,9 @@
     d2rq:password "$(_password)".
 :source_014 rml:referenceFormulation ql:CSV.
 :source_015 a rml:LogicalSource;
-    rdfs:label "prelib_profession";
+    rdfs:label "prelib_personne";
     rml:source :database_015;
-    rml:query "SELECT * FROM prelib_profession WHERE qualite_id IS NOT null;".
+    rml:query "SELECT (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_naissance`, 4, 0), LPAD(`mois_naissance`, 2, 0), LPAD(`jour_naissance`, 2, 0)) WHEN (annee_naissance IS NOT NULL) THEN annee_naissance END) AS date_naissance, (CASE WHEN (jour_naissance IS NOT NULL AND mois_naissance IS NOT NULL AND annee_naissance IS NOT NULL) THEN 'date' WHEN (annee_naissance IS NOT NULL) THEN 'gYear' END) AS date_naissance_dtype, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_deces`, 4, 0), LPAD(`mois_deces`, 2, 0), LPAD(`jour_deces`, 2, 0)) WHEN (annee_deces IS NOT NULL) THEN annee_deces END) AS date_deces, (CASE WHEN (jour_deces IS NOT NULL AND mois_deces IS NOT NULL AND annee_deces IS NOT NULL) THEN 'date' WHEN (annee_deces IS NOT NULL) THEN 'gYear' END) AS date_deces_dtype, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF, REPLACE(isni, ' ', '') AS ISNI_SPACELESS, IF(sexe = 'M', REPLACE(sexe, 'M', 'male'),IF(sexe = 'F', REPLACE(sexe, 'F', 'female'),'')) AS gender, prelib_personne.* FROM prelib_personne ORDER BY id ;".
 :database_015 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -197,9 +197,9 @@
     d2rq:password "$(_password)".
 :source_015 rml:referenceFormulation ql:CSV.
 :source_016 a rml:LogicalSource;
-    rdfs:label "prelib_qualiteparticipecollectif";
+    rdfs:label "prelib_profession";
     rml:source :database_016;
-    rml:query "SELECT * FROM prelib_qualiteparticipecollectif;".
+    rml:query "SELECT * FROM prelib_profession WHERE qualite_id IS NOT null;".
 :database_016 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -207,9 +207,9 @@
     d2rq:password "$(_password)".
 :source_016 rml:referenceFormulation ql:CSV.
 :source_017 a rml:LogicalSource;
-    rdfs:label "prelib_qualiterelation";
+    rdfs:label "prelib_qualiteparticipecollectif";
     rml:source :database_017;
-    rml:query "SELECT * FROM prelib_qualiterelation;".
+    rml:query "SELECT * FROM prelib_qualiteparticipecollectif;".
 :database_017 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -217,9 +217,9 @@
     d2rq:password "$(_password)".
 :source_017 rml:referenceFormulation ql:CSV.
 :source_018 a rml:LogicalSource;
-    rdfs:label "prelib_relationinterpersonnelle";
+    rdfs:label "prelib_qualiterelation";
     rml:source :database_018;
-    rml:query "SELECT (CASE WHEN (jour_debut_relation IS NOT NULL AND mois_debut_relation IS NOT NULL AND annee_debut_relation IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_debut_relation`, 4, 0), LPAD(`mois_debut_relation`, 2, 0), LPAD(`jour_debut_relation`, 2, 0)) END) AS date_debut_relation, (CASE WHEN (jour_fin_relation IS NOT NULL AND mois_fin_relation IS NOT NULL AND annee_fin_relation IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_fin_relation`, 4, 0), LPAD(`mois_fin_relation`, 2, 0), LPAD(`jour_fin_relation`, 2, 0)) END) AS date_fin_relation, prelib_relationinterpersonnelle.* FROM prelib_relationinterpersonnelle ORDER BY id ;".
+    rml:query "SELECT * FROM prelib_qualiterelation;".
 :database_018 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -227,9 +227,9 @@
     d2rq:password "$(_password)".
 :source_018 rml:referenceFormulation ql:CSV.
 :source_019 a rml:LogicalSource;
-    rdfs:label "prelib_revue";
+    rdfs:label "prelib_relationinterpersonnelle";
     rml:source :database_019;
-    rml:query "SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_revue;".
+    rml:query "SELECT (CASE WHEN (jour_debut_relation IS NOT NULL AND mois_debut_relation IS NOT NULL AND annee_debut_relation IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_debut_relation`, 4, 0), LPAD(`mois_debut_relation`, 2, 0), LPAD(`jour_debut_relation`, 2, 0)) END) AS date_debut_relation, (CASE WHEN (jour_fin_relation IS NOT NULL AND mois_fin_relation IS NOT NULL AND annee_fin_relation IS NOT NULL) THEN CONCAT_WS('-', LPAD(`annee_fin_relation`, 4, 0), LPAD(`mois_fin_relation`, 2, 0), LPAD(`jour_fin_relation`, 2, 0)) END) AS date_fin_relation, prelib_relationinterpersonnelle.* FROM prelib_relationinterpersonnelle ORDER BY id ;".
 :database_019 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -237,17 +237,37 @@
     d2rq:password "$(_password)".
 :source_019 rml:referenceFormulation ql:CSV.
 :source_020 a rml:LogicalSource;
-    rdfs:label "prelib_ville";
+    rdfs:label "prelib_revue";
     rml:source :database_020;
-    rml:query "SELECT * FROM prelib_ville;".
+    rml:query "SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_revue;".
 :database_020 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
     d2rq:username "$(_username)";
     d2rq:password "$(_password)".
 :source_020 rml:referenceFormulation ql:CSV.
+:source_021 a rml:LogicalSource;
+    rdfs:label "prelib_typeoeuvre";
+    rml:source :database_021;
+    rml:query "SELECT * FROM prelib_typeoeuvre;".
+:database_021 a d2rq:Database;
+    d2rq:jdbcDSN "http://localhost/django_mshb";
+    d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
+    d2rq:username "$(_username)";
+    d2rq:password "$(_password)".
+:source_021 rml:referenceFormulation ql:CSV.
+:source_022 a rml:LogicalSource;
+    rdfs:label "prelib_ville";
+    rml:source :database_022;
+    rml:query "SELECT * FROM prelib_ville;".
+:database_022 a d2rq:Database;
+    d2rq:jdbcDSN "http://localhost/django_mshb";
+    d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
+    d2rq:username "$(_username)";
+    d2rq:password "$(_password)".
+:source_022 rml:referenceFormulation ql:CSV.
 :rules_000 void:exampleResource :map_PersonneMapping_000.
-:map_PersonneMapping_000 rml:logicalSource :source_014;
+:map_PersonneMapping_000 rml:logicalSource :source_015;
     a rr:TriplesMap;
     rdfs:label "PersonneMapping".
 :s_000 a rr:SubjectMap.
@@ -619,7 +639,7 @@
     rml:languageMap :language_003.
 :language_003 rml:reference "code_iso_639_3".
 :rules_000 void:exampleResource :map_DeathMapping_000.
-:map_DeathMapping_000 rml:logicalSource :source_014;
+:map_DeathMapping_000 rml:logicalSource :source_015;
     a rr:TriplesMap;
     rdfs:label "DeathMapping".
 :s_004 a rr:SubjectMap.
@@ -647,7 +667,7 @@
 :pm_037 rr:constant crm:P4.
 :pom_037 rr:objectMap :om_037.
 :rules_000 void:exampleResource :map_BirthMapping_000.
-:map_BirthMapping_000 rml:logicalSource :source_014;
+:map_BirthMapping_000 rml:logicalSource :source_015;
     a rr:TriplesMap;
     rdfs:label "BirthMapping".
 :s_005 a rr:SubjectMap.
@@ -675,7 +695,7 @@
 :pm_040 rr:constant crm:P4.
 :pom_040 rr:objectMap :om_040.
 :rules_000 void:exampleResource :map_TimeSpanBirthMapping_000.
-:map_TimeSpanBirthMapping_000 rml:logicalSource :source_014;
+:map_TimeSpanBirthMapping_000 rml:logicalSource :source_015;
     a rr:TriplesMap;
     rdfs:label "TimeSpanBirthMapping".
 :s_006 a rr:SubjectMap.
@@ -700,7 +720,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:gYear;
     fnml:functionValue :fn_004.
-:fn_004 rml:logicalSource :source_014;
+:fn_004 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_004.
 :pomexec_004 rr:predicateMap :pmexec_004.
 :pmexec_004 rr:constant fno:executes.
@@ -715,7 +735,7 @@
 :pom_043 rr:objectMap :om_043.
 :om_043 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_005.
-:fn_005 rml:logicalSource :source_014;
+:fn_005 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_005.
 :pomexec_005 rr:predicateMap :pmexec_005.
 :pmexec_005 rr:constant fno:executes.
@@ -759,7 +779,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:date;
     fnml:functionValue :fn_006.
-:fn_006 rml:logicalSource :source_014;
+:fn_006 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_006.
 :pomexec_006 rr:predicateMap :pmexec_006.
 :pmexec_006 rr:constant fno:executes.
@@ -774,7 +794,7 @@
 :pom_048 rr:objectMap :om_048.
 :om_048 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_007.
-:fn_007 rml:logicalSource :source_014;
+:fn_007 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_007.
 :pomexec_007 rr:predicateMap :pmexec_007.
 :pmexec_007 rr:constant fno:executes.
@@ -809,7 +829,7 @@
     rml:reference "date_naissance";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_TimeSpanDeathMapping_000.
-:map_TimeSpanDeathMapping_000 rml:logicalSource :source_014;
+:map_TimeSpanDeathMapping_000 rml:logicalSource :source_015;
     a rr:TriplesMap;
     rdfs:label "TimeSpanDeathMapping".
 :s_007 a rr:SubjectMap.
@@ -834,7 +854,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:gYear;
     fnml:functionValue :fn_008.
-:fn_008 rml:logicalSource :source_014;
+:fn_008 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_008.
 :pomexec_008 rr:predicateMap :pmexec_008.
 :pmexec_008 rr:constant fno:executes.
@@ -849,7 +869,7 @@
 :pom_054 rr:objectMap :om_054.
 :om_054 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_009.
-:fn_009 rml:logicalSource :source_014;
+:fn_009 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_009.
 :pomexec_009 rr:predicateMap :pmexec_009.
 :pmexec_009 rr:constant fno:executes.
@@ -893,7 +913,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:date;
     fnml:functionValue :fn_010.
-:fn_010 rml:logicalSource :source_014;
+:fn_010 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_010.
 :pomexec_010 rr:predicateMap :pmexec_010.
 :pmexec_010 rr:constant fno:executes.
@@ -908,7 +928,7 @@
 :pom_059 rr:objectMap :om_059.
 :om_059 a rr:ObjectMap, fnml:FunctionTermMap;
     fnml:functionValue :fn_011.
-:fn_011 rml:logicalSource :source_014;
+:fn_011 rml:logicalSource :source_015;
     rr:predicateObjectMap :pomexec_011.
 :pomexec_011 rr:predicateMap :pmexec_011.
 :pmexec_011 rr:constant fno:executes.
@@ -1521,7 +1541,7 @@
     rr:template "http://mshb.huma-num.fr/prelib/ville/{ville_id}";
     rr:termType rr:IRI.
 :rules_000 void:exampleResource :map_QualiteParticipeCollectifMapping_000.
-:map_QualiteParticipeCollectifMapping_000 rml:logicalSource :source_016;
+:map_QualiteParticipeCollectifMapping_000 rml:logicalSource :source_017;
     a rr:TriplesMap;
     rdfs:label "QualiteParticipeCollectifMapping".
 :s_017 a rr:SubjectMap.
@@ -1548,7 +1568,7 @@
     rml:languageMap :language_009.
 :language_009 rr:constant "fr".
 :rules_000 void:exampleResource :map_QualiteRelationMapping_000.
-:map_QualiteRelationMapping_000 rml:logicalSource :source_017;
+:map_QualiteRelationMapping_000 rml:logicalSource :source_018;
     a rr:TriplesMap;
     rdfs:label "QualiteRelationMapping".
 :s_018 a rr:SubjectMap.
@@ -1611,7 +1631,7 @@
     rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :rules_000 void:exampleResource :map_OccupationTemporalEntityMapping_000.
-:map_OccupationTemporalEntityMapping_000 rml:logicalSource :source_015;
+:map_OccupationTemporalEntityMapping_000 rml:logicalSource :source_016;
     a rr:TriplesMap;
     rdfs:label "OccupationTemporalEntityMapping".
 :s_019 a rr:SubjectMap.
@@ -1663,7 +1683,7 @@
 :pm_130 rr:constant sdh-so:P7.
 :pom_130 rr:objectMap :om_130.
 :rules_000 void:exampleResource :map_TimeSpanOccupationMapping_000.
-:map_TimeSpanOccupationMapping_000 rml:logicalSource :source_015;
+:map_TimeSpanOccupationMapping_000 rml:logicalSource :source_016;
     a rr:TriplesMap;
     rdfs:label "TimeSpanOccupationMapping".
 :s_020 a rr:SubjectMap.
@@ -1719,7 +1739,7 @@
     rr:termType rr:Literal;
     rr:datatype xsd:gYear.
 :rules_000 void:exampleResource :map_RelationInterpersonnelleMapping_000.
-:map_RelationInterpersonnelleMapping_000 rml:logicalSource :source_018;
+:map_RelationInterpersonnelleMapping_000 rml:logicalSource :source_019;
     a rr:TriplesMap;
     rdfs:label "RelationInterpersonnelleMapping".
 :s_021 a rr:SubjectMap.
@@ -1768,7 +1788,7 @@
 :pm_140 rr:constant crm:P4.
 :pom_140 rr:objectMap :om_140.
 :rules_000 void:exampleResource :map_TimeSpanRelationInterpersonnelleMapping_000.
-:map_TimeSpanRelationInterpersonnelleMapping_000 rml:logicalSource :source_018;
+:map_TimeSpanRelationInterpersonnelleMapping_000 rml:logicalSource :source_019;
     a rr:TriplesMap;
     rdfs:label "TimeSpanRelationInterpersonnelleMapping".
 :s_022 a rr:SubjectMap.
@@ -2051,67 +2071,83 @@
 :pom_168 rr:predicateMap :pm_168.
 :pm_168 rr:constant crm:P14.
 :pom_168 rr:objectMap :om_168.
-:rules_000 void:exampleResource :map_RevueMapping_000.
-:map_RevueMapping_000 rml:logicalSource :source_019;
+:rules_000 void:exampleResource :map_TypeOeuvreMapping_000.
+:map_TypeOeuvreMapping_000 rml:logicalSource :source_021;
     a rr:TriplesMap;
-    rdfs:label "RevueMapping".
+    rdfs:label "TypeOeuvreMapping".
 :s_028 a rr:SubjectMap.
-:map_RevueMapping_000 rr:subjectMap :s_028.
-:s_028 rr:template "http://mshb.huma-num.fr/prelib/revue/{id}".
+:map_TypeOeuvreMapping_000 rr:subjectMap :s_028.
+:s_028 rr:template "http://mshb.huma-num.fr/prelib/type-oeuvre/{id}".
 :pom_169 a rr:PredicateObjectMap.
-:map_RevueMapping_000 rr:predicateObjectMap :pom_169.
+:map_TypeOeuvreMapping_000 rr:predicateObjectMap :pom_169.
 :pm_169 a rr:PredicateMap.
 :pom_169 rr:predicateMap :pm_169.
 :pm_169 rr:constant rdf:type.
 :pom_169 rr:objectMap :om_169.
 :om_169 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F18";
+    rr:constant "https://ontome.net/ns/sdh-crm-supplement/C6";
     rr:termType rr:IRI.
 :pom_170 a rr:PredicateObjectMap.
-:map_RevueMapping_000 rr:predicateObjectMap :pom_170.
+:map_TypeOeuvreMapping_000 rr:predicateObjectMap :pom_170.
 :pm_170 a rr:PredicateMap.
 :pom_170 rr:predicateMap :pm_170.
-:pm_170 rr:constant crm:P102.
+:pm_170 rr:constant rdfs:label.
 :pom_170 rr:objectMap :om_170.
 :om_170 a rr:ObjectMap;
-    rml:reference "titre";
-    rr:termType rr:Literal.
+    rml:reference "intitule";
+    rr:termType rr:Literal;
+    rml:languageMap :language_013.
+:language_013 rr:constant "fr".
+:rules_000 void:exampleResource :map_OeuvreTypesMapping_000.
+:map_OeuvreTypesMapping_000 rml:logicalSource :source_013;
+    a rr:TriplesMap;
+    rdfs:label "OeuvreTypesMapping".
+:s_029 a rr:SubjectMap.
+:map_OeuvreTypesMapping_000 rr:subjectMap :s_029.
+:s_029 rr:template "http://mshb.huma-num.fr/prelib/oeuvre/{oeuvre_id}".
 :pom_171 a rr:PredicateObjectMap.
-:map_RevueMapping_000 rr:predicateObjectMap :pom_171.
+:map_OeuvreTypesMapping_000 rr:predicateObjectMap :pom_171.
 :pm_171 a rr:PredicateMap.
 :pom_171 rr:predicateMap :pm_171.
-:pm_171 rr:constant rdfs:label.
+:pm_171 rr:constant crm-sup:P4.
 :pom_171 rr:objectMap :om_171.
 :om_171 a rr:ObjectMap;
-    rml:reference "titre";
+    rr:template "http://mshb.huma-num.fr/prelib/type-oeuvre/{typeoeuvre_id}";
     rr:termType rr:Literal.
+:rules_000 void:exampleResource :map_RevueMapping_000.
+:map_RevueMapping_000 rml:logicalSource :source_020;
+    a rr:TriplesMap;
+    rdfs:label "RevueMapping".
+:s_030 a rr:SubjectMap.
+:map_RevueMapping_000 rr:subjectMap :s_030.
+:s_030 rr:template "http://mshb.huma-num.fr/prelib/revue/{id}".
 :pom_172 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_172.
 :pm_172 a rr:PredicateMap.
 :pom_172 rr:predicateMap :pm_172.
-:pm_172 rr:constant owl:sameAs.
+:pm_172 rr:constant rdf:type.
 :pom_172 rr:objectMap :om_172.
 :om_172 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F18";
     rr:termType rr:IRI.
 :pom_173 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_173.
 :pm_173 a rr:PredicateMap.
 :pom_173 rr:predicateMap :pm_173.
-:pm_173 rr:constant owl:sameAs.
+:pm_173 rr:constant crm:P102.
 :pom_173 rr:objectMap :om_173.
 :om_173 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
-    rr:termType rr:IRI.
+    rml:reference "titre";
+    rr:termType rr:Literal.
 :pom_174 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_174.
 :pm_174 a rr:PredicateMap.
 :pom_174 rr:predicateMap :pm_174.
-:pm_174 rr:constant owl:sameAs.
+:pm_174 rr:constant rdfs:label.
 :pom_174 rr:objectMap :om_174.
 :om_174 a rr:ObjectMap;
-    rr:template "http://www.sudoc.fr/{sudoc}";
-    rr:termType rr:IRI.
+    rml:reference "titre";
+    rr:termType rr:Literal.
 :pom_175 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_175.
 :pm_175 a rr:PredicateMap.
@@ -2119,7 +2155,7 @@
 :pm_175 rr:constant owl:sameAs.
 :pom_175 rr:objectMap :om_175.
 :om_175 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_176 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_176.
@@ -2128,34 +2164,34 @@
 :pm_176 rr:constant owl:sameAs.
 :pom_176 rr:objectMap :om_176.
 :om_176 a rr:ObjectMap;
-    rr:template "http://www.worldcat.org/oclc/{oclc}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_177 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_177.
 :pm_177 a rr:PredicateMap.
 :pom_177 rr:predicateMap :pm_177.
-:pm_177 rr:constant crm-sup:P20.
+:pm_177 rr:constant owl:sameAs.
 :pom_177 rr:objectMap :om_177.
 :om_177 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "http://www.sudoc.fr/{sudoc}";
     rr:termType rr:IRI.
 :pom_178 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_178.
 :pm_178 a rr:PredicateMap.
 :pom_178 rr:predicateMap :pm_178.
-:pm_178 rr:constant crm-sup:P20.
+:pm_178 rr:constant owl:sameAs.
 :pom_178 rr:objectMap :om_178.
 :om_178 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
     rr:termType rr:IRI.
 :pom_179 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_179.
 :pm_179 a rr:PredicateMap.
 :pom_179 rr:predicateMap :pm_179.
-:pm_179 rr:constant crm-sup:P20.
+:pm_179 rr:constant owl:sameAs.
 :pom_179 rr:objectMap :om_179.
 :om_179 a rr:ObjectMap;
-    rr:template "http://www.sudoc.fr/{sudoc}";
+    rr:template "http://www.worldcat.org/oclc/{oclc}";
     rr:termType rr:IRI.
 :pom_180 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_180.
@@ -2164,7 +2200,7 @@
 :pm_180 rr:constant crm-sup:P20.
 :pom_180 rr:objectMap :om_180.
 :om_180 a rr:ObjectMap;
-    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_181 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_181.
@@ -2173,124 +2209,151 @@
 :pm_181 rr:constant crm-sup:P20.
 :pom_181 rr:objectMap :om_181.
 :om_181 a rr:ObjectMap;
-    rr:template "http://www.worldcat.org/oclc/{oclc}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_182 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_182.
 :pm_182 a rr:PredicateMap.
 :pom_182 rr:predicateMap :pm_182.
-:pm_182 rr:constant bibo:issn.
+:pm_182 rr:constant crm-sup:P20.
 :pom_182 rr:objectMap :om_182.
 :om_182 a rr:ObjectMap;
-    rml:reference "issn";
-    rr:termType rr:Literal.
+    rr:template "http://www.sudoc.fr/{sudoc}";
+    rr:termType rr:IRI.
 :pom_183 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_183.
 :pm_183 a rr:PredicateMap.
 :pom_183 rr:predicateMap :pm_183.
-:pm_183 rr:constant bibo:eissn.
+:pm_183 rr:constant crm-sup:P20.
 :pom_183 rr:objectMap :om_183.
 :om_183 a rr:ObjectMap;
-    rml:reference "issn_numerique";
-    rr:termType rr:Literal.
+    rr:template "http://data.bnf.fr/ark:/12148/cb{FRBNF}#about";
+    rr:termType rr:IRI.
 :pom_184 a rr:PredicateObjectMap.
 :map_RevueMapping_000 rr:predicateObjectMap :pom_184.
 :pm_184 a rr:PredicateMap.
 :pom_184 rr:predicateMap :pm_184.
-:pm_184 rr:constant bibo:oclcnum.
+:pm_184 rr:constant crm-sup:P20.
 :pom_184 rr:objectMap :om_184.
 :om_184 a rr:ObjectMap;
+    rr:template "http://www.worldcat.org/oclc/{oclc}";
+    rr:termType rr:IRI.
+:pom_185 a rr:PredicateObjectMap.
+:map_RevueMapping_000 rr:predicateObjectMap :pom_185.
+:pm_185 a rr:PredicateMap.
+:pom_185 rr:predicateMap :pm_185.
+:pm_185 rr:constant bibo:issn.
+:pom_185 rr:objectMap :om_185.
+:om_185 a rr:ObjectMap;
+    rml:reference "issn";
+    rr:termType rr:Literal.
+:pom_186 a rr:PredicateObjectMap.
+:map_RevueMapping_000 rr:predicateObjectMap :pom_186.
+:pm_186 a rr:PredicateMap.
+:pom_186 rr:predicateMap :pm_186.
+:pm_186 rr:constant bibo:eissn.
+:pom_186 rr:objectMap :om_186.
+:om_186 a rr:ObjectMap;
+    rml:reference "issn_numerique";
+    rr:termType rr:Literal.
+:pom_187 a rr:PredicateObjectMap.
+:map_RevueMapping_000 rr:predicateObjectMap :pom_187.
+:pm_187 a rr:PredicateMap.
+:pom_187 rr:predicateMap :pm_187.
+:pm_187 rr:constant bibo:oclcnum.
+:pom_187 rr:objectMap :om_187.
+:om_187 a rr:ObjectMap;
     rml:reference "oclc";
     rr:termType rr:Literal.
 :rules_000 void:exampleResource :map_PublicationEventMapping_000.
 :map_PublicationEventMapping_000 rml:logicalSource :source_008;
     a rr:TriplesMap;
     rdfs:label "PublicationEventMapping".
-:s_029 a rr:SubjectMap.
-:map_PublicationEventMapping_000 rr:subjectMap :s_029.
-:s_029 rr:termType rr:BlankNode.
-:pom_185 a rr:PredicateObjectMap.
-:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_185.
-:pm_185 a rr:PredicateMap.
-:pom_185 rr:predicateMap :pm_185.
-:pm_185 rr:constant rdf:type.
-:pom_185 rr:objectMap :om_185.
-:om_185 a rr:ObjectMap;
-    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F30";
-    rr:termType rr:IRI.
-:pom_186 a rr:PredicateObjectMap.
-:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_186.
-:pm_186 a rr:PredicateMap.
-:pom_186 rr:predicateMap :pm_186.
-:pm_186 rr:constant frbroo:R23.
-:pom_186 rr:objectMap :om_186.
-:pom_187 a rr:PredicateObjectMap.
-:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_187.
-:pm_187 a rr:PredicateMap.
-:pom_187 rr:predicateMap :pm_187.
-:pm_187 rr:constant crm:P14.
-:pom_187 rr:objectMap :om_187.
-:rules_000 void:exampleResource :map_VilleMapping_000.
-:map_VilleMapping_000 rml:logicalSource :source_020;
-    a rr:TriplesMap;
-    rdfs:label "VilleMapping".
-:s_030 a rr:SubjectMap.
-:map_VilleMapping_000 rr:subjectMap :s_030.
-:s_030 rr:template "http://mshb.huma-num.fr/prelib/ville/{id}".
+:s_031 a rr:SubjectMap.
+:map_PublicationEventMapping_000 rr:subjectMap :s_031.
+:s_031 rr:termType rr:BlankNode.
 :pom_188 a rr:PredicateObjectMap.
-:map_VilleMapping_000 rr:predicateObjectMap :pom_188.
+:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_188.
 :pm_188 a rr:PredicateMap.
 :pom_188 rr:predicateMap :pm_188.
 :pm_188 rr:constant rdf:type.
 :pom_188 rr:objectMap :om_188.
 :om_188 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/sdhss/C13";
+    rr:constant "http://iflastandards.info/ns/fr/frbr/frbroo/F30";
     rr:termType rr:IRI.
 :pom_189 a rr:PredicateObjectMap.
-:map_VilleMapping_000 rr:predicateObjectMap :pom_189.
+:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_189.
 :pm_189 a rr:PredicateMap.
 :pom_189 rr:predicateMap :pm_189.
-:pm_189 rr:constant rdfs:label.
+:pm_189 rr:constant frbroo:R23.
 :pom_189 rr:objectMap :om_189.
-:om_189 a rr:ObjectMap;
-    rml:reference "nom";
-    rr:termType rr:Literal;
-    rml:languageMap :language_013.
-:language_013 rr:constant "fr".
 :pom_190 a rr:PredicateObjectMap.
-:map_VilleMapping_000 rr:predicateObjectMap :pom_190.
+:map_PublicationEventMapping_000 rr:predicateObjectMap :pom_190.
 :pm_190 a rr:PredicateMap.
 :pom_190 rr:predicateMap :pm_190.
-:pm_190 rr:constant owl:sameAs.
+:pm_190 rr:constant crm:P14.
 :pom_190 rr:objectMap :om_190.
-:om_190 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+:rules_000 void:exampleResource :map_VilleMapping_000.
+:map_VilleMapping_000 rml:logicalSource :source_022;
+    a rr:TriplesMap;
+    rdfs:label "VilleMapping".
+:s_032 a rr:SubjectMap.
+:map_VilleMapping_000 rr:subjectMap :s_032.
+:s_032 rr:template "http://mshb.huma-num.fr/prelib/ville/{id}".
 :pom_191 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_191.
 :pm_191 a rr:PredicateMap.
 :pom_191 rr:predicateMap :pm_191.
-:pm_191 rr:constant owl:sameAs.
+:pm_191 rr:constant rdf:type.
 :pom_191 rr:objectMap :om_191.
 :om_191 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:constant "https://ontome.net/ns/sdhss/C13";
     rr:termType rr:IRI.
 :pom_192 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_192.
 :pm_192 a rr:PredicateMap.
 :pom_192 rr:predicateMap :pm_192.
-:pm_192 rr:constant crm-sup:P20.
+:pm_192 rr:constant rdfs:label.
 :pom_192 rr:objectMap :om_192.
 :om_192 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "nom";
+    rr:termType rr:Literal;
+    rml:languageMap :language_014.
+:language_014 rr:constant "fr".
 :pom_193 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_193.
 :pm_193 a rr:PredicateMap.
 :pom_193 rr:predicateMap :pm_193.
-:pm_193 rr:constant crm-sup:P20.
+:pm_193 rr:constant owl:sameAs.
 :pom_193 rr:objectMap :om_193.
 :om_193 a rr:ObjectMap;
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:termType rr:IRI.
+:pom_194 a rr:PredicateObjectMap.
+:map_VilleMapping_000 rr:predicateObjectMap :pom_194.
+:pm_194 a rr:PredicateMap.
+:pom_194 rr:predicateMap :pm_194.
+:pm_194 rr:constant owl:sameAs.
+:pom_194 rr:objectMap :om_194.
+:om_194 a rr:ObjectMap;
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:termType rr:IRI.
+:pom_195 a rr:PredicateObjectMap.
+:map_VilleMapping_000 rr:predicateObjectMap :pom_195.
+:pm_195 a rr:PredicateMap.
+:pom_195 rr:predicateMap :pm_195.
+:pm_195 rr:constant crm-sup:P20.
+:pom_195 rr:objectMap :om_195.
+:om_195 a rr:ObjectMap;
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:termType rr:IRI.
+:pom_196 a rr:PredicateObjectMap.
+:map_VilleMapping_000 rr:predicateObjectMap :pom_196.
+:pm_196 a rr:PredicateMap.
+:pom_196 rr:predicateMap :pm_196.
+:pm_196 rr:constant crm-sup:P20.
+:pom_196 rr:objectMap :om_196.
+:om_196 a rr:ObjectMap;
     rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :om_020 a rr:ObjectMap;
@@ -2398,12 +2461,12 @@
     rr:joinCondition :jc_020.
 :jc_020 rr:child "collectif_id";
     rr:parent "id".
-:om_186 a rr:ObjectMap;
+:om_189 a rr:ObjectMap;
     rr:parentTriplesMap :map_RevueMapping_000;
     rr:joinCondition :jc_021.
 :jc_021 rr:child "revue_id";
     rr:parent "id".
-:om_187 a rr:ObjectMap;
+:om_190 a rr:ObjectMap;
     rr:parentTriplesMap :map_GroupMapping_000;
     rr:joinCondition :jc_022.
 :jc_022 rr:child "collectif_id";

@@ -144,6 +144,12 @@ sources:
   query : > 
    SELECT * FROM prelib_oeuvrelangue JOIN prelib_langue 
    WHERE prelib_langue.id = prelib_oeuvrelangue.langue_id;
+ prelib_oeuvre_types:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_oeuvre_types;
  prelib_paraitdans:
   access: *dbHost
   credentials: *credentials
@@ -224,6 +230,12 @@ sources:
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
   query : SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_revue;
+ prelib_typeoeuvre:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation   
+  query : SELECT * FROM prelib_typeoeuvre;
  prelib_ville:
   access: *dbHost
   credentials: *credentials
@@ -788,7 +800,7 @@ mappings:
    - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
-   - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]   
+   - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
  
  # frbroo:F24 "Publication Expression"
  # frbroo:CLR6i "should be carried by"
@@ -889,7 +901,22 @@ mappings:
          function: equal
          parameters:
           - [str1, $(collectif_id)]
-          - [str2, $(id)] 
+          - [str2, $(id)]
+
+ # crm-sup:C6 "Expression Type"
+ TypeOeuvreMapping:
+  sources: prelib_typeoeuvre
+  subjects: prelib:type-oeuvre/$(id)
+  predicateobjects:
+   - [a, crm-sup:C6]
+   - [rdfs:label, $(intitule), fr~lang]
+
+ # crm-sup:P4 "has expression type (is expression type of)"
+ OeuvreTypesMapping:
+  sources: prelib_oeuvre_types
+  subjects: prelib:oeuvre/$(oeuvre_id)
+  predicateobjects:
+   - [crm-sup:P4, prelib:type-oeuvre/$(typeoeuvre_id)]
 
  # Pour bibo:issn, voir https://data.bnf.fr/fr/semanticweb et LOV
  # frbroo:F18 "Serial Work"
