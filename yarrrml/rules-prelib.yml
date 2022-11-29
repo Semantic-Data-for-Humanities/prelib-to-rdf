@@ -236,11 +236,17 @@ sources:
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
   query : SELECT * FROM prelib_typeoeuvre;
+ prelib_typecollectif:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_typecollectif;
  prelib_ville:
   access: *dbHost
   credentials: *credentials
   type: *dbType
-  referenceFormulation: *csvReferenceFormulation   
+  referenceFormulation: *csvReferenceFormulation
   query : SELECT * FROM prelib_ville;
 
 # A FAIRE : 
@@ -496,12 +502,14 @@ mappings:
        - [str2, 'date']
 
  # crm:E74 "Group"
+ # crm-sup:P7 "has group type (is group type of)"
  GroupMapping:
   sources: prelib_collectif
   subjects: prelib:collectif/$(id)
   predicateobjects:
    - [a, crm:E74]
    - [rdfs:label, $(nom), fr~lang]
+   - [crm-sup:P7, prelib:type-collectif/$(type_collectif_id)~iri]
    - [isni-onto:identifierValid, $(ISNI_SPACELESS)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
@@ -555,6 +563,14 @@ mappings:
     parameters:
      - [grel:valueParameter, $(forme)]
      - [grel:valueParameter2, "1"]
+
+ # crm-sup:C9 "Group Type"
+ TypeCollectifMapping:
+  sources: prelib_typecollectif
+  subjects: prelib:type-collectif/$(id)
+  predicateobjects:
+   - [a, crm-sup:C9]
+   - [rdfs:label, $(nom), fr~lang]
 
  # frbroo:F3 "Manifestation Product Type"
  # crm:P102 "has title (is title of)"
