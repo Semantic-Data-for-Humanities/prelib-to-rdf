@@ -155,7 +155,14 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation   
-  query : SELECT * FROM prelib_paraitdans;    
+  query : >
+   SELECT (CASE WHEN (jour_parution IS NOT NULL AND mois_parution IS NOT NULL AND annee_parution IS NOT NULL) 
+   THEN CONCAT_WS('-', LPAD(`annee_parution`, 4, 0), LPAD(`mois_parution`, 2, 0), LPAD(`jour_parution`, 2, 0)) 
+   WHEN (annee_parution IS NOT NULL) THEN annee_parution END) AS date_parution, 
+   (CASE WHEN (jour_parution IS NOT NULL AND mois_parution IS NOT NULL AND annee_parution IS NOT NULL) 
+   THEN 'date' WHEN (annee_parution IS NOT NULL) THEN 'gYear' END) AS date_parution_dtype,
+   prelib_paraitdans.*
+   FROM prelib_paraitdans;
  prelib_personne:
   access: *dbHost
   credentials: *credentials
@@ -268,8 +275,9 @@ sources:
 # Remarques :
 # - Le mapping proposé par Data4Humanities ne se préoccupe pas les URI des ressources correspondant
 #    aux concepts de PRELIB (personnes, collectifs, etc.). Or certaines ressources
-#    instances de la même classe (ex. sdh-so:C7 Occupation) proviennent de plusieurs tables (trois dans)
-#    le cas des Occupations. Il n'y a dans ce cas pas d'autre solution que de créer des ressources anonymes 
+#    instances de la même classe (ex. sdh-so:C7 "Occupation" ou frbroo:F24 "Publication Expression") 
+#    proviennent de plusieurs tables (trois dans le cas des Occupations). 
+#    Il n'y a dans ce cas pas d'autre solution que de créer des ressources anonymes 
 #    (pas de possibilité de créer des ressources d'URI de type https://mshb.huma-num.fr/prelib/occupation/562/, 
 #    par exemple car le chiffre final correspond à la clé primaire de ces trois tables).
 #    Il faudrait définir dès le départ si les ressources doivent/peuvent être anonymes ou non 
@@ -821,7 +829,7 @@ mappings:
  # frbroo:F24 "Publication Expression"
  # frbroo:CLR6i "should be carried by"
  # frbroo:R5 "has component"
- PublicationExpressionMapping:
+ OeuvreEditionMapping:
   sources: prelib_oeuvreedition
   predicateobjects:
    - [a, frbroo:F24]
@@ -982,10 +990,105 @@ mappings:
           - [str2, $(id)]
 
  # frbroo:F24 "Publication Expression" = expression de l'intégralité d'un numéro d'une revue 
- PublicationExpressionMapping:
+ # frbroo:R15 "has fragment (is fragment of)"
+ # crm:P106 "is composed of (forms part of)"
+ # frbroo:CLR6 "should carry (should be carried by)"
+ ParaitDansMapping:
+  sources: prelib_paraitdans
+  subjects: prelib:parait-dans-revue/$(id)
+  predicateobjects: 
+   - [a, frbroo:F24]
+   - [crm:P106, prelib:oeuvre/$(oeuvre_id)~iri]
+   - p: frbroo:R15
+     o:
+      - mapping: ParaitDansNumeroRevueMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+      - mapping: ParaitDansPageDebutMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+      - mapping: ParaitDansPageFinMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+      - mapping: ParaitDansDateParutionMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]          
+   - p: frbroo:CLR6
+     o:
+      - mapping: ParaitDansManifestationProductTypeMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]   
+
+ # frbroo:F23 "Expression Fragment"
+ # crm:P2 "has type (is type of)"
+ # crm:P3 "has note"
+ ParaitDansNumeroRevueMapping:
   sources: prelib_paraitdans
   predicateobjects: 
-  - [a, frbroo:F24]
+   - [a, frbroo:F23]
+   - [crm:P2, "numéro", fr~lang]
+   - [crm:P3, $(numero_revue), fr~lang]
+
+ ParaitDansPageDebutMapping:
+  sources: prelib_paraitdans
+  predicateobjects:
+   - [a, frbroo:F23]
+   - [crm:P2, "page de début", fr~lang]
+   - [crm:P3, $(page_debut), xsd:integer]
+
+ ParaitDansPageFinMapping:
+  sources: prelib_paraitdans
+  predicateobjects: 
+   - [a, frbroo:F23]
+   - [crm:P2, "page de fin", fr~lang]
+   - [crm:P3, $(page_fin), xsd:integer]
+  
+ ParaitDansDateParutionMapping:
+  sources: prelib_paraitdans
+  predicateobjects:
+   - [a, frbroo:F23]
+   - [crm:P2, "date de parution", fr~lang]
+   - p: crm:P3
+     o:
+      - value: $(date_parution)
+        datatype: xsd:gYear
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(date_parution_dtype)]
+          - [str2, 'gYear']
+      - value: $(date_parution)
+        datatype: xsd:date
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(date_parution_dtype)]
+          - [str2, 'date']
+ 
+ # frbroo:F3 "Manifestation Product Type"
+ # sdh-int:P20 "has issue (is issue of)"
+ # Ressource nécessaire pour lier la frbroo:F24 "Publication Expression"
+ # de ParaitDansMapping à la revue (frbroo:F18 "Serial Work")
+ ParaitDansManifestationProductTypeMapping:
+  sources: prelib_paraitdans
+  predicateobjects: 
+   - [a, frbroo:F3]
+   - [sdh-int:P20, prelib:revue/$(revue_id)~iri]
  
  # sdh:C13 "Geographical Place"
  VilleMapping:
