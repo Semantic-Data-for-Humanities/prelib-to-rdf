@@ -21,6 +21,7 @@ prefixes:
  prelib: http://mshb.huma-num.fr/prelib/
  sdh: https://ontome.net/ns/sdhss/
  sdh-int: https://ontome.net/ns/intellectual-literary-life/
+ sdh-sls: https://ontome.net/ns/social-life-specific/
  sdh-so: https://ontome.net/ns/social-legal-economic-life/
  sudoc: http://www.sudoc.fr/
  viaf: http://viaf.org/viaf/
@@ -136,11 +137,17 @@ sources:
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
   query : SELECT * FROM prelib_estdedicaceacollectif;
+ prelib_etudes:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_etudes;
  prelib_oeuvre:
   access: *dbHost
   credentials: *credentials
   type: *dbType
-  referenceFormulation: *csvReferenceFormulation   
+  referenceFormulation: *csvReferenceFormulation
   query : SELECT prelib_oeuvre.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_oeuvre;
  prelib_oeuvreedition:
   access: *dbHost
@@ -591,6 +598,41 @@ mappings:
   predicateobjects:
    - [a, crm-sup:C9]
    - [rdfs:label, $(nom), fr~lang]
+
+ # sdh-sls:C2 "Attending a School"
+ # sdh-sls:P3 "concerned person (attending a school)"
+ # sdh-sls:P2 "concerned school (is attended by)"
+ EtudesMapping:
+  source: prelib_etudes
+  subjects: prelib:etudes/$(id)
+  predicateobjects:
+   - [a, sdh-sls:C2]
+   - [sdh-sls:P3, prelib:personne/$(personne_id)~iri]
+   - [sdh-sls:P4, prelib:collectif/$(groupe_id)~iri]
+   - p: crm:P4
+     o: 
+      - mapping: TimeSpanEtudesMapping
+        condition:
+         function: equal
+         parameters:
+          - [str1, $(id)]
+          - [str2, $(id)]
+
+ # crm:E52 "Time-Span"
+ # crm:P82a "begin of the begin"
+ # crm:P82b "end of the end"
+ TimeSpanEtudesMapping:
+  source: prelib_etudes
+  predicateobjects:
+  - [a, crm:E52]
+  - predicates: crm:P82a
+    objects:
+     value: $(annee_debut_etudes)
+     datatype: xsd:gYear
+  - predicates: crm:P82b
+    objects:
+     value: $(annee_fin_etudes)
+     datatype: xsd:gYear
 
  # frbroo:F3 "Manifestation Product Type"
  # crm:P102 "has title (is title of)"
