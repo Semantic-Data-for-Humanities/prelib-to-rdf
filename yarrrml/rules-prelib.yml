@@ -129,7 +129,13 @@ sources:
   credentials: *credentials
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
-  query : SELECT * FROM prelib_estdedicacea;  
+  query : SELECT * FROM prelib_estdedicacea;
+ prelib_estdedicaceacollectif:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation
+  query : SELECT * FROM prelib_estdedicaceacollectif;
  prelib_oeuvre:
   access: *dbHost
   credentials: *credentials
@@ -667,6 +673,13 @@ mappings:
    - [a, crm:F23]
    - [frbroo:R15, prelib:oeuvre/$(oeuvre_id)~iri]
    - [crm:P129, prelib:personne/$(personne_id)~iri]
+
+ EstDedicaceACollectifMapping:
+  sources: prelib_estdedicaceacollectif
+  predicateobjects:
+   - [a, crm:F23]
+   - [frbroo:R15, prelib:oeuvre/$(oeuvre_id)~iri]
+   - [crm:P129, prelib:collectif/$(collectif_id)~iri]   
 
  # crmba:B1 "Built Work"
  # sdh:P17 "has location"
