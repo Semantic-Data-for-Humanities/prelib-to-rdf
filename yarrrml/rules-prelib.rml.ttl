@@ -278,9 +278,9 @@
     d2rq:password "$(_password)".
 :source_023 rml:referenceFormulation ql:CSV.
 :source_024 a rml:LogicalSource;
-    rdfs:label "prelib_typeoeuvre";
+    rdfs:label "prelib_traduction";
     rml:source :database_024;
-    rml:query "SELECT * FROM prelib_typeoeuvre;".
+    rml:query "SELECT * FROM prelib_oeuvreoeuvre WHERE type_relation_oeuvres_id = 1;".
 :database_024 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -288,9 +288,9 @@
     d2rq:password "$(_password)".
 :source_024 rml:referenceFormulation ql:CSV.
 :source_025 a rml:LogicalSource;
-    rdfs:label "prelib_typecollectif";
+    rdfs:label "prelib_typeoeuvre";
     rml:source :database_025;
-    rml:query "SELECT * FROM prelib_typecollectif;".
+    rml:query "SELECT * FROM prelib_typeoeuvre;".
 :database_025 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
@@ -298,15 +298,25 @@
     d2rq:password "$(_password)".
 :source_025 rml:referenceFormulation ql:CSV.
 :source_026 a rml:LogicalSource;
-    rdfs:label "prelib_ville";
+    rdfs:label "prelib_typecollectif";
     rml:source :database_026;
-    rml:query "SELECT * FROM prelib_ville;".
+    rml:query "SELECT * FROM prelib_typecollectif;".
 :database_026 a d2rq:Database;
     d2rq:jdbcDSN "http://localhost/django_mshb";
     d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
     d2rq:username "$(_username)";
     d2rq:password "$(_password)".
 :source_026 rml:referenceFormulation ql:CSV.
+:source_027 a rml:LogicalSource;
+    rdfs:label "prelib_ville";
+    rml:source :database_027;
+    rml:query "SELECT * FROM prelib_ville;".
+:database_027 a d2rq:Database;
+    d2rq:jdbcDSN "http://localhost/django_mshb";
+    d2rq:jdbcDriver "com.mysql.cj.jdbc.Driver";
+    d2rq:username "$(_username)";
+    d2rq:password "$(_password)".
+:source_027 rml:referenceFormulation ql:CSV.
 :rules_000 void:exampleResource :map_PersonneMapping_000.
 :map_PersonneMapping_000 rml:logicalSource :source_018;
     a rr:TriplesMap;
@@ -1328,7 +1338,7 @@
     rml:languageMap :language_007.
 :language_007 rml:reference "code_iso_639_3".
 :rules_000 void:exampleResource :map_TypeCollectifMapping_000.
-:map_TypeCollectifMapping_000 rml:logicalSource :source_025;
+:map_TypeCollectifMapping_000 rml:logicalSource :source_026;
     a rr:TriplesMap;
     rdfs:label "TypeCollectifMapping".
 :s_012 a rr:SubjectMap.
@@ -2293,7 +2303,7 @@
 :pm_184 rr:constant crm:P14.
 :pom_184 rr:objectMap :om_184.
 :rules_000 void:exampleResource :map_TypeOeuvreMapping_000.
-:map_TypeOeuvreMapping_000 rml:logicalSource :source_024;
+:map_TypeOeuvreMapping_000 rml:logicalSource :source_025;
     a rr:TriplesMap;
     rdfs:label "TypeOeuvreMapping".
 :s_033 a rr:SubjectMap.
@@ -2828,42 +2838,49 @@
 :om_236 a rr:ObjectMap;
     rr:template "http://mshb.huma-num.fr/prelib/revue/{revue_id}";
     rr:termType rr:IRI.
-:rules_000 void:exampleResource :map_VilleMapping_000.
-:map_VilleMapping_000 rml:logicalSource :source_026;
+:rules_000 void:exampleResource :map_TraductionMapping_000.
+:map_TraductionMapping_000 rml:logicalSource :source_024;
     a rr:TriplesMap;
-    rdfs:label "VilleMapping".
+    rdfs:label "TraductionMapping".
 :s_043 a rr:SubjectMap.
-:map_VilleMapping_000 rr:subjectMap :s_043.
-:s_043 rr:template "http://mshb.huma-num.fr/prelib/ville/{id}".
+:map_TraductionMapping_000 rr:subjectMap :s_043.
+:s_043 rr:template "http://mshb.huma-num.fr/prelib/oeuvre/{oeuvre_originale_id}".
 :pom_233 a rr:PredicateObjectMap.
-:map_VilleMapping_000 rr:predicateObjectMap :pom_233.
+:map_TraductionMapping_000 rr:predicateObjectMap :pom_233.
 :pm_233 a rr:PredicateMap.
 :pom_233 rr:predicateMap :pm_233.
-:pm_233 rr:constant rdf:type.
+:pm_233 rr:constant crm:P73.
 :pom_233 rr:objectMap :om_237.
 :om_237 a rr:ObjectMap;
-    rr:constant "https://ontome.net/ns/sdhss/C13";
+    rr:template "http://mshb.huma-num.fr/prelib/oeuvre/{oeuvre_inspiree_id}";
     rr:termType rr:IRI.
+:rules_000 void:exampleResource :map_VilleMapping_000.
+:map_VilleMapping_000 rml:logicalSource :source_027;
+    a rr:TriplesMap;
+    rdfs:label "VilleMapping".
+:s_044 a rr:SubjectMap.
+:map_VilleMapping_000 rr:subjectMap :s_044.
+:s_044 rr:template "http://mshb.huma-num.fr/prelib/ville/{id}".
 :pom_234 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_234.
 :pm_234 a rr:PredicateMap.
 :pom_234 rr:predicateMap :pm_234.
-:pm_234 rr:constant rdfs:label.
+:pm_234 rr:constant rdf:type.
 :pom_234 rr:objectMap :om_238.
 :om_238 a rr:ObjectMap;
-    rml:reference "nom";
-    rr:termType rr:Literal;
-    rml:languageMap :language_020.
-:language_020 rr:constant "fr".
+    rr:constant "https://ontome.net/ns/sdhss/C13";
+    rr:termType rr:IRI.
 :pom_235 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_235.
 :pm_235 a rr:PredicateMap.
 :pom_235 rr:predicateMap :pm_235.
-:pm_235 rr:constant owl:sameAs.
+:pm_235 rr:constant rdfs:label.
 :pom_235 rr:objectMap :om_239.
 :om_239 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
-    rr:termType rr:IRI.
+    rml:reference "nom";
+    rr:termType rr:Literal;
+    rml:languageMap :language_020.
+:language_020 rr:constant "fr".
 :pom_236 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_236.
 :pm_236 a rr:PredicateMap.
@@ -2871,16 +2888,16 @@
 :pm_236 rr:constant owl:sameAs.
 :pom_236 rr:objectMap :om_240.
 :om_240 a rr:ObjectMap;
-    rr:template "https://database.factgrid.de/entity/{factgrid}";
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
     rr:termType rr:IRI.
 :pom_237 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_237.
 :pm_237 a rr:PredicateMap.
 :pom_237 rr:predicateMap :pm_237.
-:pm_237 rr:constant crm-sup:P20.
+:pm_237 rr:constant owl:sameAs.
 :pom_237 rr:objectMap :om_241.
 :om_241 a rr:ObjectMap;
-    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :pom_238 a rr:PredicateObjectMap.
 :map_VilleMapping_000 rr:predicateObjectMap :pom_238.
@@ -2889,6 +2906,15 @@
 :pm_238 rr:constant crm-sup:P20.
 :pom_238 rr:objectMap :om_242.
 :om_242 a rr:ObjectMap;
+    rr:template "http://www.wikidata.org/entity/{wikidata}";
+    rr:termType rr:IRI.
+:pom_239 a rr:PredicateObjectMap.
+:map_VilleMapping_000 rr:predicateObjectMap :pom_239.
+:pm_239 a rr:PredicateMap.
+:pom_239 rr:predicateMap :pm_239.
+:pm_239 rr:constant crm-sup:P20.
+:pom_239 rr:objectMap :om_243.
+:om_243 a rr:ObjectMap;
     rr:template "https://database.factgrid.de/entity/{factgrid}";
     rr:termType rr:IRI.
 :om_020 a rr:ObjectMap;

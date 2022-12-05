@@ -256,6 +256,12 @@ sources:
   type: *dbType
   referenceFormulation: *csvReferenceFormulation
   query : SELECT prelib_revue.*, SUBSTRING(ark_bnf, 9, CHAR_LENGTH(ark_bnf) - 8) AS FRBNF FROM prelib_revue;
+ prelib_traduction:
+  access: *dbHost
+  credentials: *credentials
+  type: *dbType
+  referenceFormulation: *csvReferenceFormulation 
+  query: SELECT * FROM prelib_oeuvreoeuvre WHERE type_relation_oeuvres_id = 1;
  prelib_typeoeuvre:
   access: *dbHost
   credentials: *credentials
@@ -1160,6 +1166,13 @@ mappings:
   predicateobjects: 
    - [a, frbroo:F3]
    - [sdh-int:P20, prelib:revue/$(revue_id)~iri]
+
+ # crm:P73 "has translation (is translation of)"
+ TraductionMapping:
+  sources: prelib_traduction
+  subjects: prelib:oeuvre/$(oeuvre_originale_id)
+  predicateobjects: 
+   - [crm:P73, prelib:oeuvre/$(oeuvre_inspiree_id)~iri]
  
  # sdh:C13 "Geographical Place"
  VilleMapping:
