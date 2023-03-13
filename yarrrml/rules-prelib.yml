@@ -365,8 +365,6 @@ mappings:
   subjects: prelib:personne/$(id)
   predicateobjects:
    - [a, crm:E21]
-   - [rdfs:label, $(nom_usuel)]
-   - [foaf:name, $(nom_usuel)]
    - [foaf:familyName, $(nom_etat_civil)]
    - [foaf:givenName, $(prenom_etat_civil)]
    - [bnf-onto:FRBNF, $(FRBNF)]
@@ -425,6 +423,8 @@ mappings:
   subjects: prelib:personne/$(personne_id)
   predicateobjects:
    - [skos:prefLabel, $(appellation), $(code_iso_639_3)~lang]
+   - [rdfs:label, $(appellation), $(code_iso_639_3)~lang]
+   - [foaf:name, $(appellation), $(code_iso_639_3)~lang]
   condition:
     function: idlab-fn:equal
     parameters:
