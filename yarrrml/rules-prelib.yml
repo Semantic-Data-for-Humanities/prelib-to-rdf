@@ -12,7 +12,7 @@ prefixes:
  frbroo: http://iflastandards.info/ns/fr/frbr/frbroo/
  grel: http://users.ugent.be/~bjdmeest/function/grel.ttl# 
  idlab-fn: http://example.com/idlab/function/
- idref: https://www.idref.fr/
+ idref: http://www.idref.fr/
  factgrid: https://database.factgrid.de/entity/
  isni-onto: http://isni.org/ontology#
  isni: http://isni.org/isni/
@@ -545,13 +545,13 @@ mappings:
    - [isni-onto:identifierValid, $(ISNI_SPACELESS)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
-   - [owl:sameAs, idref:$(idref)~iri]
+   - [owl:sameAs, idref:$(idref)/id~iri]
    - [owl:sameAs, databnf:12148/cb$(FRBNF)#about~iri]
    - [owl:sameAs, isni:$(ISNI_SPACELESS)~iri]
    - [owl:sameAs, viaf:$(viaf)~iri]
    - [crm-sup:P20, wd:$(wikidata)~iri]
    - [crm-sup:P20, factgrid:$(factgrid)~iri]
-   - [crm-sup:P20, idref:$(idref)~iri]
+   - [crm-sup:P20, idref:$(idref)/id~iri]
    - [crm-sup:P20, databnf:12148/cb$(FRBNF)#about~iri]
    - [crm-sup:P20, isni:$(ISNI_SPACELESS)~iri]
    - [crm-sup:P20, viaf:$(viaf)~iri]
