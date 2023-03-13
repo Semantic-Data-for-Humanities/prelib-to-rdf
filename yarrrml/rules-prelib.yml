@@ -541,7 +541,6 @@ mappings:
   subjects: prelib:collectif/$(id)
   predicateobjects:
    - [a, crm:E74]
-   - [rdfs:label, $(nom), fr~lang]
    - [crm-sup:P7, prelib:type-collectif/$(type_collectif_id)~iri]
    - [isni-onto:identifierValid, $(ISNI_SPACELESS)]
    - [owl:sameAs, wd:$(wikidata)~iri]
@@ -580,6 +579,7 @@ mappings:
   subjects: prelib:collectif/$(collectif_id)
   predicateobjects:
    - [skos:prefLabel, $(appellation), $(code_iso_639_3)~lang]
+   - [rdfs:label, $(appellation), $(code_iso_639_3)~lang]
   condition:
     function: idlab-fn:equal
     parameters:
