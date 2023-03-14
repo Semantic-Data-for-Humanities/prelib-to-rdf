@@ -364,7 +364,7 @@ mappings:
   sources: prelib_personne
   subjects: prelib:personne/$(id)
   predicateobjects:
-   - [a, crm:E21]
+   - [a, crm:E21_Person]
    - [foaf:familyName, $(nom_etat_civil)]
    - [foaf:givenName, $(prenom_etat_civil)]
    - [bnf-onto:FRBNF, $(FRBNF)]
@@ -377,7 +377,7 @@ mappings:
    - [owl:sameAs, viaf:$(viaf)~iri]
    - [foaf:gender, $(gender), en~lang]
    # Lien avec les ressources anomymes de classe crm:E41   
-   - p: crm:P1
+   - p: crm:P1_is_identified_by
      o:
       - mapping: AppellationPersonneMapping
         condition:
@@ -385,7 +385,7 @@ mappings:
          parameters:
           - [str1, $(id)]
           - [str2, $(personne_id)]       
-   - p: crm:P98
+   - p: crm:P98_brought_into_life
      o:
       - mapping: BirthMapping
         condition:
@@ -393,7 +393,7 @@ mappings:
          parameters:
           - [str1, $(id)]
           - [str2, $(id)]
-   - p: crm:P100
+   - p: crm:P100_was_death_of
      o:
       - mapping: DeathMapping
         condition:
@@ -409,7 +409,7 @@ mappings:
  AppellationPersonneMapping:
   sources: prelib_appellationpersonne
   predicateobjects:
-  - [a, crm:E41]
+  - [a, crm:E41_Appellation]
   - [crm-sup:P21, $(appellation), $(code_iso_639_3)~lang]
 
  AppellationRetenuePersonneMapping:
@@ -442,8 +442,8 @@ mappings:
  DeathMapping:
   sources: prelib_personne
   predicateobjects:
-   - [a, crm:E69]
-   - p: crm:P7
+   - [a, crm:E69_Death]
+   - p: crm:P7_took_place_at
      o:
       - mapping: VilleMapping
         condition:
@@ -451,7 +451,7 @@ mappings:
          parameters:
           - [str1, $(ville_deces_id)]
           - [str2, $(id)]
-   - p: crm:P4
+   - p: crm:P4_has_time-span
      o:
       - mapping: TimeSpanDeathMapping
         condition:
@@ -464,8 +464,8 @@ mappings:
  BirthMapping:
   sources: prelib_personne
   predicateobjects:
-   - [a, crm:E67]
-   - p: crm:P7
+   - [a, crm:E67_Birth]
+   - p: crm:P7_took_place_at
      o:
       - mapping: VilleMapping
         condition:
@@ -473,7 +473,7 @@ mappings:
          parameters:
           - [str1, $(ville_naissance_id)]
           - [str2, $(id)]
-   - p: crm:P4
+   - p: crm:P4_has_time-span
      o:
       - mapping: TimeSpanBirthMapping
         condition:
@@ -488,8 +488,8 @@ mappings:
  TimeSpanBirthMapping:
   sources: prelib_personne
   predicateobjects:
-   - [a, crm:E52]
-   - p: crm:P82
+   - [a, crm:E52_Time-Span]
+   - p: crm:P82_at_some_time_within
      o: $(date_naissance)
      datatype: xsd:gYear
      condition:
@@ -497,7 +497,7 @@ mappings:
       parameters:
        - [str1, $(date_naissance_dtype)]
        - [str2, 'gYear']
-   - p: crm:P82
+   - p: crm:P82_at_some_time_within
      o: $(date_naissance)
      datatype: xsd:date
      condition:
@@ -510,8 +510,8 @@ mappings:
  TimeSpanDeathMapping:
   sources: prelib_personne
   predicateobjects:
-   - [a, crm:E52]
-   - p: crm:P82
+   - [a, crm:E52_Time-Span]
+   - p: crm:P82_at_some_time_within
      o: $(date_deces)
      datatype: xsd:gYear
      condition:
@@ -519,7 +519,7 @@ mappings:
       parameters:
        - [str1, $(date_deces_dtype)]
        - [str2, 'gYear']
-   - p: crm:P82
+   - p: crm:P82_at_some_time_within
      o: $(date_deces)
      datatype: xsd:date
      condition:
@@ -534,8 +534,8 @@ mappings:
   sources: prelib_collectif
   subjects: prelib:collectif/$(id)
   predicateobjects:
-   - [a, crm:E74]
-   - [crm-sup:P7, prelib:type-collectif/$(type_collectif_id)~iri]
+   - [a, crm:E74_Group]
+   - [crm-sup:P7_took_place_at, prelib:type-collectif/$(type_collectif_id)~iri]
    - [isni-onto:identifierValid, $(ISNI_SPACELESS)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]   
@@ -544,7 +544,7 @@ mappings:
    - [owl:sameAs, isni:$(ISNI_SPACELESS)~iri]
    - [owl:sameAs, viaf:$(viaf)~iri]
    # Lien avec les ressources anomymes de classe crm:E41
-   - p: crm:P1
+   - p: crm:P1_is_identified_by
      o:
       - mapping: AppellationCollectifMapping
         condition:
@@ -559,7 +559,7 @@ mappings:
  AppellationCollectifMapping:
   sources: prelib_appellationcollectif
   predicateobjects:
-  - [a, crm:E41]
+  - [a, crm:E41_Appellation]
   - [crm-sup:P21, $(appellation), $(code_iso_639_3)~lang]
 
  AppellationRetenueCollectifMapping:
@@ -603,7 +603,7 @@ mappings:
    - [a, sdh-sls:C2]
    - [sdh-sls:P3, prelib:personne/$(personne_id)~iri]
    - [sdh-sls:P4, prelib:collectif/$(groupe_id)~iri]
-   - p: crm:P4
+   - p: crm:P4_has_time-span
      o: 
       - mapping: TimeSpanEtudesMapping
         condition:
@@ -618,12 +618,12 @@ mappings:
  TimeSpanEtudesMapping:
   source: prelib_etudes
   predicateobjects:
-  - [a, crm:E52]
-  - predicates: crm:P82a
+  - [a, crm:E52_Time-Span]
+  - predicates: crm:P82a_begin_of_the_begin
     objects:
      value: $(annee_debut_etudes)
      datatype: xsd:gYear
-  - predicates: crm:P82b
+  - predicates: crm:P82b_end_of_the_end
     objects:
      value: $(annee_fin_etudes)
      datatype: xsd:gYear
@@ -636,7 +636,7 @@ mappings:
   predicateobjects:
    - [a, frbroo:F3]
    - [rdfs:label, $(titre)]
-   - [crm:P102, $(titre)]
+   - [crm:P102_has_title, $(titre)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]
    - [owl:sameAs, sudoc:$(sudoc)~iri]
@@ -653,7 +653,7 @@ mappings:
   sources: prelib_editeoeuvre
   subjects: prelib:edition-event/$(edition_id)
   predicateobjects:
-   - p: crm:P14
+   - p: crm:P14_carried_out_by
      o:
       - mapping: GroupMapping
         condition:
@@ -677,7 +677,7 @@ mappings:
   subjects: prelib:edition-event/$(id)
   predicateobjects:
    - [a, sdh-int:C1]        
-   - p: crm:P4
+   - p: crm:P4_has_time-span
      o: 
       - mapping: TimeSpanExpressionPublicationEventMapping
         condition:
@@ -691,8 +691,8 @@ mappings:
  TimeSpanExpressionPublicationEventMapping:
   sources: prelib_edition
   predicateobjects:
-   - [a, crm:E52]
-   - p: crm:P82
+   - [a, crm:E52_Time-Span]
+   - p: crm:P82_at_some_time_within
      o: $(annee_publication)
      datatype: xsd:gYear
 
@@ -702,16 +702,16 @@ mappings:
  EstDedicaceAMapping:
   sources: prelib_estdedicacea
   predicateobjects:
-   - [a, crm:F23]
+   - [a, frbroo:F23]
    - [frbroo:R15, prelib:oeuvre/$(oeuvre_id)~iri]
-   - [crm:P129, prelib:personne/$(personne_id)~iri]
+   - [crm:P129_is_about, prelib:personne/$(personne_id)~iri]
 
  EstDedicaceACollectifMapping:
   sources: prelib_estdedicaceacollectif
   predicateobjects:
-   - [a, crm:F23]
+   - [a, frbroo:F23]
    - [frbroo:R15, prelib:oeuvre/$(oeuvre_id)~iri]
-   - [crm:P129, prelib:collectif/$(collectif_id)~iri]   
+   - [crm:P129_is_about, prelib:collectif/$(collectif_id)~iri]   
 
  # crmba:B1 "Built Work"
  # sdh:P17 "has location"
@@ -762,8 +762,8 @@ mappings:
    - [a, sdh-so:C8]
    # A voir si on n'écrit pas cette ligne comme pour sdh-so:P7 lié au GroupMapping
    - [sdh-so:P4, prelib:personne/$(personne_id)~iri]
-   - [crm:P8, prelib:batiment/$(batiment_id)~iri]
-   - p: crm:P4
+   - [crm:P8_took_place_on_or_within, prelib:batiment/$(batiment_id)~iri]
+   - p: crm:P4_has_time-span
      o: 
       - mapping: TimeSpanOccupationMapping
         condition:
@@ -802,20 +802,20 @@ mappings:
  TimeSpanOccupationMapping:
   sources: prelib_profession
   predicateobjects:
-  - [a, crm:E52]
-  - predicates: crm:P82a
+  - [a, crm:E52_Time-Span]
+  - predicates: crm:P82a_begin_of_the_begin
     objects:
      value: $(date_debut)
      datatype: xsd:date
-  - predicates: crm:P82b
+  - predicates: crm:P82b_end_of_the_end
     objects:
      value: $(date_fin)
      datatype: xsd:date
-  - predicates: crm:P82a
+  - predicates: crm:P82a_begin_of_the_begin
     objects:
      value: $(annee_debut)
      datatype: xsd:gYear
-  - predicates: crm:P82b
+  - predicates: crm:P82b_end_of_the_end
     objects:
      value: $(annee_fin)
      datatype: xsd:gYear
@@ -832,7 +832,7 @@ mappings:
    - [sdh-so:P18, prelib:personne/$(personne_id)~iri]
    - [sdh-so:P17, prelib:personne/$(relation_id)~iri]
    - [sdh-so:P16, prelib:qualite-relation/$(qualite_relation_id)~iri]
-   - p: crm:P4
+   - p: crm:P4_has_time-span
      o:
       - mapping: TimeSpanRelationInterpersonnelleMapping
         condition:
@@ -849,20 +849,20 @@ mappings:
  TimeSpanRelationInterpersonnelleMapping:
   sources: prelib_relationinterpersonnelle
   predicateobjects:
-  - [a, crm:E52]
-  - predicates: crm:P82a
+  - [a, crm:E52_Time-Span]
+  - predicates: crm:P82a_begin_of_the_begin
     objects:
      value: $(date_debut_relation)
      datatype: xsd:date
-  - predicates: crm:P82b
+  - predicates: crm:P82b_end_of_the_end
     objects:
      value: $(date_fin_relation)
      datatype: xsd:date
-  - predicates: crm:P82a
+  - predicates: crm:P82a_begin_of_the_begin
     objects:
      value: $(annee_debut_relation)
      datatype: xsd:gYear
-  - predicates: crm:P82b
+  - predicates: crm:P82b_end_of_the_end
     objects:
      value: $(annee_fin_relation)
      datatype: xsd:gYear          
@@ -874,7 +874,7 @@ mappings:
   subjects: prelib:oeuvre/$(id)
   predicateobjects:
    - [a, frbroo:F2]
-   - [a, crm:E33]
+   - [a, crm:E33_Linguistic_Object]
    - [rdfs:label, $(titre)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]
@@ -909,7 +909,7 @@ mappings:
   sources: prelib_oeuvrelangue
   subjects: prelib:oeuvre/$(oeuvre_id)
   predicateobjects:
-   - [crm:P72, lexvo:$(code_iso_639_3)~iri]
+   - [crm:P72_has_language, lexvo:$(code_iso_639_3)~iri]
 
  # Probleme de l'expression du rôle du createur, nécessiterait de la reification pour utiliser P14.1 in the role of, 
  # propriété de la propriété P14 carried out by (performed).
@@ -933,8 +933,8 @@ mappings:
    # La table prelib_ecritoeuvre ne contient pas que des relations entre des oeuvres et des auteurs
    # mais des fonction_id = éditeurs scientifiques, traducteurs, collecteur, illustrateur, préfacier, etc.
    # la colonne date_ecriture dont est dérivée annee devrait plutôt s'appeller date tout court.
-   - [crm:P3, $(nom_fonction), fr~lang]
-   - [crm:P4, $(annee)]
+   - [crm:P3_has_note, $(nom_fonction), fr~lang]
+   - [crm:P4_has_time-span, $(annee)]
    - p: frbroo:R17
      o:
       - mapping: ExpressionMapping
@@ -943,7 +943,7 @@ mappings:
          parameters:
           - [str1, $(oeuvre_id)]
           - [str2, $(id)]
-   - p: crm:P14
+   - p: crm:P14_carried_out_by
      o:
       - mapping: PersonneMapping
         condition:
@@ -962,8 +962,8 @@ mappings:
   predicateobjects:
    - [a, frbroo:F28]
    # Voir remarque ci-dessus au sujet de la table prelib_ecritoeuvre
-   - [crm:P3, $(nom_fonction), fr~lang]
-   - [crm:P4, $(annee)]
+   - [crm:P3_has_note, $(nom_fonction), fr~lang]
+   - [crm:P4_has_time-span, $(annee)]
    - p: frbroo:R17
      o:
       - mapping: ExpressionMapping
@@ -972,7 +972,7 @@ mappings:
          parameters:
           - [str1, $(oeuvre_id)]
           - [str2, $(id)]
-   - p: crm:P14
+   - p: crm:P14_carried_out_by
      o:
       - mapping: GroupMapping
         condition:
@@ -1003,7 +1003,7 @@ mappings:
   subjects: prelib:revue/$(id)
   predicateobjects:
    - [a, frbroo:F18]
-   - [crm:P102, $(titre)]
+   - [crm:P102_has_title, $(titre)]
    - [rdfs:label, $(titre)]
    - [owl:sameAs, wd:$(wikidata)~iri]
    - [owl:sameAs, factgrid:$(factgrid)~iri]
@@ -1029,7 +1029,7 @@ mappings:
          parameters:
           - [str1, $(revue_id)]
           - [str2, $(id)]
-   - p: crm:P14
+   - p: crm:P14_carried_out_by
      o:
       - mapping: GroupMapping
         condition:
@@ -1047,7 +1047,7 @@ mappings:
   subjects: prelib:parait-dans-revue/$(id)
   predicateobjects: 
    - [a, frbroo:F24]
-   - [crm:P106, prelib:oeuvre/$(oeuvre_id)~iri]
+   - [crm:P106_is_composed_of, prelib:oeuvre/$(oeuvre_id)~iri]
    - p: frbroo:R15
      o:
       - mapping: ParaitDansNumeroRevueMapping
@@ -1090,29 +1090,29 @@ mappings:
   sources: prelib_paraitdans
   predicateobjects: 
    - [a, frbroo:F23]
-   - [crm:P2, "numéro", fr~lang]
-   - [crm:P3, $(numero_revue), fr~lang]
+   - [crm:P2_has_type, "numéro", fr~lang]
+   - [crm:P3_has_note, $(numero_revue), fr~lang]
 
  ParaitDansPageDebutMapping:
   sources: prelib_paraitdans
   predicateobjects:
    - [a, frbroo:F23]
-   - [crm:P2, "page de début", fr~lang]
-   - [crm:P3, $(page_debut), xsd:integer]
+   - [crm:P2_has_type, "page de début", fr~lang]
+   - [crm:P3_has_note, $(page_debut), xsd:integer]
 
  ParaitDansPageFinMapping:
   sources: prelib_paraitdans
   predicateobjects: 
    - [a, frbroo:F23]
-   - [crm:P2, "page de fin", fr~lang]
-   - [crm:P3, $(page_fin), xsd:integer]
+   - [crm:P2_has_type, "page de fin", fr~lang]
+   - [crm:P3_has_note, $(page_fin), xsd:integer]
   
  ParaitDansDateParutionMapping:
   sources: prelib_paraitdans
   predicateobjects:
    - [a, frbroo:F23]
-   - [crm:P2, "date de parution", fr~lang]
-   - p: crm:P3
+   - [crm:P2_has_type, "date de parution", fr~lang]
+   - p: crm:P3_has_note
      o:
       - value: $(date_parution)
         datatype: xsd:gYear
@@ -1144,7 +1144,7 @@ mappings:
   sources: prelib_traduction
   subjects: prelib:oeuvre/$(oeuvre_originale_id)
   predicateobjects: 
-   - [crm:P73, prelib:oeuvre/$(oeuvre_inspiree_id)~iri]
+   - [crm:P73_has_translation, prelib:oeuvre/$(oeuvre_inspiree_id)~iri]
  
  # sdh:C13 "Geographical Place"
  VilleMapping:
